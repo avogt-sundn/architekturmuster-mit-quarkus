@@ -14,11 +14,8 @@ import io.quarkus.narayana.jta.QuarkusTransaction;
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional.TxType;
 
 @QuarkusTest
-@Transactional
 class OrganisationResourceTest {
     @TestHTTPResource(value = "/organizations")
     URI uri;
@@ -32,10 +29,8 @@ class OrganisationResourceTest {
      * @see OrganisationResource#getSingle(Long)
      */
     @Test
-    @Transactional(TxType.NOT_SUPPORTED)
     void _GetSingle() {
         QuarkusTransaction.begin();
-
         // erzeuge einen Datensatz in der Datenbank
         Organisation organisation = Organisation.builder().beschreibung("Stadtkrankenhaus in Berlin").name("Charité")
                 .build();
@@ -45,7 +40,6 @@ class OrganisationResourceTest {
         assertThat(organisation.id).isNotNull();
 
         QuarkusTransaction.commit();
-
         // finde diesen Datensatz per REST:
         given().pathParam("id", organisation.id)
                 .when().get("organizations/{id}")
