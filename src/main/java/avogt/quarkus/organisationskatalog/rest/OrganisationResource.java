@@ -8,6 +8,7 @@ import avogt.quarkus.organisationskatalog.OrganisationMapper;
 import avogt.quarkus.organisationskatalog.sql.OrganisationEntity;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -35,14 +36,13 @@ public class OrganisationResource {
                 OrganisationEntity.findById(id))).location(new URI("/organizations/" + id)).build();
     }
 
-    /**
-     * @param id, is a path parameter, like in '/organizations/101'
-     * @return the found organization, or null, serialized to '{}'
-     */
+   
     @GET
-    public Response getPaginated(@QueryParam(value = "_page") int page, int pageSize) {
+    public Response getPaginated(@QueryParam(value = "_page") int page,
+            @DefaultValue("10") @QueryParam(value = "_pagesize") int pageSize) {
 
         List<OrganisationEntity> list = OrganisationEntity.findAll().page(Page.of(page, pageSize)).list();
         return Response.ok(mapper.toDomainList(list)).build();
     }
+
 }

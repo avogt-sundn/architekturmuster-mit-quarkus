@@ -33,25 +33,46 @@ class OrganisationResourceTest {
      */
     @Test
     void _GetSingle() {
-        QuarkusTransaction.begin();
-        // erzeuge einen Datensatz in der Datenbank
-        OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
-                .name("Charité")
-                .build();
-        AdresseEntity adresse = AdresseEntity.builder().strasse("Charitéplatz 1").postleitzahl(10117).stadt("Berlin")
-                .build();
-        organisation.addAdresse(adresse);
-        organisation.persist();
-        assertThat(organisation.id).isNotNull();
 
+        Long id;
+        QuarkusTransaction.begin();
+        {
+            // erzeuge einen Datensatz in der Datenbank
+            OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
+                    .name("Charité")
+                    .build();
+            AdresseEntity adresse = AdresseEntity.builder().strasse("Charitéplatz 1").postleitzahl(10117)
+                    .stadt("Berlin")
+                    .build();
+            organisation.addAdresse(adresse);
+            organisation.persist();
+            assertThat(organisation.id).isNotNull();
+            id = organisation.id;
+        }
         QuarkusTransaction.commit();
+
         // finde diesen Datensatz per REST:
-        given().pathParam("id", organisation.id)
+        given().pathParam("id", id)
                 .when().get("organizations/{id}")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
-                .and().body("id", equalTo(organisation.id.intValue()))
+                .and().body("id", equalTo(id.intValue()))
                 .and().body("adressen", hasSize(1))
                 .and().body("adressen[0].stadt", equalTo("Berlin"));
+        QuarkusTransaction.begin();
+        {
+            OrganisationEntity.deleteById(id);
+        }
+        QuarkusTransaction.commit();
 
     }
+
+    @Test
+    void _GetAll() {
+        // finde diesen Datensatz per REST:
+        given()
+                .when().get("organizations")
+                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
+
+    }
+
 }
