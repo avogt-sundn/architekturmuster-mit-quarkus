@@ -1,4 +1,4 @@
-package avogt.quarkus.example;
+package avogt.quarkus.organisationskatalog;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;

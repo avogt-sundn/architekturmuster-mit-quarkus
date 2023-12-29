@@ -1,4 +1,4 @@
-package avogt.quarkus.example;
+package avogt.quarkus.organisationskatalog.sql;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,28 +26,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Organisation extends PanacheEntityBase {
+public class OrganisationEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    Long id;
+    public Long id;
 
     @Column
-    String name;
+    public String name;
     @Column
-    String nummer;
+    public String nummer;
     @Column
-    String beschreibung;
+    public String beschreibung;
 
     /**
      * Eine Organisation besitzt ein oder mehrere Adressen.
      */
     @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @Builder.Default
-    Set<Adresse> adressen = new HashSet<>();
+    public Set<AdresseEntity> adressen = new HashSet<>();
 
-    public void addAdresse(Adresse adresse) {
+    public void addAdresse(AdresseEntity adresse) {
         this.adressen.add(adresse);
     }
 }

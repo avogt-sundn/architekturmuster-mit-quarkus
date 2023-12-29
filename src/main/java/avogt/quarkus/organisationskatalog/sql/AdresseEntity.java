@@ -1,4 +1,4 @@
-package avogt.quarkus.example;
+package avogt.quarkus.organisationskatalog.sql;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,20 +19,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Adresse {
+public class AdresseEntity {
 
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    Long id;
+    public Long id;
 
     @Column
-    String strasse;
+    public String strasse;
 
     @Column
-    Integer postleitzahl;
+    public Integer postleitzahl;
 
     @Column
-    String stadt;
+    public String stadt;
 
 }
