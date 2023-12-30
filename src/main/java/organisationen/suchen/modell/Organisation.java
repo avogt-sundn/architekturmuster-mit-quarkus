@@ -1,4 +1,4 @@
-package avogt.quarkus.organisationskatalog;
+package organisationen.suchen.modell;
 
 import java.util.Set;
 

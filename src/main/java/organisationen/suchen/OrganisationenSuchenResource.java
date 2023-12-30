@@ -1,11 +1,9 @@
-package avogt.quarkus.organisationskatalog.rest;
+package organisationen.suchen;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import avogt.quarkus.organisationskatalog.OrganisationMapper;
-import avogt.quarkus.organisationskatalog.sql.OrganisationEntity;
 import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.util.StringUtil;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -17,12 +15,14 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import organisationen.suchen.modell.OrganisationMapper;
+import organisationen.suchen.modell.sql.OrganisationEntity;
 
 @Path("organizations")
 @AllArgsConstructor
 @ApplicationScoped
 @Slf4j
-public class OrganisationResource {
+public class OrganisationenSuchenResource {
 
     OrganisationMapper mapper;
 

@@ -1,4 +1,4 @@
-package avogt.quarkus.example;
+package organisationen.bearbeiten;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
@@ -10,14 +10,14 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import avogt.quarkus.organisationskatalog.rest.OrganisationResource;
-import avogt.quarkus.organisationskatalog.sql.OrganisationEntity;
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import organisationen.suchen.OrganisationenSuchenResource;
+import organisationen.suchen.modell.sql.OrganisationEntity;
 
 @QuarkusTest
 class OrganisationResourceTest {
@@ -33,7 +33,7 @@ class OrganisationResourceTest {
     }
 
     /**
-     * @see OrganisationResource#getSingle(Long)
+     * @see OrganisationenSuchenResource#getSingle(Long)
      */
     @Test
     void _GetSingle() {
@@ -55,7 +55,6 @@ class OrganisationResourceTest {
     void deleteById(Long id) {
         OrganisationEntity.deleteById(id);
     }
-
 
     @Test
     void _GetAll() {

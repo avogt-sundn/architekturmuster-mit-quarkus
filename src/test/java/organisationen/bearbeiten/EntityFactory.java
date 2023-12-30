@@ -1,12 +1,12 @@
-package avogt.quarkus.example;
+package organisationen.bearbeiten;
 
 import java.util.stream.IntStream;
 
-import avogt.quarkus.organisationskatalog.sql.AdresseEntity;
-import avogt.quarkus.organisationskatalog.sql.OrganisationEntity;
 import jakarta.enterprise.context.Dependent;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import organisationen.suchen.modell.sql.AdresseEntity;
+import organisationen.suchen.modell.sql.OrganisationEntity;
 
 @Dependent
 public class EntityFactory {
@@ -45,6 +45,5 @@ public class EntityFactory {
     public OrganisationEntity persistASingleInTx(String beschreibung, int i) {
         return persistASingle(beschreibung, i);
     }
-
 
 }

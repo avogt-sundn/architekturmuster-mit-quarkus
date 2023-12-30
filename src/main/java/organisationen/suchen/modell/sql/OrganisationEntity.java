@@ -1,4 +1,4 @@
-package avogt.quarkus.organisationskatalog.sql;
+package organisationen.suchen.modell.sql;
 
 import java.util.HashSet;
 import java.util.Set;
