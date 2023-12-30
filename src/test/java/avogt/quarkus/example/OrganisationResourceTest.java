@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 
 import java.net.URI;
+import java.util.stream.IntStream;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,14 +38,7 @@ class OrganisationResourceTest {
         Long id;
         QuarkusTransaction.begin();
         {
-            // erzeuge einen Datensatz in der Datenbank
-            OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
-                    .name("Charité")
-                    .build();
-            AdresseEntity adresse = AdresseEntity.builder().strasse("Charitéplatz 1").postleitzahl(10117)
-                    .stadt("Berlin")
-                    .build();
-            organisation.addAdresse(adresse);
+            OrganisationEntity organisation = create();
             organisation.persist();
             assertThat(organisation.id).isNotNull();
             id = organisation.id;
@@ -63,7 +57,18 @@ class OrganisationResourceTest {
             OrganisationEntity.deleteById(id);
         }
         QuarkusTransaction.commit();
+    }
 
+    private OrganisationEntity create() {
+        // erzeuge einen Datensatz in der Datenbank
+        OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
+                .name("Charité")
+                .build();
+        AdresseEntity adresse = AdresseEntity.builder().strasse("Charitéplatz 1").postleitzahl(10117)
+                .stadt("Berlin")
+                .build();
+        organisation.addAdresse(adresse);
+        return organisation;
     }
 
     @Test
@@ -73,6 +78,41 @@ class OrganisationResourceTest {
                 .when().get("organizations")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
 
+    }
+
+    @Test
+    void _GetPaginated() {
+        final int count = 10;
+        IntStream.range(0, count)
+                .map(i -> {
+                    QuarkusTransaction.begin();
+                    OrganisationEntity o = create();
+                    o.name = "" + i;
+                    o.beschreibung = "GetPaginated";
+                    o.persist();
+                    System.out.println(i);
+                    QuarkusTransaction.commit();
+
+                    return i;
+                }).sum();
+
+        // finde diesen Datensatz per REST:
+        given()
+                .when().get("organizations")
+                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
+                .and().body("id", hasSize(count));
+
+        given()
+                .when().get("organizations?_page=0&_pagesize=2")
+                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
+                .and().body("id", hasSize(2))
+                .and().body("[0].name", equalTo("0"));
+
+        given()
+                .when().get("organizations?_page=1&_pagesize=2")
+                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
+                .and().body("id", hasSize(2))
+                .and().body("[0].name", equalTo("2"));
     }
 
 }
