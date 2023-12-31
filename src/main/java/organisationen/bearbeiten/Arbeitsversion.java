@@ -1,5 +1,9 @@
-package organisationen.suchen.modell.sql;
+package organisationen.bearbeiten;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,31 +12,24 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "adresse")
-@Data
+@Table(name = "arbeitsversion")
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class AdresseEntity {
+class Arbeitsversion extends PanacheEntityBase {
 
     @Id
     @GeneratedValue
-    @EqualsAndHashCode.Include
-    public Long id;
+    Long id;
 
-    @Column
-    public String strasse;
+    @Column(nullable = false)
+    Long organisationId;
 
-    @Column
-    public Integer postleitzahl;
-
-    @Column
-    public String stadt;
-
+    @JdbcTypeCode(value = SqlTypes.JSON)
+    String jsonString;
 }

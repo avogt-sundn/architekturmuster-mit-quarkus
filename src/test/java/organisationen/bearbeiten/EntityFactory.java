@@ -5,8 +5,8 @@ import java.util.stream.IntStream;
 import jakarta.enterprise.context.Dependent;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
-import organisationen.suchen.modell.sql.AdresseEntity;
-import organisationen.suchen.modell.sql.OrganisationEntity;
+import organisationen.suchen.modell.AdresseEntity;
+import organisationen.suchen.modell.OrganisationEntity;
 
 @Dependent
 public class EntityFactory {
@@ -42,8 +42,13 @@ public class EntityFactory {
     }
 
     @Transactional(TxType.REQUIRES_NEW)
-    public OrganisationEntity persistASingleInTx(String beschreibung, int i) {
-        return persistASingle(beschreibung, i);
+    public Long persistASingleInTx(String beschreibung, int i) {
+        return persistASingle(beschreibung, i).id;
+    }
+
+    @Transactional(TxType.REQUIRES_NEW)
+    void deleteById(Long id) {
+        OrganisationEntity.deleteById(id);
     }
 
 }

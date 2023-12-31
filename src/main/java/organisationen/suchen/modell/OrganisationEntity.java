@@ -1,4 +1,4 @@
-package organisationen.suchen.modell.sql;
+package organisationen.suchen.modell;
 
 import java.util.HashSet;
 import java.util.Set;

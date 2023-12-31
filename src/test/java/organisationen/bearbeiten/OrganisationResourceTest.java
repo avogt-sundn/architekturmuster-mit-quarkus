@@ -17,7 +17,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 import organisationen.suchen.OrganisationenSuchenResource;
-import organisationen.suchen.modell.sql.OrganisationEntity;
+import organisationen.suchen.modell.OrganisationEntity;
 
 @QuarkusTest
 class OrganisationResourceTest {
@@ -38,7 +38,7 @@ class OrganisationResourceTest {
     @Test
     void _GetSingle() {
 
-        Long id = factory.persistASingleInTx("GetSingle", 99).id;
+        Long id = factory.persistASingleInTx("GetSingle", 99);
 
         // finde diesen Datensatz per REST:
         given().pathParam("id", id)
@@ -48,12 +48,7 @@ class OrganisationResourceTest {
                 .and().body("adressen", hasSize(1))
                 .and().body("adressen[0].stadt", equalTo("Berlin"));
 
-        deleteById(id);
-    }
-
-    @Transactional(TxType.REQUIRES_NEW)
-    void deleteById(Long id) {
-        OrganisationEntity.deleteById(id);
+        factory.deleteById(id);
     }
 
     @Test

@@ -15,8 +15,8 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import organisationen.suchen.modell.OrganisationEntity;
 import organisationen.suchen.modell.OrganisationMapper;
-import organisationen.suchen.modell.sql.OrganisationEntity;
 
 @Path("organizations")
 @AllArgsConstructor

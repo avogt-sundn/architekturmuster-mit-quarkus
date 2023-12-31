@@ -6,8 +6,6 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import organisationen.suchen.modell.sql.OrganisationEntity;
-
 @Mapper(componentModel = "cdi")
 public interface OrganisationMapper {
 
