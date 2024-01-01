@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.*;
 import java.net.URI;
 
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,9 @@ import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.swagger.parser.OpenAPIParser;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import organisationen.suchen.modell.Organisation;
@@ -35,6 +39,16 @@ class OrganisationenBearbeitenResourceTest {
     @BeforeAll
     static void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+    }
+
+    @Test
+    void openapiCheck() {
+        SwaggerParseResult result = new OpenAPIParser().readLocation("src/main/resources/openapi/openapi.yaml", null,
+                null);
+        OpenAPI openAPI = result.getOpenAPI();
+        Assertions.assertThat(openAPI).isNotNull();
+
+        openAPI.getPaths().
     }
 
     @Test
