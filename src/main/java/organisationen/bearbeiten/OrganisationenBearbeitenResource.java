@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -32,7 +33,7 @@ public class OrganisationenBearbeitenResource {
     @POST
     @Path("{id}/draft")
     @Transactional
-    public Response createArbeitsversion(@PathParam("id") Long organisationId, Organisation organisation) {
+    public Response createArbeitsversion(@PathParam("id") Long organisationId, @Valid Organisation organisation) {
         log.info("erzeuge neue arbeitsversion");
         Arbeitsversion.builder().organisationId(organisationId).jsonString(jsonb.toJson(organisation)).build()
                 .persist();

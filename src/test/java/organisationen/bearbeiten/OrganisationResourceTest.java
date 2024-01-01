@@ -38,7 +38,7 @@ class OrganisationResourceTest {
     @Test
     void _GetSingle() {
 
-        Long id = factory.persistASingleInTx("GetSingle", 99);
+        Long id = factory.persistASingleInTx("GetSingle", 99).getId();
 
         // finde diesen Datensatz per REST:
         given().pathParam("id", id)

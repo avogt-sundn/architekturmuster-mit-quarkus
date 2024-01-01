@@ -5,11 +5,17 @@ import java.util.stream.IntStream;
 import jakarta.enterprise.context.Dependent;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import lombok.AllArgsConstructor;
 import organisationen.suchen.modell.AdresseEntity;
+import organisationen.suchen.modell.Organisation;
 import organisationen.suchen.modell.OrganisationEntity;
+import organisationen.suchen.modell.OrganisationMapper;
 
 @Dependent
+@AllArgsConstructor
 public class EntityFactory {
+
+    OrganisationMapper mapper;
 
     private OrganisationEntity create() {
         // erzeuge einen Datensatz in der Datenbank
@@ -42,8 +48,8 @@ public class EntityFactory {
     }
 
     @Transactional(TxType.REQUIRES_NEW)
-    public Long persistASingleInTx(String beschreibung, int i) {
-        return persistASingle(beschreibung, i).id;
+    public Organisation persistASingleInTx(String beschreibung, int i) {
+        return mapper.toDomain(persistASingle(beschreibung, i));
     }
 
     @Transactional(TxType.REQUIRES_NEW)
