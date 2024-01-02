@@ -25,7 +25,7 @@ class OrganisationResourceTest {
     URI uri;
 
     @Inject
-    EntityFactory factory;
+    TestHelperOrganisation factory;
 
     @BeforeAll
     static void setup() {

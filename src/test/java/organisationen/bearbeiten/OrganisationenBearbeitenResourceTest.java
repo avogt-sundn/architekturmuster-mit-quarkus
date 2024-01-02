@@ -27,7 +27,7 @@ class OrganisationenBearbeitenResourceTest {
     @TestHTTPResource(value = "/organizations")
     URI uri;
     @Inject
-    EntityFactory factory;
+    TestHelperOrganisation factory;
 
     @Inject
     Jsonb jsonb;
@@ -42,6 +42,7 @@ class OrganisationenBearbeitenResourceTest {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
         final String body = jsonb.toJson(organisation);
+
         given().with().contentType(ContentType.JSON)
                 .body(body).when().post("organizations/" + organisation.getId() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
@@ -54,7 +55,7 @@ class OrganisationenBearbeitenResourceTest {
     @Test
     void _ValidateBodyFails() throws JSONException {
 
-        final String json = """
+        final String expectedErrorResponse = """
                 {
                         "status": 400,
                         "title": "Constraint Violation",
@@ -75,6 +76,6 @@ class OrganisationenBearbeitenResourceTest {
                         """).when().post("organizations/" + UNDEFINED_ORGANISATION_ID + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
                 .and().extract().asPrettyString();
-        JSONAssert.assertEquals(json, extractableResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedErrorResponse, extractableResponse, JSONCompareMode.STRICT);
     }
 }
