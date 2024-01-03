@@ -1,19 +1,20 @@
 package organisationen.bearbeiten;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -22,15 +23,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
+@Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class ArbeitsversionEntity extends PanacheEntityBase {
+public class ArbeitsversionEntity extends PanacheEntity {
 
-    @Id
-    @GeneratedValue
-    Long id;
-
-    @Column(nullable = false)
-    Long organisationId;
+    @Column(unique = true, nullable = false, columnDefinition = "uuid")
+    UUID fachschluessel;
 
     @JdbcTypeCode(value = SqlTypes.JSON)
     String jsonString;

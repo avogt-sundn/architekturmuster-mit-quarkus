@@ -2,6 +2,7 @@ package organisationen.suchen.modell;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
@@ -32,6 +33,9 @@ public class OrganisationEntity extends PanacheEntityBase {
     @GeneratedValue
     @EqualsAndHashCode.Include
     public Long id;
+
+    @Column(unique = true, nullable = false, columnDefinition = "uuid")
+    UUID fachschluessel;
 
     @Column
     public String name;

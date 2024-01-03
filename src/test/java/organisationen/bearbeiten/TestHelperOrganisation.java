@@ -1,5 +1,6 @@
 package organisationen.bearbeiten;
 
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import org.mapstruct.factory.Mappers;
@@ -23,6 +24,7 @@ public class TestHelperOrganisation {
         // erzeuge einen Datensatz in der Datenbank
         OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
                 .name("Charité")
+                .fachschluessel(UUID.randomUUID())
                 .build();
         AdresseEntity adresse = AdresseEntity.builder().strasse("Charitéplatz 1").postleitzahl(10117)
                 .stadt("Berlin")

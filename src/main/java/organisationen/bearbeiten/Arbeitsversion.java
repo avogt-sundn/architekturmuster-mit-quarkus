@@ -1,6 +1,7 @@
 package organisationen.bearbeiten;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.json.bind.annotation.JsonbDateFormat;
 import lombok.Builder;
@@ -13,7 +14,7 @@ public class Arbeitsversion {
 
     Long id;
 
-    Long organisationId;
+    UUID fachschluessel;
 
     Organisation organisation;
 

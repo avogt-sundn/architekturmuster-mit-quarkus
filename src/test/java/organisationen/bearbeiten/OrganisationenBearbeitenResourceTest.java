@@ -2,13 +2,19 @@ package organisationen.bearbeiten;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.*;
+
+import java.util.UUID;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -22,9 +28,11 @@ import organisationen.suchen.modell.Organisation;
 @QuarkusTest
 @Slf4j
 @TestHTTPEndpoint(OrganisationenBearbeitenResource.class)
+@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
+@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 class OrganisationenBearbeitenResourceTest {
 
-    private static final int UNDEFINED_ORGANISATION_ID = 0;
+    private static final String UNDEFINED_ORGANISATION_ID = UUID.randomUUID().toString();
 
     @Inject
     TestHelperOrganisation factory;
@@ -42,12 +50,14 @@ class OrganisationenBearbeitenResourceTest {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
         final String body = jsonb.toJson(organisation);
+        assertNotNull(organisation.getFachschluessel());
+
         // 1. create
         given().with().contentType(ContentType.JSON)
-                .body(body).when().post(organisation.getId() + "/draft")
+                .body(body).when().post(organisation.getFachschluessel() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
-        final String result = given().when().get(organisation.getId() + "/draft")
+        final String result = given().when().get(organisation.getFachschluessel() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK))
                 .and()
                 .rootPath("organisation")
@@ -59,6 +69,29 @@ class OrganisationenBearbeitenResourceTest {
         factory.deleteById(organisation.getId());
     }
 
+    @Test
+    void _Update() throws JSONException {
+
+        Organisation organisation = factory.persistASingleInTx("UpdateArbeitsversion", 1);
+        assertNotNull(organisation.getFachschluessel());
+
+        // 1. create
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+                .when().post(organisation.getFachschluessel() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        // 2. change
+        organisation.setBeschreibung("NeueBeschreibung");
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+                .when().put(organisation.getFachschluessel() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        // 2. read back
+        given()
+                .when().get(organisation.getFachschluessel() + "/draft")
+                .then().rootPath("organisation")
+                .body("beschreibung", equalTo("NeueBeschreibung"));
+
+        factory.deleteById(organisation.getId());
+    }
 
     @Test
     @Disabled
@@ -74,7 +107,8 @@ class OrganisationenBearbeitenResourceTest {
         final String result = given().when().get(organisation.getId() + "/draft")
                 .then()
                 .rootPath("organisation")
-                // dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht wirksam
+                // dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht
+                // wirksam
                 .body(sameJSONAs(body))
                 .and().extract().asPrettyString();
 
@@ -100,11 +134,13 @@ class OrganisationenBearbeitenResourceTest {
                 """;
         given().with().contentType(ContentType.JSON)
                 .body("""
-                                {
-                                    "name": "Arnsberg"
-                                }
-                        """).when().post(UNDEFINED_ORGANISATION_ID + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
+                        {
+                            "name": "Arnsberg",
+                            "fachschluessel": """
+                        + "\"" + UUID.randomUUID() + "\"" +
+                        """
+                                }""")
+                .when().post(UNDEFINED_ORGANISATION_ID + "/draft").then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
                 .and().body(sameJSONAs(expectedErrorResponse));
     }
 }

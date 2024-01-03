@@ -23,8 +23,8 @@ public interface ArbeitsversionMapper {
 
         Arbeitsversion.ArbeitsversionBuilder arbeitsversion = Arbeitsversion.builder();
 
-        arbeitsversion.id(entity.getId());
-        arbeitsversion.organisationId(entity.getOrganisationId());
+        arbeitsversion.id(entity.id);
+        arbeitsversion.fachschluessel(entity.getFachschluessel());
         try (Jsonb jsonb = JsonbBuilder.create()) {
             Organisation fromJson = jsonb.fromJson(entity.jsonString, Organisation.class);
             arbeitsversion.organisation(fromJson);
