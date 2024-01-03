@@ -1,0 +1,202 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "json-postgres API",
+    "version" : "1.0.0-SNAPSHOT"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Auto generated value"
+  }, {
+    "url" : "http://0.0.0.0:8080",
+    "description" : "Auto generated value"
+  } ],
+  "paths" : {
+    "/organizations" : {
+      "get" : {
+        "tags" : [ "Organisationen Suchen Resource" ],
+        "parameters" : [ {
+          "name" : "_page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }, {
+          "name" : "_pagesize",
+          "in" : "query",
+          "schema" : {
+            "format" : "int32",
+            "default" : 10,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "beschreibung",
+          "in" : "query",
+          "schema" : {
+            "default" : "",
+            "type" : "string"
+          }
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "schema" : {
+            "default" : "",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/organizations/{id}" : {
+      "get" : {
+        "tags" : [ "Organisationen Suchen Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/organizations/{id}/draft" : {
+      "get" : {
+        "tags" : [ "Organisationen Bearbeiten Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Arbeitsversion"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Organisationen Bearbeiten Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Organisation"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Adresse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "strasse" : {
+            "type" : "string"
+          },
+          "postleitzahl" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "stadt" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Arbeitsversion" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "organisationId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "organisation" : {
+            "$ref" : "#/components/schemas/Organisation"
+          },
+          "createdAt" : {
+            "$ref" : "#/components/schemas/LocalDate"
+          }
+        }
+      },
+      "LocalDate" : {
+        "format" : "date",
+        "type" : "string",
+        "example" : "2022-03-10"
+      },
+      "Organisation" : {
+        "required" : [ "name", "beschreibung" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "name" : {
+            "pattern" : "\\S",
+            "type" : "string"
+          },
+          "nummer" : {
+            "type" : "string"
+          },
+          "beschreibung" : {
+            "pattern" : "\\S",
+            "type" : "string"
+          },
+          "adressen" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Adresse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

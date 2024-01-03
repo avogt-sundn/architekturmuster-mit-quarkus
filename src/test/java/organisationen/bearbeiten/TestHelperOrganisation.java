@@ -2,6 +2,8 @@ package organisationen.bearbeiten;
 
 import java.util.stream.IntStream;
 
+import org.mapstruct.factory.Mappers;
+
 import jakarta.enterprise.context.Dependent;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
@@ -17,7 +19,7 @@ public class TestHelperOrganisation {
 
     OrganisationMapper mapper;
 
-    private OrganisationEntity create() {
+    static public Organisation create() {
         // erzeuge einen Datensatz in der Datenbank
         OrganisationEntity organisation = OrganisationEntity.builder().beschreibung("Stadtkrankenhaus in Berlin")
                 .name("Charité")
@@ -26,7 +28,8 @@ public class TestHelperOrganisation {
                 .stadt("Berlin")
                 .build();
         organisation.addAdresse(adresse);
-        return organisation;
+        // liefere aber das Domain Objekt zurück (mapper nach Organisation):
+        return Mappers.getMapper(OrganisationMapper.class).toDomain(organisation);
     }
 
     @Transactional(TxType.REQUIRES_NEW)
@@ -40,7 +43,7 @@ public class TestHelperOrganisation {
     }
 
     private OrganisationEntity persistASingle(String beschreibung, int i) {
-        OrganisationEntity o = create();
+        OrganisationEntity o = mapper.toEntity(create());
         o.name = "" + i;
         o.beschreibung = beschreibung;
         o.persist();

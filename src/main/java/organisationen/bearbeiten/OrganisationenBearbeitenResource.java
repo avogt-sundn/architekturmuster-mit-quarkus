@@ -1,7 +1,6 @@
 package organisationen.bearbeiten;
 
 import java.net.URI;
-import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
@@ -13,13 +12,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import organisationen.suchen.modell.Organisation;
 
 @Path("organizations")
 @AllArgsConstructor
 @ApplicationScoped
-@Slf4j
 public class OrganisationenBearbeitenResource {
 
     Jsonb jsonb;

@@ -4,13 +4,11 @@ import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 
-import java.net.URI;
-
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import io.quarkus.test.common.http.TestHTTPResource;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import jakarta.inject.Inject;
@@ -20,9 +18,9 @@ import organisationen.suchen.OrganisationenSuchenResource;
 import organisationen.suchen.modell.OrganisationEntity;
 
 @QuarkusTest
+// benutzt die basis url aus der @path annotation der Resource Klasse
+@TestHTTPEndpoint(OrganisationenSuchenResource.class)
 class OrganisationResourceTest {
-    @TestHTTPResource(value = "/organizations")
-    URI uri;
 
     @Inject
     TestHelperOrganisation factory;
@@ -42,7 +40,7 @@ class OrganisationResourceTest {
 
         // finde diesen Datensatz per REST:
         given().pathParam("id", id)
-                .when().get("organizations/{id}")
+                .when().get("{id}")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
                 .and().body("id", equalTo(id.intValue()))
                 .and().body("adressen", hasSize(1))
@@ -55,7 +53,7 @@ class OrganisationResourceTest {
     void _GetAll() {
         // finde diesen Datensatz per REST:
         given()
-                .when().get("organizations")
+                .when().get()
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
 
     }
@@ -68,18 +66,18 @@ class OrganisationResourceTest {
 
         // finde diesen Datensatz per REST:
         given()
-                .when().get("organizations?beschreibung=GetPaginated")
+                .when().get("?beschreibung=GetPaginated")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
                 .and().body("id", hasSize(count));
 
         given()
-                .when().get("organizations?beschreibung=GetPaginated&_page=0&_pagesize=2")
+                .when().get("?beschreibung=GetPaginated&_page=0&_pagesize=2")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
                 .and().body("id", hasSize(2))
                 .and().body("[0].name", equalTo("0"));
 
         given()
-                .when().get("organizations?beschreibung=GetPaginated&_page=1&_pagesize=2")
+                .when().get("?beschreibung=GetPaginated&_page=1&_pagesize=2")
                 .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all()
                 .and().body("id", hasSize(2))
                 .and().body("[0].name", equalTo("2"));

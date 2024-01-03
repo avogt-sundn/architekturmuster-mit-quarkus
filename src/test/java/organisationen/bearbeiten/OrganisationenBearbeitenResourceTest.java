@@ -4,14 +4,13 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.*;
 
-import java.net.URI;
-
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import io.quarkus.test.common.http.TestHTTPResource;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -22,11 +21,11 @@ import organisationen.suchen.modell.Organisation;
 
 @QuarkusTest
 @Slf4j
+@TestHTTPEndpoint(OrganisationenBearbeitenResource.class)
 class OrganisationenBearbeitenResourceTest {
 
     private static final int UNDEFINED_ORGANISATION_ID = 0;
-    @TestHTTPResource(value = "/organizations")
-    URI uri;
+
     @Inject
     TestHelperOrganisation factory;
 
@@ -45,16 +44,41 @@ class OrganisationenBearbeitenResourceTest {
         final String body = jsonb.toJson(organisation);
         // 1. create
         given().with().contentType(ContentType.JSON)
-                .body(body).when().post("organizations/" + organisation.getId() + "/draft")
+                .body(body).when().post(organisation.getId() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
-        final String result = given().when().get("organizations/" + organisation.getId() + "/draft")
-                // .then().statusCode(equalTo(HttpStatus.SC_OK)).and()
-                .then().log().all().rootPath("organisation").body("beschreibung", equalTo("CreateArbeitsversion"))
+        final String result = given().when().get(organisation.getId() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK))
+                .and()
+                .rootPath("organisation")
+                .body("beschreibung", equalTo("CreateArbeitsversion"))
                 .and().extract().asPrettyString();
 
         log.info("result: \n{}", result);
+        // JSONAssert.assertEquals(body, result, JSONCompareMode.STRICT);
+        factory.deleteById(organisation.getId());
+    }
 
+
+    @Test
+    @Disabled
+    void Bug_CreateArbeitsversion() throws JSONException {
+
+        Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
+        final String body = jsonb.toJson(organisation);
+        // 1. create
+        given().with().contentType(ContentType.JSON)
+                .body(body).when().post(organisation.getId() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        // 2. read back
+        final String result = given().when().get(organisation.getId() + "/draft")
+                .then()
+                .rootPath("organisation")
+                // dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht wirksam
+                .body(sameJSONAs(body))
+                .and().extract().asPrettyString();
+
+        log.info("result: \n{}", result);
         // JSONAssert.assertEquals(body, result, JSONCompareMode.STRICT);
         factory.deleteById(organisation.getId());
     }
@@ -79,8 +103,8 @@ class OrganisationenBearbeitenResourceTest {
                                 {
                                     "name": "Arnsberg"
                                 }
-                        """).when().post("organizations/" + UNDEFINED_ORGANISATION_ID + "/draft")
+                        """).when().post(UNDEFINED_ORGANISATION_ID + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
-                .and().assertThat().body(sameJSONAs(expectedErrorResponse));
+                .and().body(sameJSONAs(expectedErrorResponse));
     }
 }

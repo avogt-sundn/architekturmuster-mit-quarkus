@@ -4,7 +4,6 @@ import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class Organisation {
