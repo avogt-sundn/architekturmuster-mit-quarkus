@@ -24,19 +24,25 @@ public class OrganisationenBearbeitenResource {
 
     Jsonb jsonb;
 
+    ArbeitsversionMapper mapper;
+
     @GET
     @Path("{id}/draft")
-    public List<Arbeitsversion> get(@PathParam("id") Long id) {
-        return Arbeitsversion.find("organisationId", id).list();
+    public Arbeitsversion get(@PathParam("id") Long organisationId) {
+
+        return mapper.toDomainList(ArbeitsversionEntity.list("organisationId", organisationId)).get(0);
     }
 
     @POST
     @Path("{id}/draft")
     @Transactional
     public Response createArbeitsversion(@PathParam("id") Long organisationId, @Valid Organisation organisation) {
-        log.info("erzeuge neue arbeitsversion");
-        Arbeitsversion.builder().organisationId(organisationId).jsonString(jsonb.toJson(organisation)).build()
-                .persist();
-        return Response.ok().location(URI.create("/organizations/" + organisationId + "/draft")).build();
+
+        ArbeitsversionEntity arbeitsversionEntity = ArbeitsversionEntity.builder().organisationId(organisationId)
+                .jsonString(jsonb.toJson(organisation)).build();
+        arbeitsversionEntity.persist();
+
+        return Response.ok(mapper.toDomain(arbeitsversionEntity))
+                .location(URI.create("/organizations/" + organisationId + "/draft")).build();
     }
 }

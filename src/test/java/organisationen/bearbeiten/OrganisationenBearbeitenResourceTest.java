@@ -2,6 +2,7 @@ package organisationen.bearbeiten;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static uk.co.datumedge.hamcrest.json.SameJSONAs.*;
 
 import java.net.URI;
 
@@ -9,8 +10,6 @@ import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -18,9 +17,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
+import lombok.extern.slf4j.Slf4j;
 import organisationen.suchen.modell.Organisation;
 
 @QuarkusTest
+@Slf4j
 class OrganisationenBearbeitenResourceTest {
 
     private static final int UNDEFINED_ORGANISATION_ID = 0;
@@ -38,17 +39,23 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    void _CreateArbeitsversion() {
+    void _CreateArbeitsversion() throws JSONException {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
         final String body = jsonb.toJson(organisation);
-
+        // 1. create
         given().with().contentType(ContentType.JSON)
                 .body(body).when().post("organizations/" + organisation.getId() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
+                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        // 2. read back
+        final String result = given().when().get("organizations/" + organisation.getId() + "/draft")
+                // .then().statusCode(equalTo(HttpStatus.SC_OK)).and()
+                .then().log().all().rootPath("organisation").body("beschreibung", equalTo("CreateArbeitsversion"))
+                .and().extract().asPrettyString();
 
-        given().when().get("organizations/" + organisation.getId() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK)).log().all();
+        log.info("result: \n{}", result);
+
+        // JSONAssert.assertEquals(body, result, JSONCompareMode.STRICT);
         factory.deleteById(organisation.getId());
     }
 
@@ -67,15 +74,13 @@ class OrganisationenBearbeitenResourceTest {
                         ]
                 }
                 """;
-
-        final String extractableResponse = given().with().contentType(ContentType.JSON)
+        given().with().contentType(ContentType.JSON)
                 .body("""
                                 {
                                     "name": "Arnsberg"
                                 }
                         """).when().post("organizations/" + UNDEFINED_ORGANISATION_ID + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
-                .and().extract().asPrettyString();
-        JSONAssert.assertEquals(expectedErrorResponse, extractableResponse, JSONCompareMode.STRICT);
+                .and().assertThat().body(sameJSONAs(expectedErrorResponse));
     }
 }
