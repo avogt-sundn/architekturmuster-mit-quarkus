@@ -58,6 +58,10 @@ paths:
     put:
       tags:
       - Organisationen Bearbeiten Resource
+      summary: Ändern eine bestehende Arbeitsversion
+      description: |
+        Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.
+        Die enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.
       parameters:
       - name: fachschluessel
         in: path
@@ -86,6 +90,23 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Organisation'
+      responses:
+        "200":
+          description: OK
+    patch:
+      tags:
+      - Organisationen Bearbeiten Resource
+      parameters:
+      - name: fachschluessel
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Status'
       responses:
         "200":
           description: OK
@@ -158,6 +179,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Adresse'
+    Status:
+      enum:
+      - IN_BEARBEITUNG
+      - ZUR_PRUEFUNG
+      - ZUR_FREIGABE
+      type: string
     UUID:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"

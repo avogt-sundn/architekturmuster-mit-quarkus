@@ -94,7 +94,25 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    @Disabled
+    void ChangeStatus() {
+        Organisation organisation = factory.persistASingleInTx("ChangeStatus", 1);
+        assertNotNull(organisation.getFachschluessel());
+
+        // 1. create
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+                .when().post(organisation.getFachschluessel() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        // 2. status change
+        given().with().contentType(ContentType.TEXT).body("ZUR_FREIGABE").log().all()
+                .when().patch(organisation.getFachschluessel() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK))
+                .and().body(equalTo("ZUR_FREIGABE")).log().all();
+    }
+
+    @Test
+    @Disabled("""
+            dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht wirksam
+            """)
     void Bug_CreateArbeitsversion() throws JSONException {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);

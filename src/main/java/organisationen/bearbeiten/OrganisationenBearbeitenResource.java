@@ -3,16 +3,20 @@ package organisationen.bearbeiten;
 import java.net.URI;
 import java.util.UUID;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 import organisationen.suchen.modell.Organisation;
@@ -48,13 +52,28 @@ public class OrganisationenBearbeitenResource {
                 .location(URI.create("/organizations/" + fachschluessel + "/draft")).build();
     }
 
+    @Operation(summary = "Ändern eine bestehende Arbeitsversion", description = """
+            Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.
+            Die enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.
+                """)
     @PUT
     @Path("{fachschluessel}/draft")
     @Transactional
-    public Response freigeben(@PathParam("fachschluessel") UUID fachschluessel, @Valid Organisation organisation) {
+    public Response edit(@PathParam("fachschluessel") UUID fachschluessel, @Valid Organisation organisation) {
         ArbeitsversionEntity single = ArbeitsversionEntity.find("fachschluessel", fachschluessel).firstResult();
         single.jsonString = jsonb.toJson(organisation);
         return Response.ok().build();
+    }
+
+    @PATCH
+    @Path("{fachschluessel}/draft")
+    @Transactional
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response status(@PathParam("fachschluessel") UUID fachschluessel, @Valid Status status) {
+        ArbeitsversionEntity single = ArbeitsversionEntity.find("fachschluessel", fachschluessel).firstResult();
+        // TODO: status logic missing
+        single.status = status;
+        return Response.ok(status).build();
     }
 
 }

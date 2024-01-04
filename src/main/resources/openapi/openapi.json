@@ -78,6 +78,8 @@
       },
       "put" : {
         "tags" : [ "Organisationen Bearbeiten Resource" ],
+        "summary" : "Ändern eine bestehende Arbeitsversion",
+        "description" : "Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.\nDie enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.\n",
         "parameters" : [ {
           "name" : "fachschluessel",
           "in" : "path",
@@ -116,6 +118,31 @@
             "application/json" : {
               "schema" : {
                 "$ref" : "#/components/schemas/Organisation"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "Organisationen Bearbeiten Resource" ],
+        "parameters" : [ {
+          "name" : "fachschluessel",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/UUID"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Status"
               }
             }
           }
@@ -221,6 +248,10 @@
             }
           }
         }
+      },
+      "Status" : {
+        "enum" : [ "IN_BEARBEITUNG", "ZUR_PRUEFUNG", "ZUR_FREIGABE" ],
+        "type" : "string"
       },
       "UUID" : {
         "format" : "uuid",
