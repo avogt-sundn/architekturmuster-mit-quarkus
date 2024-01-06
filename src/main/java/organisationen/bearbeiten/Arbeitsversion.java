@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.json.bind.annotation.JsonbDateFormat;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import organisationen.suchen.modell.Organisation;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Arbeitsversion {
 
     Long id;

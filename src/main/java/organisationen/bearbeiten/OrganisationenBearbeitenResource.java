@@ -26,21 +26,24 @@ import organisationen.suchen.modell.Organisation;
 @ApplicationScoped
 public class OrganisationenBearbeitenResource {
 
+    private static final String FACHSCHLUESSEL_PARAM = "fachschluessel";
+
     Jsonb jsonb;
 
     ArbeitsversionMapper mapper;
 
     @GET
     @Path("{fachschluessel}/draft")
-    public Arbeitsversion get(@PathParam("fachschluessel") UUID fachschluessel) {
 
-        return mapper.toDomainList(ArbeitsversionEntity.list("fachschluessel", fachschluessel)).get(0);
+    public Arbeitsversion get(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel) {
+
+        return mapper.toDomainList(ArbeitsversionEntity.list(FACHSCHLUESSEL_PARAM, fachschluessel)).get(0);
     }
 
     @POST
     @Path("{fachschluessel}/draft")
     @Transactional
-    public Response createArbeitsversion(@PathParam("fachschluessel") UUID fachschluessel,
+    public Response createArbeitsversion(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel,
             @Valid Organisation organisation) {
 
         organisation.setFachschluessel(fachschluessel);
@@ -59,8 +62,8 @@ public class OrganisationenBearbeitenResource {
     @PUT
     @Path("{fachschluessel}/draft")
     @Transactional
-    public Response edit(@PathParam("fachschluessel") UUID fachschluessel, @Valid Organisation organisation) {
-        ArbeitsversionEntity single = ArbeitsversionEntity.find("fachschluessel", fachschluessel).firstResult();
+    public Response edit(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Organisation organisation) {
+        ArbeitsversionEntity single = ArbeitsversionEntity.find(FACHSCHLUESSEL_PARAM, fachschluessel).firstResult();
         single.jsonString = jsonb.toJson(organisation);
         return Response.ok().build();
     }
@@ -69,8 +72,8 @@ public class OrganisationenBearbeitenResource {
     @Path("{fachschluessel}/draft")
     @Transactional
     @Produces(MediaType.TEXT_PLAIN)
-    public Response status(@PathParam("fachschluessel") UUID fachschluessel, @Valid Status status) {
-        ArbeitsversionEntity single = ArbeitsversionEntity.find("fachschluessel", fachschluessel).firstResult();
+    public Response status(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Status status) {
+        ArbeitsversionEntity single = ArbeitsversionEntity.find(FACHSCHLUESSEL_PARAM, fachschluessel).firstResult();
         // TODO: status logic missing
         single.status = status;
         return Response.ok(status).build();

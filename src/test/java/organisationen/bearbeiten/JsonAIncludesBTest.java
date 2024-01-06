@@ -26,7 +26,7 @@ import organisationen.suchen.modell.Organisation;
 class JsonAIncludesBTest {
 
     private final static String jsonArbeitsversion;
-    private final static String jsonOrganisation;
+    // private final static String jsonOrganisation;
     private final static Jsonb jsonb = JsonbBuilder.create();
     private final static Organisation organisation;
     private final static Arbeitsversion arbeitsversion;
@@ -38,7 +38,7 @@ class JsonAIncludesBTest {
         arbeitsversion = Arbeitsversion.builder().organisation(organisation).id(
                 new Random().nextLong()).build();
 
-        jsonOrganisation = jsonb.toJson(organisation);
+        // jsonOrganisation = jsonb.toJson(organisation);
         jsonArbeitsversion = jsonb.toJson(arbeitsversion);
     }
 

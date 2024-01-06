@@ -15,13 +15,23 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import io.restassured.config.ObjectMapperConfig;
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapperType;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbException;
 import lombok.extern.slf4j.Slf4j;
 import organisationen.suchen.modell.Organisation;
 
@@ -40,9 +50,23 @@ class OrganisationenBearbeitenResourceTest {
     @Inject
     Jsonb jsonb;
 
+    final static boolean useJackson = false;
+
     @BeforeAll
     static void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        if (useJackson) {
+            RestAssured.config
+                    .objectMapperConfig(
+                            new ObjectMapperConfig().jackson2ObjectMapperFactory((type, s) -> new ObjectMapper()
+                                    .registerModule(new Jdk8Module())
+                                    .registerModule(new JavaTimeModule())
+                                    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)));
+        } else {
+            RestAssured.config().objectMapperConfig(
+                    ObjectMapperConfig.objectMapperConfig().defaultObjectMapperType(ObjectMapperType.JSONB));
+        }
+        ;
     }
 
     @Test
@@ -94,7 +118,7 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    void ChangeStatus() {
+    void ChangeStatus() throws JsonbException, JSONException {
         Organisation organisation = factory.persistASingleInTx("ChangeStatus", 1);
         assertNotNull(organisation.getFachschluessel());
 
@@ -107,6 +131,16 @@ class OrganisationenBearbeitenResourceTest {
                 .when().patch(organisation.getFachschluessel() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK))
                 .and().body(equalTo("ZUR_FREIGABE")).log().all();
+        // 3. new status
+        Arbeitsversion orgExtracted = given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+                .when().get(organisation.getFachschluessel() + "/draft")
+                .then().statusCode(equalTo(HttpStatus.SC_OK))
+                .and().rootPath("organisation").extract().as(Arbeitsversion.class);
+        log.info("orgExtracted: {}", orgExtracted);
+        JSONAssert.assertEquals(jsonb.toJson(organisation), jsonb.toJson(orgExtracted.organisation),
+                JSONCompareMode.STRICT);
+
+        factory.deleteById(organisation.getId());
     }
 
     @Test
