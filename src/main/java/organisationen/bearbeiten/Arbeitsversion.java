@@ -3,6 +3,7 @@ package organisationen.bearbeiten;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbDateFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Arbeitsversion {
     Organisation organisation;
 
     @Builder.Default
-    // @JsonbDateFormat("dd-MM-yyyy")
+    @JsonbDateFormat(JsonbDateFormat.DEFAULT_FORMAT)
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }

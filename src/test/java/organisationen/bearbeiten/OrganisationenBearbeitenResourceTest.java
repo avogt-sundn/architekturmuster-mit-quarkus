@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.*;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
@@ -81,10 +82,15 @@ class OrganisationenBearbeitenResourceTest {
         Organisation organisation = factory.persistASingleInTx("UpdateArbeitsversion", 1);
         assertNotNull(organisation.getFachschluessel());
 
+        // 2024-01-08T14:08:01.023687
+        String pattern = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{6}";
+        Pattern r = Pattern.compile(pattern);
+
         // 1. create
         given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
                 .when().post(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK));
+                .then().statusCode(equalTo(HttpStatus.SC_OK))
+                .and().body("createdAt", matchesPattern(r));
         // 2. change
         organisation.setBeschreibung("NeueBeschreibung");
         given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
