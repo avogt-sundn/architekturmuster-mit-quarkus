@@ -3,6 +3,7 @@ package organisationen.bearbeiten;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,6 +36,8 @@ public interface ArbeitsversionMapper {
         return arbeitsversion.build();
     }
 
+    @Mapping(target = "jsonString", ignore = true)
+    @Mapping(target = "status", ignore = true)
     ArbeitsversionEntity toEntity(Arbeitsversion domain);
 
 }

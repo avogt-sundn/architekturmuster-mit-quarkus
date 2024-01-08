@@ -58,10 +58,6 @@ paths:
     put:
       tags:
       - Organisationen Bearbeiten Resource
-      summary: Ändern eine bestehende Arbeitsversion
-      description: |
-        Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.
-        Die enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.
       parameters:
       - name: fachschluessel
         in: path
@@ -150,11 +146,11 @@ components:
         organisation:
           $ref: '#/components/schemas/Organisation'
         createdAt:
-          $ref: '#/components/schemas/LocalDate'
-    LocalDate:
-      format: date
+          $ref: '#/components/schemas/LocalDateTime'
+    LocalDateTime:
+      format: date-time
       type: string
-      example: 2022-03-10
+      example: 2022-03-10T12:15:50
     Organisation:
       required:
       - name

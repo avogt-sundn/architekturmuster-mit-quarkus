@@ -1,5 +1,6 @@
 package organisationen.bearbeiten;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -37,4 +38,9 @@ public class ArbeitsversionEntity extends PanacheEntity {
 
     @JdbcTypeCode(value = SqlTypes.JSON)
     String jsonString;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+
 }

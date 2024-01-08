@@ -3,8 +3,6 @@ package organisationen.bearbeiten;
 import java.net.URI;
 import java.util.UUID;
 
-import org.eclipse.microprofile.openapi.annotations.Operation;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
@@ -55,10 +53,13 @@ public class OrganisationenBearbeitenResource {
                 .location(URI.create("/organizations/" + fachschluessel + "/draft")).build();
     }
 
-    @Operation(summary = "Ändern eine bestehende Arbeitsversion", description = """
-            Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.
-            Die enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.
-                """)
+    // @Operation(summary = "Ändern eine bestehende Arbeitsversion", description =
+    // """
+    // Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion
+    // inhaltlich geändert werden.
+    // Die enthaltene Organisation kann bearbeitet werden, ebenso der Status der
+    // Arbeitsversion.
+    // """)
     @PUT
     @Path("{fachschluessel}/draft")
     @Transactional

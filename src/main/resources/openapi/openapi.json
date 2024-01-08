@@ -78,8 +78,6 @@
       },
       "put" : {
         "tags" : [ "Organisationen Bearbeiten Resource" ],
-        "summary" : "Ändern eine bestehende Arbeitsversion",
-        "description" : "Mit PUT kann eine unter dem fachschluessel vorliegende Arbeitsversion inhaltlich geändert werden.\nDie enthaltene Organisation kann bearbeitet werden, ebenso der Status der Arbeitsversion.\n",
         "parameters" : [ {
           "name" : "fachschluessel",
           "in" : "path",
@@ -209,14 +207,14 @@
             "$ref" : "#/components/schemas/Organisation"
           },
           "createdAt" : {
-            "$ref" : "#/components/schemas/LocalDate"
+            "$ref" : "#/components/schemas/LocalDateTime"
           }
         }
       },
-      "LocalDate" : {
-        "format" : "date",
+      "LocalDateTime" : {
+        "format" : "date-time",
         "type" : "string",
-        "example" : "2022-03-10"
+        "example" : "2022-03-10T12:15:50"
       },
       "Organisation" : {
         "required" : [ "name", "beschreibung" ],
