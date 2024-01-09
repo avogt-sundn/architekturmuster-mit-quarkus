@@ -7,7 +7,7 @@ networks:
 services:
 
   influxdb:
-    image: influxdb:2.0
+    image: influxdb:1.8
     ports:
       - "8086:8086"
     environment:
