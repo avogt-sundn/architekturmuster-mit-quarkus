@@ -22,9 +22,9 @@ import lombok.NoArgsConstructor;
 public class KatalogEntity extends PanacheEntityBase {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
-    // "KATALOG_SEQ")
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+     "KATALOG_SEQ")
+    //@GeneratedValue(strategy = GenerationType.TABLE)
     Long id;
 
     @Id
