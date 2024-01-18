@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
@@ -44,8 +45,8 @@ class KatalogEntityTest {
     @Test
     @Order(2)
     void AddArbeitsversion() {
-        KatalogEntity.getEntityManager().detach(katalogEntity);
-        KatalogEntity.getEntityManager().clear();
+        // KatalogEntity.getEntityManager().detach(katalogEntity);
+        // KatalogEntity.getEntityManager().clear();
 
         String json = jsonb.toJson(katalogEntity);
         KatalogEntity duplicate = jsonb.fromJson(json, KatalogEntity.class);
@@ -58,11 +59,10 @@ class KatalogEntityTest {
     @Test
     @Order(3)
     void FindArbeitsversion() {
-
         KatalogEntity arbeit = KatalogEntity.findById(
                 new KatalogId(katalogEntity.id, true));
         assertThat(arbeit.id).isEqualTo(katalogEntity.id);
-        assertThat(katalogEntity.isArbeitsversion).isTrue();
+        assertThat(arbeit.isArbeitsversion).isTrue();
 
         KatalogEntity keineArbeit = KatalogEntity.findById(
                 new KatalogId(katalogEntity.id, false));
