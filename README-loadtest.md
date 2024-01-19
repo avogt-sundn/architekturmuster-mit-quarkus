@@ -12,6 +12,14 @@ k6 ist ein Kommandozeilentool.
 
 k6 kann auf dem eigenen Rechner installiert werden oder im Docker Container `k6` der mit dem compose gestartet wurde.
 
+Im Container `k6` kann eine Kommandozeile geöffnet werden durch `exec`, aufgerufen im VSCode-Terminal:
+
+
+```bash
+docker compose -f docker-compose-k6.yml exec k6 /bin/ash
+# /home/k6 #
+```
+
 Es benötigt zwei Parameter:
 
 1. das Test-Skript
@@ -28,6 +36,10 @@ Es benötigt zwei Parameter:
         ```bash
         k6 run /scripts/script.js --out influxdb=http://influxdb:8086/k6
         ```
+
+## Starten im VS Code - Devcontainer
+
+Das Projekt sollte im Dev Container ("reopen in devcontainer") gestartet werden, damit alle tools verfügbar sind.
 
 Vor dem Testlauf ist das quarkus Projekt mit `quarkus dev` zu starten, so dass es auf der URL, so wie im script angegeben, erreichbar ist:
 
