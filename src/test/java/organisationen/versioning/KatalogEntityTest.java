@@ -45,8 +45,6 @@ class KatalogEntityTest {
     @Test
     @Order(2)
     void AddArbeitsversion() {
-        // KatalogEntity.getEntityManager().detach(katalogEntity);
-        // KatalogEntity.getEntityManager().clear();
 
         String json = jsonb.toJson(katalogEntity);
         KatalogEntity duplicate = jsonb.fromJson(json, KatalogEntity.class);
@@ -59,6 +57,7 @@ class KatalogEntityTest {
     @Test
     @Order(3)
     void FindArbeitsversion() {
+        
         KatalogEntity arbeit = KatalogEntity.findById(
                 new KatalogId(katalogEntity.id, true));
         assertThat(arbeit.id).isEqualTo(katalogEntity.id);
