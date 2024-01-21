@@ -1,4 +1,4 @@
-# Architektur-Muster mit Quarkus
+# Architekturmuster mit Quarkus
 
 Dies ist ein Multi-module maven Projekt.
 VS Code kann damit gut umgehen.
