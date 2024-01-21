@@ -20,4 +20,4 @@ public interface AdresseMapper {
 
     void updateDomainFromEntity(AdresseEntity entity, @MappingTarget Adresse domain);
 
-};
+}

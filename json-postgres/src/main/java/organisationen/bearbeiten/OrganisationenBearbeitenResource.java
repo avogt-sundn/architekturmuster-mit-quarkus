@@ -75,7 +75,6 @@ public class OrganisationenBearbeitenResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response status(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Status status) {
         ArbeitsversionEntity single = ArbeitsversionEntity.find(FACHSCHLUESSEL_PARAM, fachschluessel).firstResult();
-        // TODO: status logic missing
         single.status = status;
         return Response.ok(status).build();
     }
