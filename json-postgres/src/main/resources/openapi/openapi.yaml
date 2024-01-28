@@ -10,6 +10,19 @@ servers:
   description: Auto generated value
 paths:
   /jsonresource:
+    get:
+      tags:
+      - Json Resource
+      parameters:
+      - name: params
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
     post:
       tags:
       - Json Resource
