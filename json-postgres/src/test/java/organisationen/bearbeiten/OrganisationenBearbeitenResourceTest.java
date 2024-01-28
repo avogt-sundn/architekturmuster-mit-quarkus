@@ -60,16 +60,12 @@ class OrganisationenBearbeitenResourceTest {
         assertNotNull(organisation.getFachschluessel());
 
         // 1. create
-        given().with().contentType(ContentType.JSON)
-                .body(body).when().post(organisation.getFachschluessel() + "/draft")
+        given().with().contentType(ContentType.JSON).body(body).when().post(organisation.getFachschluessel() + "/draft")
                 .then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
-        final String result = given().when().get(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK))
-                .and()
-                .rootPath("organisation")
-                .body("beschreibung", equalTo("CreateArbeitsversion"))
-                .and().extract().asPrettyString();
+        final String result = given().when().get(organisation.getFachschluessel() + "/draft").then()
+                .statusCode(equalTo(HttpStatus.SC_OK)).and().rootPath("organisation")
+                .body("beschreibung", equalTo("CreateArbeitsversion")).and().extract().asPrettyString();
 
         log.info("result: \n{}", result);
         // JSONAssert.assertEquals(body, result, JSONCompareMode.STRICT);
@@ -83,23 +79,22 @@ class OrganisationenBearbeitenResourceTest {
         assertNotNull(organisation.getFachschluessel());
 
         // 2024-01-08T14:08:01.023687
-        String pattern = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{6}";
+        String pattern = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d+";
         Pattern r = Pattern.compile(pattern);
 
+        assertTrue(r.matcher("2024-01-08T14:08:01.023687").matches(), "Format mit 6 Nachkommastellen");
+        assertTrue(r.matcher("2024-01-08T14:08:01.23687").matches(), "Format mit 5 Nachkommastellen");
+
         // 1. create
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
-                .when().post(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK))
-                .and().body("createdAt", matchesPattern(r));
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+                .post(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK)).and()
+                .body("createdAt", matchesPattern(r));
         // 2. change
         organisation.setBeschreibung("NeueBeschreibung");
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
-                .when().put(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+                .put(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
-        given()
-                .when().get(organisation.getFachschluessel() + "/draft")
-                .then().rootPath("organisation")
+        given().when().get(organisation.getFachschluessel() + "/draft").then().rootPath("organisation")
                 .body("beschreibung", equalTo("NeueBeschreibung"));
 
         factory.deleteById(organisation.getId());
@@ -111,19 +106,15 @@ class OrganisationenBearbeitenResourceTest {
         assertNotNull(organisation.getFachschluessel());
 
         // 1. create
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
-                .when().post(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+                .post(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. status change
-        given().with().contentType(ContentType.TEXT).body("ZUR_FREIGABE").log().all()
-                .when().patch(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK))
-                .and().body(equalTo("ZUR_FREIGABE")).log().all();
+        given().with().contentType(ContentType.TEXT).body("ZUR_FREIGABE").log().all().when()
+                .patch(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK)).and()
+                .body(equalTo("ZUR_FREIGABE")).log().all();
         // 3. new status
-        Arbeitsversion orgExtracted = given().with().contentType(ContentType.JSON)
-                .body(jsonb.toJson(organisation))
-                .when().get(organisation.getFachschluessel() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK))
+        Arbeitsversion orgExtracted = given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+                .when().get(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK))
                 .and().rootPath("organisation").extract().as(Arbeitsversion.class);
         log.info("orgExtracted: {}", orgExtracted);
         JSONAssert.assertEquals(jsonb.toJson(organisation), jsonb.toJson(orgExtracted.organisation),
@@ -141,17 +132,13 @@ class OrganisationenBearbeitenResourceTest {
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
         final String body = jsonb.toJson(organisation);
         // 1. create
-        given().with().contentType(ContentType.JSON)
-                .body(body).when().post(organisation.getId() + "/draft")
-                .then().statusCode(equalTo(HttpStatus.SC_OK));
+        given().with().contentType(ContentType.JSON).body(body).when().post(organisation.getId() + "/draft").then()
+                .statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
-        final String result = given().when().get(organisation.getId() + "/draft")
-                .then()
-                .rootPath("organisation")
+        final String result = given().when().get(organisation.getId() + "/draft").then().rootPath("organisation")
                 // dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht
                 // wirksam
-                .body(sameJSONAs(body))
-                .and().extract().asPrettyString();
+                .body(sameJSONAs(body)).and().extract().asPrettyString();
 
         log.info("result: \n{}", result);
         // JSONAssert.assertEquals(body, result, JSONCompareMode.STRICT);
@@ -173,15 +160,11 @@ class OrganisationenBearbeitenResourceTest {
                         ]
                 }
                 """;
-        given().with().contentType(ContentType.JSON)
-                .body("""
-                        {
-                            "name": "Arnsberg",
-                            "fachschluessel": """
-                        + "\"" + UUID.randomUUID() + "\"" +
-                        """
-                                }""")
-                .when().post(UNDEFINED_ORGANISATION_ID + "/draft").then().statusCode(equalTo(HttpStatus.SC_BAD_REQUEST))
-                .and().body(sameJSONAs(expectedErrorResponse));
+        given().with().contentType(ContentType.JSON).body("""
+                {
+                    "name": "Arnsberg",
+                    "fachschluessel": """ + "\"" + UUID.randomUUID() + "\"" + """
+                }""").when().post(UNDEFINED_ORGANISATION_ID + "/draft").then()
+                .statusCode(equalTo(HttpStatus.SC_BAD_REQUEST)).and().body(sameJSONAs(expectedErrorResponse));
     }
 }

@@ -12,6 +12,47 @@
     "description" : "Auto generated value"
   } ],
   "paths" : {
+    "/jsonresource" : {
+      "post" : {
+        "tags" : [ "Json Resource" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "$ref" : "#/components/schemas/JsonValue"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/jsonresource/{id}" : {
+      "get" : {
+        "tags" : [ "Json Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/organizations" : {
       "get" : {
         "tags" : [ "Organisationen Suchen Resource" ],
@@ -211,6 +252,14 @@
           }
         }
       },
+      "JsonValue" : {
+        "type" : "object",
+        "properties" : {
+          "valueType" : {
+            "$ref" : "#/components/schemas/ValueType"
+          }
+        }
+      },
       "LocalDateTime" : {
         "format" : "date-time",
         "type" : "string",
@@ -254,6 +303,10 @@
       "UUID" : {
         "format" : "uuid",
         "pattern" : "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+        "type" : "string"
+      },
+      "ValueType" : {
+        "enum" : [ "ARRAY", "OBJECT", "STRING", "NUMBER", "TRUE", "FALSE", "NULL" ],
         "type" : "string"
       }
     }
