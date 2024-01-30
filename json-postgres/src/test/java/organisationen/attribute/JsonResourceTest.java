@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.HttpStatus;
 import org.jboss.logging.MDC;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,5 +78,11 @@ class JsonResourceTest {
         Long id = Long.valueOf(group);
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK)).and().body("uuid", equalTo(randomUUID));
+
+    }
+    
+    @AfterEach
+    void afterEach() {
+        MDC.clear();
     }
 }

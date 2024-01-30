@@ -18,8 +18,6 @@ class AttributeJsonbTest {
                 """;
         Jsonb parser = JsonbBuilder.create();
         String result = parser.toJson(en);
-        assertThat(result).doesNotContain("\\");
-        assertThat(result).contains("testvalue");
-
+        assertThat(result).doesNotContain("\\").contains("testvalue");
     }
 }
