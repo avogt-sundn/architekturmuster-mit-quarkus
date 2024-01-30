@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,13 +58,14 @@ class JsonResourceTest {
 
     @Test
     void testSaveObjectFromJson() {
-        String location = given().with().contentType(ContentType.JSON).body("""
+        final String randomUUID = UUID.randomUUID().toString();
+        final String location = given().with().contentType(ContentType.JSON).body("""
                 {
                     "name": "armin",
                     "surname": "vogt",
-                    "other": "prefer lowercase ;-) "
+                    "uuid": "%s"
                 }
-                """).post().then().log().all().statusCode(equalTo(HttpStatus.SC_CREATED))
+                """.formatted(randomUUID)).post().then().log().all().statusCode(equalTo(HttpStatus.SC_CREATED))
                 .header("Location", matchesPattern(locationHeaderMatchingPattern)).and().extract().header("Location");
 
         MDC.put("location", location);
@@ -74,6 +76,6 @@ class JsonResourceTest {
 
         Long id = Long.valueOf(group);
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
-                .statusCode(equalTo(HttpStatus.SC_OK)).and().body("name", equalTo("armin"));
+                .statusCode(equalTo(HttpStatus.SC_OK)).and().body("uuid", equalTo(randomUUID));
     }
 }

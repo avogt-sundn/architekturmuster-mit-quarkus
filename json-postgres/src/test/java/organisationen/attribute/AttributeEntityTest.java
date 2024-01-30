@@ -4,14 +4,19 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.UUID;
 
+import org.jboss.logging.MDC;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
 
 @QuarkusTest
-public class AttributeEntityTest {
+@ExtendWith(TestBase.class)
+class AttributeEntityTest {
 
     @Test
     @Transactional
@@ -26,9 +31,13 @@ public class AttributeEntityTest {
                 """.formatted(id));
         AttributeEntity byKeyValue = AttributeEntity.findFirstByKeyValue("uuid", id.toString());
         assertThat(byKeyValue).isNotNull();
-        assertThat(byKeyValue.jsonString).contains("nachname").contains("vogt");
-
+        MDC.put("jsonstring", byKeyValue.jsonString);
+        assertThat(byKeyValue.jsonString.toString()).contains("nachname").contains("vogt");
+        assertThat(byKeyValue.jsonString.toString()).withFailMessage("json not escaped").doesNotContain("\\");
     }
+
+    @Inject
+    Jsonb jsonb;
 
     private void createFromJson(String json) {
         AttributeEntity entity = new AttributeEntity();
