@@ -41,4 +41,5 @@ public class AttributeEntity extends PanacheEntity {
         List<AttributeEntity> result = query.getResultList();
         return result.get(0);
     }
+
 }
