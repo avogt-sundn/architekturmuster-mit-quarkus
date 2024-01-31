@@ -72,12 +72,12 @@ class JsonResourceTest {
     }
 
     private Long getId(final String location) {
-        
-        MDC.put("location", location);
+
+        MDC.put("location header aus der response", location);
         java.util.regex.Matcher locationFromResponse = locationHeaderMatchingPattern.matcher(location);
         assertTrue(locationFromResponse.matches());
         String group = locationFromResponse.group(1);
-        MDC.put("group", group);
+        MDC.put("id aus dem Suffix der location", group);
         Long id = Long.valueOf(group);
         return id;
     }
