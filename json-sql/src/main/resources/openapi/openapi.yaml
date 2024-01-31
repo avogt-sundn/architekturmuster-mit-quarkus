@@ -1,0 +1,69 @@
+---
+openapi: 3.0.3
+info:
+  title: json-sql API
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
+paths:
+  /jsonresource:
+    get:
+      tags:
+      - Json Resource
+      parameters:
+      - name: params
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - Json Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/JsonValue'
+      responses:
+        "200":
+          description: OK
+  /jsonresource/{id}:
+    get:
+      tags:
+      - Json Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    JsonValue:
+      type: object
+      properties:
+        valueType:
+          $ref: '#/components/schemas/ValueType'
+    ValueType:
+      enum:
+      - ARRAY
+      - OBJECT
+      - STRING
+      - NUMBER
+      - "TRUE"
+      - "FALSE"
+      - "NULL"
+      type: string

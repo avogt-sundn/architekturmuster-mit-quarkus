@@ -11,5 +11,7 @@
 
     <modules>
         <module>json-postgres</module>
+        <module>json-sql</module>
     </modules>
+
 </project>
