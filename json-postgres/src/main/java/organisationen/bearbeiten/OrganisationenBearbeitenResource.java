@@ -46,7 +46,7 @@ public class OrganisationenBearbeitenResource {
 
         organisation.setFachschluessel(fachschluessel);
         ArbeitsversionEntity arbeitsversionEntity = ArbeitsversionEntity.builder().fachschluessel(fachschluessel)
-                .jsonString(jsonb.toJson(organisation)).build();
+                .build();
         arbeitsversionEntity.persist();
 
         return Response.ok(mapper.toDomain(arbeitsversionEntity))
@@ -65,8 +65,7 @@ public class OrganisationenBearbeitenResource {
     @Transactional
     public Response edit(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Organisation organisation) {
         ArbeitsversionEntity single = ArbeitsversionEntity.find(FACHSCHLUESSEL_PARAM, fachschluessel).firstResult();
-        single.jsonString = jsonb.toJson(organisation);
-        return Response.ok().build();
+        return Response.ok(single).build();
     }
 
     @PATCH

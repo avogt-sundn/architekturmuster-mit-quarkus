@@ -3,9 +3,6 @@ package organisationen.bearbeiten;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,9 +32,6 @@ public class ArbeitsversionEntity extends PanacheEntity {
 
     @Enumerated(EnumType.ORDINAL)
     Status status;
-
-    @JdbcTypeCode(value = SqlTypes.JSON)
-    String jsonString;
 
     @Column(nullable = false)
     @Builder.Default
