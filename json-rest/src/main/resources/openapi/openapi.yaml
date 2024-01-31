@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.3
 info:
-  title: json-postgres API
+  title: json-rest API
   version: 1.0.0-SNAPSHOT
 servers:
 - url: http://localhost:8080
