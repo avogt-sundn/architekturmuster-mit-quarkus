@@ -24,8 +24,8 @@ services:
 
   oracle:
     image: container-registry.oracle.com/database/express:latest
-#    environment:
-#      ORACLE_PWD: password
+    environment:
+      ORACLE_PWD: password
     ports:
       - 5500:5500
       - 1521:1521
