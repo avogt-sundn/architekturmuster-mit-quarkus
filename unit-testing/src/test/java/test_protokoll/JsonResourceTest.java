@@ -1,7 +1,6 @@
-package json_payload_ohne_bean_binding;
+package test_protokoll;
 
 import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +11,7 @@ import org.apache.http.HttpStatus;
 import org.jboss.logging.MDC;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -20,6 +20,7 @@ import io.restassured.http.ContentType;
 
 @QuarkusTest
 @TestHTTPEndpoint(JsonResource.class)
+@ExtendWith(TestBase.class)
 class JsonResourceTest {
 
     final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
@@ -30,29 +31,9 @@ class JsonResourceTest {
     }
 
     @Test
-    void understandRegex() {
-
-        java.util.regex.Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:1234/grumpy/77");
-        assertTrue(matcher.matches());
-        assertThat(matcher.groupCount()).isEqualTo(1);
-        Long id = Long.valueOf(matcher.group(1));
-        assertThat(id).withFailMessage("location hatte keine id am Ende, sondern: ", id).isEqualTo(77);
-    }
-
-    @Test
-    void greedyMatchDoesNotRequireUrlPathPrefix() {
-
-        java.util.regex.Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:8081/77");
-        assertTrue(matcher.matches());
-        assertThat(matcher.groupCount()).isEqualTo(1);
-        String group = matcher.group(1);
-        Long id = Long.valueOf(group);
-        assertThat(id).withFailMessage("location hatte keine id am Ende, sondern: " + id).isEqualTo(77);
-    }
-
-    @Test
-    void testSaveObjectFromJson() {
+    void _SaveObjectFromJson() {
         final String randomUUID = UUID.randomUUID().toString();
+
         final String location = given().with().contentType(ContentType.JSON).body("""
                 {
                     "name": "armin",
@@ -63,12 +44,11 @@ class JsonResourceTest {
                 .header("Location", matchesPattern(locationHeaderMatchingPattern)).and().extract().header("Location");
 
         Long id = getId(location);
-
+        MDC.put("id empfangen", id);
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
-                .statusCode(equalTo(HttpStatus.SC_OK))
-                .and().body(not(containsString("\\")))
-                .and().body("uuid", equalTo(randomUUID));
-
+                .statusCode(equalTo(HttpStatus.SC_OK)).and().body(not(containsString("\\"))).and()
+                .body("uuid", equalTo(randomUUID));
+        throw new RuntimeException();
     }
 
     private Long getId(final String location) {

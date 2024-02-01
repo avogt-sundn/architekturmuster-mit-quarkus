@@ -1,4 +1,4 @@
-package json_payload_ohne_bean_binding;
+package test_protokoll;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -50,8 +50,7 @@ public class JsonResource {
     public Response load(@PathParam("id") Long id) {
 
         String string = store.get(id);
-        return Response.ok(
-                jsonb.fromJson(string, JsonObject.class)).build();
+        return Response.ok(jsonb.fromJson(string, JsonObject.class)).build();
     }
 
     @GET
