@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.jboss.resteasy.reactive.RestQuery;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
@@ -18,32 +19,37 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  *
  */
-@Path("json-payload-ohne-bean-binding")
+@Path(JsonResource.JSON_PAYLOAD_OHNE_BEAN_BINDING_RESOURCE)
 @ApplicationScoped
 public class JsonResource {
+
+    static final String JSON_PAYLOAD_OHNE_BEAN_BINDING_RESOURCE = "json-payload-ohne-bean-binding/resource";
 
     Map<Long, String> store = new HashMap<>();
     AtomicLong sequence = new AtomicLong();
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response saveObjectFromJson(JsonObject body) {
-
-        long id = sequence.incrementAndGet();
-        store.put(id, body.toString());
-        return Response.created(URI.create("/" + id)).build();
-    }
+    Jsonb jsonb;
 
     public JsonResource(Jsonb jsonb) {
         this.jsonb = jsonb;
     }
 
-    Jsonb jsonb;
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response saveObjectFromJson(JsonObject body, UriInfo info) {
+
+        long id = sequence.incrementAndGet();
+        store.put(id, body.toString());
+        Log.info(info.getBaseUri().getPath());
+
+        return Response.created(URI.create(String.valueOf(id))).build();
+    }
 
     @GET
     @Path("{id}")
@@ -51,11 +57,6 @@ public class JsonResource {
 
         String string = store.get(id);
         return Response.ok(jsonb.fromJson(string, JsonObject.class)).build();
-    }
-
-    @GET
-    public Response search(@RestQuery String[] params) {
-        return Response.ok().build();
     }
 
 }

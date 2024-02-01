@@ -36,7 +36,7 @@ public class JsonResource {
 
         long id = sequence.incrementAndGet();
         store.put(id, body.toString());
-        return Response.created(URI.create("/" + id)).build();
+        return Response.created(URI.create(""+ id)).build();
     }
 
     public JsonResource(Jsonb jsonb) {

@@ -11,7 +11,6 @@ import org.apache.http.HttpStatus;
 import org.jboss.logging.MDC;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -22,7 +21,7 @@ import io.restassured.http.ContentType;
 @TestHTTPEndpoint(JsonResource.class)
 class JsonResourceTest {
 
-    final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
+    final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(.+)/(\\d+)");
 
     @BeforeAll
     static void setup() {
@@ -47,7 +46,6 @@ class JsonResourceTest {
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK)).and().body(not(containsString("\\"))).and()
                 .body("uuid", equalTo(randomUUID));
-        throw new RuntimeException();
     }
 
     private Long getId(final String location) {
@@ -55,7 +53,8 @@ class JsonResourceTest {
         MDC.put("location header aus der response", location);
         java.util.regex.Matcher locationFromResponse = locationHeaderMatchingPattern.matcher(location);
         assertTrue(locationFromResponse.matches());
-        String group = locationFromResponse.group(1);
+        String group = locationFromResponse.group(2);
+
         MDC.put("id aus dem Suffix der location", group);
         Long id = Long.valueOf(group);
         return id;
