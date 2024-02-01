@@ -1,9 +1,11 @@
-package json_payload_ohne_bean_binding;
+package json_payload_ohne_bean_binding.body;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.*;
+import static uk.co.datumedge.hamcrest.json.SameJSONAs.*;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -19,10 +21,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 @QuarkusTest
-@TestHTTPEndpoint(JsonResource.class)
-class JsonResourceTest {
+@TestHTTPEndpoint(BodyResource.class)
+class BodyResourceTest {
 
-    final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
+    final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/.+/(\\d+)");
 
     @BeforeAll
     static void setup() {
@@ -30,7 +32,7 @@ class JsonResourceTest {
     }
 
     @Test
-    void understandRegex() {
+    void _UnderstandRegex() {
 
         java.util.regex.Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:1234/grumpy/77");
         assertTrue(matcher.matches());
@@ -40,34 +42,35 @@ class JsonResourceTest {
     }
 
     @Test
-    void greedyMatchDoesNotRequireUrlPathPrefix() {
+    void _LocationURIHasResourcePath() {
 
         java.util.regex.Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:8081/77");
-        assertTrue(matcher.matches());
-        assertThat(matcher.groupCount()).isEqualTo(1);
-        String group = matcher.group(1);
-        Long id = Long.valueOf(group);
-        assertThat(id).withFailMessage("location hatte keine id am Ende, sondern: " + id).isEqualTo(77);
+        assertFalse(matcher.matches());
     }
 
     @Test
-    void testSaveObjectFromJson() {
+    void _SaveObjectFromJson() {
         final String randomUUID = UUID.randomUUID().toString();
-        final String location = given().with().contentType(ContentType.JSON).body("""
-                {
-                    "name": "armin",
-                    "surname": "vogt",
-                    "uuid": "%s"
-                }
-                """.formatted(randomUUID)).post().then().log().all().statusCode(equalTo(HttpStatus.SC_CREATED))
+        final String payload = """
+                    {
+                        "name": "armin",
+                        "surname": "vogt",
+                        "uuid": "%s"
+                    }
+                """.formatted(randomUUID);
+
+        final String location = given().with().contentType(ContentType.JSON).body(
+                payload).post().then().log().all().statusCode(equalTo(HttpStatus.SC_CREATED))
                 .header("Location", matchesPattern(locationHeaderMatchingPattern)).and().extract().header("Location");
 
         Long id = getId(location);
 
+        String expected = payload;
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK))
                 .and().body(not(containsString("\\")))
-                .and().body("uuid", equalTo(randomUUID));
+                .and().body("uuid", equalTo(randomUUID))
+                .body(sameJSONAs(expected));
 
     }
 
