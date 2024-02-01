@@ -9,7 +9,9 @@ import jakarta.json.bind.annotation.JsonbTypeSerializer;
  * Wird im Rest API genutzt. Steuert die Json De-/Serialisierung.
  */
 public class Organisation {
-
+    /**
+     * Felder müssen public sein, sonst werden sie bei der Serialisierung ignoriert.
+     */
     public String vorname;
     public String nachname;
 
