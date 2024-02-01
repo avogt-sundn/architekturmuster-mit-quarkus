@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Demonstriert Praktiken und Protokoll
  */
 // Test-Klassen sind package-private
-@ExtendWith(TestBase.class)
 class PlainUnitTest {
 
     @Test

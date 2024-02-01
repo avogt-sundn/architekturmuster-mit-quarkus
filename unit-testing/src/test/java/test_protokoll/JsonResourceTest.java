@@ -20,7 +20,6 @@ import io.restassured.http.ContentType;
 
 @QuarkusTest
 @TestHTTPEndpoint(JsonResource.class)
-@ExtendWith(TestBase.class)
 class JsonResourceTest {
 
     final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
