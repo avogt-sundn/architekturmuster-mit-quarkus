@@ -20,25 +20,21 @@ public class ShowReportEntries implements TestExecutionListener {
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
 
         if (testExecutionResult.getThrowable().isPresent()) {
+            if (testIdentifier.getSource().get() instanceof MethodSource ms) {
 
-            printPerTest(testExecutionResult.getThrowable().get(),
-                    getDisplayNameFromIdentifier(testIdentifier));
+                String identifier = ms.getJavaClass().getSimpleName() + "#"
+                        + ms.getMethodName() + "(" + ms.getMethodParameterTypes() + ")";
+
+                printPerTest(testExecutionResult.getThrowable().get(), ms.getJavaClass(),
+                        identifier);
+            }
         }
 
         TestExecutionListener.super.executionFinished(testIdentifier, testExecutionResult);
     }
 
-    private String getDisplayNameFromIdentifier(TestIdentifier testIdentifier) {
-        if (testIdentifier.getSource().get() instanceof MethodSource ms) {
-            return ms.getClassName() + "#"+ms.getMethodName();
-        } else {
-            return testIdentifier.getDisplayName();
-        }
-    }
-
     @Override
     public void reportingEntryPublished(TestIdentifier testIdentifier, ReportEntry entry) {
-        logger.info(() -> "reportingEntryPublished");
         TestExecutionListener.super.reportingEntryPublished(testIdentifier, entry);
     }
 
@@ -49,7 +45,7 @@ public class ShowReportEntries implements TestExecutionListener {
         TestExecutionListener.super.testPlanExecutionFinished(testPlan);
     }
 
-    private void printPerTest(Throwable throwable, String string) {
+    private void printPerTest(Throwable throwable, Class<?> class1, String string) {
 
         String collect = MDC.getMap().entrySet().stream().map(e -> {
             try (Formatter f = new Formatter()) {
@@ -57,10 +53,16 @@ public class ShowReportEntries implements TestExecutionListener {
             }
         }).collect(Collectors.joining("\n"));
         MDC.clear();
-        logger.error(
-                () -> "\n  Test failed: " + string + "\n  with exception:\n  " + throwable + "\n" +
-                        "  Showing MDC collected during the test ('' not part of the value):\n"
-                        + collect.toString());
+
+        final org.junit.platform.commons.logging.Logger logger =
+         LoggerFactory.getLogger(class1);
+
+        logger.warn(
+                () -> "\n\n  Test " + string + "\n  failed with exception:\n\n  " + throwable + "\n"
+                        + (collect.isEmpty() ? ""
+                                : ("  Showing MDC collected during the test ('' not part of the value):\n"
+                                        + collect.toString())));
+
     }
 
 }

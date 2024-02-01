@@ -1,6 +1,7 @@
 package test_protokoll;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.jboss.logging.MDC;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,12 @@ class PlainUnitTest {
         MDC.put("wert", 1);
         reporter.publishEntry("wert war: " + 1);
         throw new RuntimeException();
+    }
+
+    @Test
+    void _KeinFehlerHier() {
+        MDC.put("keinFehler", true);
+        assertTrue(Boolean.TRUE);
     }
 
     @Test
