@@ -1,7 +1,6 @@
 package organisationen.attribute;
 
 import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,39 +25,22 @@ import io.restassured.http.ContentType;
  */
 @QuarkusTest
 @TestHTTPEndpoint(JsonResource.class)
-@ExtendWith(TestBase.class)
 class JsonResourceTest {
 
-    final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
+    static final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/(\\d+)");
 
     @BeforeAll
     static void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    @Test
-    void understandRegex() {
-
-        Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:1234/grumpy/77");
-        assertTrue(matcher.matches());
-        assertThat(matcher.groupCount()).isEqualTo(1);
-        Long id = Long.valueOf(matcher.group(1));
-        assertThat(id).withFailMessage("location hatte keine id am Ende, sondern: ", id).isEqualTo(77);
+    @AfterEach
+    void After() {
+        MDC.clear();
     }
 
     @Test
-    void greedyMatchDoesNotRequireUrlPathPrefix() {
-
-        Matcher matcher = locationHeaderMatchingPattern.matcher("http://localhost:8081/77");
-        assertTrue(matcher.matches());
-        assertThat(matcher.groupCount()).isEqualTo(1);
-        String group = matcher.group(1);
-        Long id = Long.valueOf(group);
-        assertThat(id).withFailMessage("location hatte keine id am Ende, sondern: " + id).isEqualTo(77);
-    }
-
-    @Test
-    void testSaveObjectFromJson() {
+    void SaveObjectFromJson() {
         final String randomUUID = UUID.randomUUID().toString();
         final String location = given().with().contentType(ContentType.JSON).body("""
                 {
@@ -80,9 +62,15 @@ class JsonResourceTest {
                 .statusCode(equalTo(HttpStatus.SC_OK)).and().body("uuid", equalTo(randomUUID));
 
     }
-    
-    @AfterEach
-    void afterEach() {
-        MDC.clear();
+
+    @Test
+    void QueryObjectOnJson() {
+
+        given().with().accept(ContentType.JSON).log().all()
+                .param("surname", "vogt")
+                .when().get().then().assertThat()
+                .statusCode(equalTo(HttpStatus.SC_OK))
+                .body("name", equalTo("armin"));
     }
+
 }

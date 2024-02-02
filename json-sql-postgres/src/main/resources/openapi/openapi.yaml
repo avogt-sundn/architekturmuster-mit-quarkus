@@ -14,12 +14,10 @@ paths:
       tags:
       - Json Resource
       parameters:
-      - name: params
+      - name: surname
         in: query
         schema:
-          type: array
-          items:
-            type: string
+          type: string
       responses:
         "200":
           description: OK

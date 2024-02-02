@@ -15,7 +15,6 @@ import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
 
 @QuarkusTest
-@ExtendWith(TestBase.class)
 class AttributeEntityTest {
 
     @Test
