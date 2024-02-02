@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.jboss.logging.MDC;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestReporter;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Demonstriert Praktiken und Protokoll
@@ -32,7 +31,6 @@ class PlainUnitTest {
     @Test
     void _EinAssertScheitert(TestReporter reporter) {
 
-        assertThat(reporter).isNotNull();
-        assertThat("inhalt").isBlank();
+        assertThat(reporter).withFailMessage(() -> "reporter ist nie null").isNull();
     }
 }

@@ -4,5 +4,6 @@
     "java.dependency.packagePresentation": "flat",
     "java.format.settings.url": ".vscode/java-formatter.xml",
     "files.autoSave": "afterDelay",
-    "java.project.explorer.showNonJavaResources": false
+    "java.project.explorer.showNonJavaResources": false,
+    "maven.view": "hierarchical"
 }

@@ -38,7 +38,7 @@ public class AttributeEntity extends PanacheEntity {
 
         String sql = "select * from attribute WHERE json_string->>'" + key + "' like '%" + value + "%'";
         Query query = getEntityManager().createNativeQuery(sql, AttributeEntity.class);
-        List<AttributeEntity> result = query.getResultList();
-        return result.get(0);
+        List<?> result = query.getResultList();
+        return (AttributeEntity) result.get(0);
     }
 }
