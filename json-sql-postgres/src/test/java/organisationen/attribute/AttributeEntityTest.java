@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.jboss.logging.MDC;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

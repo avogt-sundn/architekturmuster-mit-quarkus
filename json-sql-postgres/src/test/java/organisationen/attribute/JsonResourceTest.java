@@ -13,7 +13,6 @@ import org.jboss.logging.MDC;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -64,13 +63,11 @@ class JsonResourceTest {
     }
 
     @Test
-    void QueryObjectOnJson() {
-
-        given().with().accept(ContentType.JSON).log().all()
+    void SearchJsonObject() {
+        given().with()
                 .param("surname", "vogt")
                 .when().get().then().assertThat()
                 .statusCode(equalTo(HttpStatus.SC_OK))
                 .body("name", equalTo("armin"));
     }
-
 }

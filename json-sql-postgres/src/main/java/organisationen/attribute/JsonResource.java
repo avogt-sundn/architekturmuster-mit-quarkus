@@ -2,9 +2,6 @@ package organisationen.attribute;
 
 import java.net.URI;
 
-import org.jboss.logging.MDC;
-import org.jboss.resteasy.reactive.RestQuery;
-
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
@@ -14,7 +11,9 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -53,8 +52,10 @@ public class JsonResource {
     }
 
     @GET
-    public Response search(@QueryParam(value = "surname")  String  params) {
-        AttributeEntity firstByKeyValue = AttributeEntity.findFirstByKeyValue("surname", params);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("surname") String surname) {
+
+        AttributeEntity firstByKeyValue = AttributeEntity.findFirstByKeyValue("surname", surname);
         return Response.ok(firstByKeyValue.jsonString).build();
     }
 
