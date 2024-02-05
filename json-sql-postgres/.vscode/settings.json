@@ -1,0 +1,8 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "sonarlint.connectedMode.project": {
+        "connectionId": "http-host-docker-internal-9000",
+        "projectKey": "quarkitecture:json-sql-postgres"
+    },
+    "java.project.explorer.showNonJavaResources": false
+}

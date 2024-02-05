@@ -2,6 +2,7 @@ package organisationen.attribute;
 
 import java.net.URI;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
@@ -46,9 +47,8 @@ public class JsonResource {
     @Path("{id}")
     public Response load(@PathParam("id") Long id) {
 
-        AttributeEntity byId = AttributeEntity.findById(id);
-        return Response.ok(
-                jsonb.fromJson(byId.jsonString, JsonObject.class)).build();
+        AttributeEntity byId = PanacheEntityBase.findById(id);
+        return Response.ok(jsonb.fromJson(byId.jsonString, JsonObject.class)).build();
     }
 
     @GET

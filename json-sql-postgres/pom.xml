@@ -7,6 +7,8 @@
     <artifactId>json-sql-postgres</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
+        <sonar.host.url>http://host.docker.internal:9000</sonar.host.url>
+        <sonar.login>sqp_caecdb168ba6f90da634cab62744cebcc7691180</sonar.login>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
         <maven.compiler.release>17</maven.compiler.release>
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
