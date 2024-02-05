@@ -15,6 +15,7 @@
         <module>schemas</module>
         <module>json-sql-postgres</module>
         <module>json-sql-oracle</module>
+        <module>openfga</module>
 
     </modules>
 
