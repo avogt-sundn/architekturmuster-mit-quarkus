@@ -27,6 +27,7 @@ public class GreetingResource {
         this.storeClient = storeClient;
     }
 
+    @SuppressWarnings("null")
     void approve() {
         if (defaultAuthModelClient.check(
                 TupleKey.of("thing:1", "reader", "user:me"), null) != null) {
