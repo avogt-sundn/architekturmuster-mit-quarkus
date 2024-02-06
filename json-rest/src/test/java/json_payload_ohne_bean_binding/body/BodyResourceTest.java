@@ -26,6 +26,9 @@ class BodyResourceTest {
 
     final Pattern locationHeaderMatchingPattern = Pattern.compile("http://.+/.+/(\\d+)");
 
+    /*
+     * http-Protokoll wird im Fehlerfall ausgedruckt.
+     */
     @BeforeAll
     static void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -50,6 +53,7 @@ class BodyResourceTest {
 
     @Test
     void _SaveObjectFromJson() {
+
         final String randomUUID = UUID.randomUUID().toString();
         final String payload = """
                     {
@@ -68,6 +72,8 @@ class BodyResourceTest {
         String expected = payload;
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK))
+                .and().contentType(ContentType.JSON)
+                // escaping mit backslash zeigt falsche Serialisierung an
                 .and().body(not(containsString("\\")))
                 .and().body("uuid", equalTo(randomUUID))
                 .body(sameJSONAs(expected));

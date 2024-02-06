@@ -51,7 +51,7 @@ class FieldResourceTest {
         String expected = payload;
         given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK))
-                .and().log().all()
+                .and().contentType(ContentType.JSON)
                 .and().body(not(containsString("\\")))
                 .and().body("freifeld.uuid", equalTo(randomUUID))
                 .body(sameJSONAs(expected));

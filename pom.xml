@@ -5,7 +5,7 @@
 
 
     <groupId>quarkitecture</groupId>
-    <artifactId>multimodule</artifactId>
+    <artifactId>architekturmuster-mit-quarkus</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -16,7 +16,7 @@
         <module>json-sql-postgres</module>
         <module>json-sql-oracle</module>
         <module>openfga</module>
-
+        <module>jpa-versioning</module>
     </modules>
 
 </project>
