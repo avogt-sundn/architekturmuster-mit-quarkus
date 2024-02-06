@@ -64,7 +64,8 @@ class BodyResourceTest {
                 """.formatted(randomUUID);
 
         final String location = given().with().contentType(ContentType.JSON).body(
-                payload).post().then().log().all().statusCode(equalTo(HttpStatus.SC_CREATED))
+                payload).post().then()
+                .statusCode(equalTo(HttpStatus.SC_CREATED))
                 .header("Location", matchesPattern(locationHeaderMatchingPattern)).and().extract().header("Location");
 
         Long id = getId(location);

@@ -8,10 +8,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -22,7 +25,8 @@ import jakarta.ws.rs.core.Response;
 class BodyResource {
 
     /**
-     * als Konstante definiert kann man den Path auch referenzieren (Location Header)
+     * als Konstante definiert kann man den Path auch referenzieren (Location
+     * Header)
      */
     static final String BASEURI = "json-payload-ohne-bean-binding/body";
 
@@ -36,9 +40,18 @@ class BodyResource {
     Jsonb jsonb;
 
     /**
+     * Genutzte Defaults: Diese Annotations sind redundant:
      *
-     * @param body
-     * @return
+     * <pre>
+     *  &#64;Consumes(MediaType.APPLICATION_JSON)
+     *  &#64;Produces(MediaType.APPLICATION_JSON)
+     * </pre>
+     *
+     * Denn: Json ist Standard bei media handling (accepts) als auch beim response
+     * header (consumes).
+     *
+     * @param body - der http body wird als String übergeben.
+     * @return Response - die http Antwort mit Http Status CREATED(201) und Location Header mit korrekter URL für GET
      */
     @POST
     public Response saveObjectFromJson(String body) {
@@ -46,7 +59,9 @@ class BodyResource {
         long id = sequence.incrementAndGet();
         store.put(id, body);
         /**
-         * Location Header muss hier den ganzen Path mitgeteilt bekommen.
+         * Location Header ist vorgeschrieben bei POST. Status 201 Created ist
+         * vorgeschrieben bei POST. Location Header muss hier den ganzen Path mitgeteilt
+         * bekommen.
          */
         return Response.created(URI.create(BASEURI + "/" + id)).build();
     }

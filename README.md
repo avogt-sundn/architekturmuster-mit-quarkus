@@ -70,3 +70,4 @@ Wie ausführlich ein Aspekt ausgearbeitet werden soll, wollen diese Prinzipien s
 * Kommentare sollen im Quelltext die Besonderheiten der Implementierung kurz andeuten.
   * [hier zu den Kommentarbeispielen](./json-rest/src/main/java/json_payload_ohne_bean_binding/body/BodyResource.java)
 * Gute Lösungsaspeke dürfen sich wiederholen in weiteren Projekten, der Fokus sollte aber auf dem neuen Aspekt liegen und den sich wiederholenden in seinem Ursprungsprojekt verlinken (vom README.md)
+* 100% Testabdeckung
