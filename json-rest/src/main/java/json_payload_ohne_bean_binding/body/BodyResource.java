@@ -8,13 +8,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -51,7 +48,8 @@ class BodyResource {
      * header (consumes).
      *
      * @param body - der http body wird als String übergeben.
-     * @return Response - die http Antwort mit Http Status CREATED(201) und Location Header mit korrekter URL für GET
+     * @return Response - die http Antwort mit Http Status CREATED(201) und Location
+     *         Header mit korrekter URL für GET
      */
     @POST
     public Response saveObjectFromJson(String body) {
