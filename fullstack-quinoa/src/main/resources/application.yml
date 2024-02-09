@@ -1,0 +1,4 @@
+quarkus:
+  quinoa:
+    enable-spa-routing: true
+    build-dir: dist/example-ng/browser
