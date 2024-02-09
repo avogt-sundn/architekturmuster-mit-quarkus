@@ -1,9 +1,9 @@
 # fullstack-quinoa
 
-This project uses Quarkus with the quinoa extension:
+Dieses Projekt demonstriert die Quarkus-quinoa Extension:
 
-* an Angular project lives in the src tree with the java code, specifically at [./src/main/webui]()
-
+* ein Angular Project existiert im selben src Baum wie Quarkus, nämlich unter [./src/main/webui]()
+* `quarkus dev` baut und startet Backend und Frontend im Live-edit Modus
 
 
 ## Wie man ein Quinoa Projekt erzeugt
