@@ -51,8 +51,10 @@ Dieses Projekt demonstriert die Quarkus-quinoa Extension:
     ```
 
 
-### Quarkus Guides
+### Quellen
 
-[Related guide section...](https://docs.quarkiverse.io/quarkus-quinoa/dev/index.html)
+- Quarkus Quinoa Guide im quarkiverse
+    - https://docs.quarkiverse.io/quarkus-quinoa/dev/index.html
 
-- https://stephennimmo.com/2023/12/01/full-stack-development-quarkus-and-angular-with-quinoa/
+- Erstes Projekt
+    - https://stephennimmo.com/2023/12/01/full-stack-development-quarkus-and-angular-with-quinoa/
