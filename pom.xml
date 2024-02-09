@@ -17,6 +17,7 @@
         <module>json-sql-oracle</module>
         <module>openfga</module>
         <module>jpa-versioning</module>
+        <module>fullstack-quinoa</module>
     </modules>
 
 </project>
