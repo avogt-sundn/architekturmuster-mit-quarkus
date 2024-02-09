@@ -8,9 +8,10 @@ FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye
 ENV IGNORE_NOTICE=true
 
 
-# BEGIN ------ install common utils: ping, dig, ncat
-RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils
-#   END ------ install common utils: ping, dig, ncat
+# BEGIN ------ install common utils: ping, dig, ncat, pip, yq
+RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils python3-pip \
+    && pip install yq
+#   END ------ install common utils: ping, dig, ncat, pip, yq
 
 #   BEGIN ------ install graalvm
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) \
