@@ -86,4 +86,16 @@ class KatalogEntityTest {
         // read3.stream().map(o->o.isArbeitsversion?)
     }
 
+    @Test
+    @Order(5)
+    void MergeInExistierendesEntity() {
+        KatalogEntity neuEntity = KatalogEntity.builder().eintrag("Johanna").isArbeitsversion(false).build();
+        neuEntity.setId(this.katalogEntity.id);
+
+        KatalogEntity.getEntityManager().merge(neuEntity);
+
+        KatalogEntity byId = KatalogEntity.findById(new KatalogId(katalogEntity.id, false));
+        assertThat(byId.id).isNotNull().isEqualTo(this.katalogEntity.id); 
+    }
+
 }
