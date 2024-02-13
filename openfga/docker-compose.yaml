@@ -1,0 +1,20 @@
+version: "3.8"
+networks:
+  default:
+    name: docker-default-network
+    external:
+      true
+
+services:
+  openfga:
+    image: openfga/openfga:latest
+    command: run
+    ports:
+      - "8090:8080" #http
+      - "8081:8081" #grpc
+      - "3000:3000" #playground
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/grpc_health_probe", "-addr=openfga:8081"]
+      interval: 5s
+      timeout: 30s
+      retries: 3
