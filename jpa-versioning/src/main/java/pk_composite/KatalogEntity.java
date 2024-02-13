@@ -9,8 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -25,11 +27,16 @@ public class KatalogEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(generator = "katalog-generator")
     @GenericGenerator(name = "katalog-generator", type = KatalogIdGenerator.class)
-    // @GeneratedValue(strategy = GenerationType.TABLE)
     Long id;
 
     @Id
-    Boolean isArbeitsversion;
+    @Default // auch bei Benutzung des builders wird der Default-Wert auf false gesetzt
+    Boolean isArbeitsversion = false;
 
     String eintrag;
+
+    public Boolean isHauptversion() {
+        return this.isArbeitsversion == null || false == this.isArbeitsversion;
+    }
+
 }
