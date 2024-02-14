@@ -19,7 +19,8 @@ import io.quarkus.test.junit.TestProfile;
 @QuarkusTest
 @TestProfile(QuinoaTestProfiles.Enable.class)
 @WithPlaywright
-public class MyWebUITest {
+class MyWebUITest {
+
     @InjectPlaywright
     BrowserContext context;
 
