@@ -35,6 +35,8 @@ RUN apt-get install -y libglib2.0-0 \
         libxfixes3 \
         libxrandr2
 
+RUN apt-get update && apt-get install -y chromium
+
 #   END ------ Playwright Chromium
 #   BEGIN ------ install graalvm
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) \
