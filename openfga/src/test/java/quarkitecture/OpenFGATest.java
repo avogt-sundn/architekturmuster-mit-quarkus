@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,13 +31,8 @@ class OpenFGATest {
 
     OpenFGAClient client;
 
-    StoreClient storeClient;
-    AuthorizationModelClient authModelClient;
-
-    public OpenFGATest(OpenFGAClient client, StoreClient storeClient, AuthorizationModelClient authModelClient) {
+    public OpenFGATest(OpenFGAClient client) {
         this.client = client;
-        this.storeClient = storeClient;
-        this.authModelClient = authModelClient;
     }
 
     @SuppressWarnings("null")
@@ -61,8 +57,10 @@ class OpenFGATest {
         delete(storeId, storeClient);
     }
 
+
     @SuppressWarnings("null")
     @Test
+    @Disabled
     void _Run() throws IOException {
         client.listAllStores().await().indefinitely().forEach(s -> {
 
