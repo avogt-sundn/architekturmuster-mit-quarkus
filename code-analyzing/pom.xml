@@ -188,6 +188,7 @@
                         <configuration>
                             <configFile>../.vscode/java-formatter.xml</configFile>
                             <lineEnding>LF</lineEnding>
+                            <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
                     <plugin>
