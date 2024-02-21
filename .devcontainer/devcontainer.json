@@ -60,7 +60,8 @@
                 "redhat.vscode-xml",
                 "timonwong.shellcheck",
                 "Angular.ng-template",
-                "redhat.vscode-quarkus"
+                "redhat.vscode-quarkus",
+                "shengchen.vscode-checkstyle"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"
