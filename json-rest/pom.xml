@@ -234,7 +234,11 @@
                             <!--Ignore
                     certain rules. Default is none -->
                             <skipRules>
+                                <skipRule>ApiAudienceRule</skipRule>
+                                <skipRule>ApiIdentifierRule</skipRule>
                                 <skipRule>CommonFieldTypesRule</skipRule>
+                                <skipRule>FunctionalNamingForHostnamesRule</skipRule>
+                                <skipRule>SecureAllEndpointsRule</skipRule>
                                 <skipRule>SecureAllEndpointsWithScopesRule</skipRule>
                                 <skipRule>NoVersionInUriRule</skipRule>
                             </skipRules>

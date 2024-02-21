@@ -13,6 +13,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Der path der Resource wird durch die path Attribute verlängert, nie ersetzt!
+ */
 @Path(FieldResource.BASEURI)
 @ApplicationScoped
 class FieldResource {
