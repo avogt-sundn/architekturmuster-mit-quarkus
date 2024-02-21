@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -21,7 +20,6 @@ import io.quarkiverse.openfga.client.OpenFGAClient;
 import io.quarkiverse.openfga.client.StoreClient;
 import io.quarkiverse.openfga.client.model.Store;
 import io.quarkiverse.openfga.client.model.TupleKey;
-import io.quarkiverse.openfga.client.model.TypeDefinition;
 import io.quarkiverse.openfga.client.model.TypeDefinitions;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
@@ -57,11 +55,11 @@ class OpenFGATest {
         delete(storeId, storeClient);
     }
 
-
     @SuppressWarnings("null")
     @Test
-    @Disabled
+    @Disabled("Not yet implemented")
     void _Run() throws IOException {
+
         client.listAllStores().await().indefinitely().forEach(s -> {
 
             if (s.getName().equals("test")) {
@@ -72,7 +70,6 @@ class OpenFGATest {
         String storeId = client.createStore("test").await().indefinitely().getId();
         // access store via store ID
         StoreClient storeClient = client.store(storeId);
-        List<TypeDefinition> td = new ArrayList<>();
         final ObjectMapper objectMapper = new ObjectMapper();
         // read file from classpath
         String fileContents = Files.readString(Path.of("src/test/resources/auth-model.json"));
@@ -81,19 +78,13 @@ class OpenFGATest {
 
         assertThat(fileContents).isNotNull();
         Log.info("file:" + fileContents);
-        TypeDefinitions modelFromFile = objectMapper.readValue(
-                fileContents,
-                TypeDefinitions.class);
+        TypeDefinitions modelFromFile = objectMapper.readValue(fileContents, TypeDefinitions.class);
         // create a tuple
         String modelId = storeClient.authorizationModels().create(modelFromFile.getTypeDefinitions()).await()
                 .indefinitely();
         AuthorizationModelClient model = storeClient.authorizationModels().model(modelId);
 
-        model.write(
-                TupleKey.of("thing:1",
-                        "owner",
-                        "user:me"))
-                .await().indefinitely();
+        model.write(TupleKey.of("thing:1", "owner", "user:me")).await().indefinitely();
 
         Boolean check = model.check(TupleKey.of("test", "test", "test"), null).await().indefinitely();
         assertThat(check).isTrue();
