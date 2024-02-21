@@ -10,15 +10,16 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>json-rest</module>
-        <module>unit-testing</module>
         <module>code-analyzing</module>
-        <module>schemas</module>
-        <module>json-sql-postgres</module>
-        <module>json-sql-oracle</module>
-        <module>openfga</module>
-        <module>jpa-versioning</module>
         <module>fullstack-quinoa</module>
+        <module>jpa-versioning</module>
+        <module>json-rest</module>
+        <module>json-sql-oracle</module>
+        <module>json-sql-postgres</module>
+        <module>nonrepudiatable-repository</module>
+        <module>openfga</module>
+        <module>schemas</module>
+        <module>unit-testing</module>
     </modules>
 
 </project>
