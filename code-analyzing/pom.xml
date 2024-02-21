@@ -121,53 +121,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.ethlo.zally</groupId>
-                        <artifactId>zally-maven-plugin</artifactId>
-                        <version>1.1.0</version>
-                        <configuration>
-                            <!--Configure
-                    severities that fail the build. Default is MUST, SHOULD -->
-                            <failOn>MUST</failOn>
-                            <!-- The input file to validate -->
-                            <source>src/main/resources/openapi/openapi.yaml</source>
-                            <!--Ignore
-                    certain rules. Default is none -->
-                            <skipRules>
-                                <skipRule>CommonFieldTypesRule</skipRule>
-                                <skipRule>SecureAllEndpointsWithScopesRule</skipRule>
-                                <skipRule>NoVersionInUriRule</skipRule>
-                            </skipRules>
-                            <ruleConfigs>
-                                <!-- NOTE: The rule elements' content can be written in JSON or YAML -->
-                                <PluralizeResourceNamesRule>
-                                    whitelist:
-                                    - current
-                                    - self
-                                </PluralizeResourceNamesRule>
-                            </ruleConfigs>
-                            <!-- Alternatively rules can be configured with configuration file -->
-                            <!-- <rulesConfigLocation>reference.conf</rulesConfigLocation> -->
-                            <!-- Write the result of the validation to file. Optional-->
-                            <resultFile>target/api_validation_result.txt</resultFile>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>report</goal>
-                                    <goal>validate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <!-- The pluggable rule-set you want to run -->
-                                <groupId>org.zalando</groupId>
-                                <artifactId>zally-ruleset-zalando</artifactId>
-                                <version>2.1.0</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                    <plugin>
                         <groupId>net.revelc.code.formatter</groupId>
                         <artifactId>formatter-maven-plugin</artifactId>
                         <version>2.23.0</version>

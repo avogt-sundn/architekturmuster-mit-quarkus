@@ -10,9 +10,8 @@ import jakarta.ws.rs.core.MediaType;
 public class GreetingResource {
 
 	@GET
-	@Path("{id}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getItem(@PathParam("id") String id) {
+	public String getItem() {
 
 		return "Hello from RESTEasy Reactive";
 	}
