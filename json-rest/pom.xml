@@ -228,7 +228,7 @@
                         <configuration>
                             <!--Configure
                     severities that fail the build. Default is MUST, SHOULD -->
-                            <failOn></failOn>
+                            <failOn>MUST</failOn>
                             <!-- The input file to validate -->
                             <source>src/main/resources/openapi/openapi.yaml</source>
                             <!--Ignore

@@ -9,7 +9,7 @@ servers:
 - url: http://0.0.0.0:8080
   description: Auto generated value
 paths:
-  /json-payload-ohne-bean-binding/body:
+  /json-payload-ohne-bean-bindings/bodies:
     post:
       tags:
       - Body Resource
@@ -21,7 +21,7 @@ paths:
       responses:
         "200":
           description: OK
-  /json-payload-ohne-bean-binding/body/{id}:
+  /json-payload-ohne-bean-bindings/bodies/{id}:
     get:
       tags:
       - Body Resource
@@ -35,7 +35,7 @@ paths:
       responses:
         "200":
           description: OK
-  /json-payload-ohne-bean-binding/field:
+  /json-payload-ohne-bean-bindings/fields:
     post:
       tags:
       - Field Resource
@@ -47,7 +47,7 @@ paths:
       responses:
         "200":
           description: OK
-  /json-payload-ohne-bean-binding/field/{id}:
+  /json-payload-ohne-bean-bindings/fields/{id}:
     get:
       tags:
       - Field Resource

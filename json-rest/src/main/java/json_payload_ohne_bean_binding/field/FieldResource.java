@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.Response;
 @ApplicationScoped
 class FieldResource {
 
-    static final String BASEURI = "json-payload-ohne-bean-binding/field";
+    static final String BASEURI = "json-payload-ohne-bean-bindings/fields";
 
     Map<Long, Organisation> store = new HashMap<>();
     AtomicLong sequence = new AtomicLong();

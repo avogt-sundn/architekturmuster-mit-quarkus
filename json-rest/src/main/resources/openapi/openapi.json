@@ -12,7 +12,7 @@
     "description" : "Auto generated value"
   } ],
   "paths" : {
-    "/json-payload-ohne-bean-binding/body" : {
+    "/json-payload-ohne-bean-bindings/bodies" : {
       "post" : {
         "tags" : [ "Body Resource" ],
         "requestBody" : {
@@ -31,7 +31,7 @@
         }
       }
     },
-    "/json-payload-ohne-bean-binding/body/{id}" : {
+    "/json-payload-ohne-bean-bindings/bodies/{id}" : {
       "get" : {
         "tags" : [ "Body Resource" ],
         "parameters" : [ {
@@ -50,7 +50,7 @@
         }
       }
     },
-    "/json-payload-ohne-bean-binding/field" : {
+    "/json-payload-ohne-bean-bindings/fields" : {
       "post" : {
         "tags" : [ "Field Resource" ],
         "requestBody" : {
@@ -69,7 +69,7 @@
         }
       }
     },
-    "/json-payload-ohne-bean-binding/field/{id}" : {
+    "/json-payload-ohne-bean-bindings/fields/{id}" : {
       "get" : {
         "tags" : [ "Field Resource" ],
         "parameters" : [ {

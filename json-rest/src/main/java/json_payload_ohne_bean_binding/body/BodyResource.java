@@ -25,7 +25,7 @@ class BodyResource {
      * als Konstante definiert kann man den Path auch referenzieren (Location
      * Header)
      */
-    static final String BASEURI = "json-payload-ohne-bean-binding/body";
+    static final String BASEURI = "json-payload-ohne-bean-bindings/bodies";
 
     Map<Long, String> store = new HashMap<>();
     AtomicLong sequence = new AtomicLong();
@@ -47,7 +47,8 @@ class BodyResource {
      * Denn: Json ist Standard bei media handling (accepts) als auch beim response
      * header (consumes).
      *
-     * @param body - der http body wird als String übergeben.
+     * @param body
+     *            - der http body wird als String übergeben.
      * @return Response - die http Antwort mit Http Status CREATED(201) und Location
      *         Header mit korrekter URL für GET
      */
