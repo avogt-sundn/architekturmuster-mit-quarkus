@@ -29,6 +29,11 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-openapi</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
@@ -50,50 +55,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>net.revelc.code.formatter</groupId>
-                <artifactId>formatter-maven-plugin</artifactId>
-                <version>2.13.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>validate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <artifactId>quarkus-ide-config</artifactId>
-                        <groupId>io.quarkus</groupId>
-                        <version>${quarkus.platform.version}</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <configFile>../.vscode/java-formatter.xml</configFile>
-                    <lineEnding>LF</lineEnding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <encoding>UTF-8</encoding>
-                    <consoleOutput>true</consoleOutput>
-                    <failsOnError>true</failsOnError>
-                    <linkXRef>true</linkXRef>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
@@ -150,6 +111,119 @@
         </plugins>
     </build>
     <profiles>
+        <profile>
+            <id>analyze</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.ethlo.zally</groupId>
+                        <artifactId>zally-maven-plugin</artifactId>
+                        <version>1.1.0</version>
+                        <configuration>
+                            <!--Configure
+                    severities that fail the build. Default is MUST, SHOULD -->
+                            <failOn>MUST</failOn>
+                            <!-- The input file to validate -->
+                            <source>src/main/resources/openapi/openapi.yaml</source>
+                            <!--Ignore
+                    certain rules. Default is none -->
+                            <skipRules>
+                                <skipRule>CommonFieldTypesRule</skipRule>
+                                <skipRule>SecureAllEndpointsWithScopesRule</skipRule>
+                                <skipRule>NoVersionInUriRule</skipRule>
+                            </skipRules>
+                            <ruleConfigs>
+                                <!-- NOTE: The rule elements' content can be written in JSON or YAML -->
+                                <PluralizeResourceNamesRule>
+                                    whitelist:
+                                    - current
+                                    - self
+                                </PluralizeResourceNamesRule>
+                            </ruleConfigs>
+                            <!-- Alternatively rules can be configured with configuration file -->
+                            <!-- <rulesConfigLocation>reference.conf</rulesConfigLocation> -->
+                            <!-- Write the result of the validation to file. Optional-->
+                            <resultFile>target/api_validation_result.txt</resultFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>report</goal>
+                                    <goal>validate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <!-- The pluggable rule-set you want to run -->
+                                <groupId>org.zalando</groupId>
+                                <artifactId>zally-ruleset-zalando</artifactId>
+                                <version>2.1.0</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.revelc.code.formatter</groupId>
+                        <artifactId>formatter-maven-plugin</artifactId>
+                        <version>2.23.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>validate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <artifactId>quarkus-ide-config</artifactId>
+                                <groupId>io.quarkus</groupId>
+                                <version>${quarkus.platform.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <configFile>../.vscode/java-formatter.xml</configFile>
+                            <lineEnding>LF</lineEnding>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <configuration>
+                            <configLocation>checkstyle.xml</configLocation>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <logViolationsToConsole>true</logViolationsToConsole>
+                            <failsOnError>false</failsOnError>
+                            <failOnViolation>false</failOnViolation>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>9.0</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>native</id>
             <activation>

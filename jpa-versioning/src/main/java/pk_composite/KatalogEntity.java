@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -36,7 +35,7 @@ public class KatalogEntity extends PanacheEntityBase {
     String eintrag;
 
     public Boolean isHauptversion() {
-        return this.isArbeitsversion == null || false == this.isArbeitsversion;
+        return this.isArbeitsversion == null || !this.isArbeitsversion;
     }
 
 }

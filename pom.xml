@@ -12,6 +12,7 @@
     <modules>
         <module>json-rest</module>
         <module>unit-testing</module>
+        <module>code-analyzing</module>
         <module>schemas</module>
         <module>json-sql-postgres</module>
         <module>json-sql-oracle</module>
