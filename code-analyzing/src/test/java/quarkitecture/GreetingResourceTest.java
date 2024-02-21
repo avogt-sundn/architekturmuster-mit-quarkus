@@ -11,10 +11,12 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 class GreetingResourceTest {
-    @Test
-    void testHelloEndpoint() {
-	given().when().get("/hello").then().statusCode(equalTo(HttpStatus.SC_OK))
-		.body(is("Hello from RESTEasy Reactive"));
-    }
+	@Test
+	void testHelloEndpoint() {
+		given()
+				.when().get("/hello")
+				.then().statusCode(equalTo(HttpStatus.SC_OK))
+				.body(is("Hello from RESTEasy Reactive"));
+	}
 
 }
