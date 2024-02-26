@@ -1,5 +1,6 @@
 package quarkitecture;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import io.quarkiverse.openfga.client.AuthorizationModelClient;
 import io.quarkiverse.openfga.client.OpenFGAClient;
 import io.quarkiverse.openfga.client.StoreClient;
 import io.quarkiverse.openfga.client.model.Store;
+import io.quarkiverse.openfga.client.model.Tuple;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -26,10 +28,18 @@ class DevservicesTest {
     }
 
     @Test
-    void _Access() {
+    void _AccessStore() {
         List<Store> stores = client.listAllStores().await().indefinitely();
         assertTrue(stores.size() > 0);
         assertTrue(stores.stream().anyMatch(s -> s.getName().equals("dev")));
+    }
+
+    @Test
+    void _AccessTuples() {
+        List<Tuple> t = authModelClient.readAllTuples().await().indefinitely();
+        assertThat(t.size()).isGreaterThan(0);
+        t.stream().forEach(System.out::println);
+        assertTrue(t.stream().anyMatch(s -> s.getKey().getUser().equals("user:anne")));
 
     }
 
