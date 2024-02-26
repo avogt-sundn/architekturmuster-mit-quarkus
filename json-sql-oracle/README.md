@@ -8,7 +8,7 @@ Umgehung:
 - colima docker daemon mit eingebautem QEMU Emulator
 
       brew install colima
-      
+
       colima start --arch x86_64 --memory 4
 
 - dann erst mit docker compose oracle starten:
@@ -30,3 +30,20 @@ Umgehung:
     # oracle-1  |
     # oracle-1  | TNSLSNR for Linux: Version 23.0.0.0.0 - Production
     # ```
+
+## Parameter für Oracle
+
+```properties
+# application.properties
+quarkus.datasource.password=password
+quarkus.datasource.username=system
+```
+ - oracle user ist `system`
+-
+```dockerfile
+image: docker.io/gvenzl/oracle-free:23-slim-faststart
+#    image: container-registry.oracle.com/database/express:latest
+environment:
+    ORACLE_PASSWORD: password
+```
+- hier dasselbe Passwort wie in `application.properties` verwenden
