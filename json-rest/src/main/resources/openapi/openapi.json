@@ -32,9 +32,11 @@
     "/json-payload-ohne-bean-bindings/bodies" : {
       "post" : {
         "tags" : [ "Body Resource" ],
+        "summary" : "erzeugt ein neues Objekt",
+        "description" : "Ein neues Objekt vom Typ wird angelegt und mit einer ID versehen.\nDie ID wird im Location Header mitgeteilt.",
         "requestBody" : {
           "content" : {
-            "text/plain" : {
+            "application/json" : {
               "schema" : {
                 "type" : "string"
               }
@@ -42,8 +44,8 @@
           }
         },
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "default" : {
+            "description" : "Daten waren lesbar, Objekt wurde gespeichert."
           }
         }
       }
@@ -51,6 +53,8 @@
     "/json-payload-ohne-bean-bindings/bodies/{id}" : {
       "get" : {
         "tags" : [ "Body Resource" ],
+        "summary" : "liest ein vorher gespeichertes Objekt",
+        "description" : "Ein Objekt wird anhand der ID gelesen und zurückgegeben.",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -61,8 +65,11 @@
           }
         } ],
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "default" : {
+            "description" : "Daten waren lesbar, Objekt wurde gespeichert."
+          },
+          "404" : {
+            "description" : "Kein Objekt mit dieser ID gefunden."
           }
         }
       }

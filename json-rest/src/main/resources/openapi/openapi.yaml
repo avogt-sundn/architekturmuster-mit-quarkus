@@ -26,18 +26,24 @@ paths:
     post:
       tags:
       - Body Resource
+      summary: erzeugt ein neues Objekt
+      description: |-
+        Ein neues Objekt vom Typ wird angelegt und mit einer ID versehen.
+        Die ID wird im Location Header mitgeteilt.
       requestBody:
         content:
-          text/plain:
+          application/json:
             schema:
               type: string
       responses:
-        "200":
-          description: OK
+        default:
+          description: "Daten waren lesbar, Objekt wurde gespeichert."
   /json-payload-ohne-bean-bindings/bodies/{id}:
     get:
       tags:
       - Body Resource
+      summary: liest ein vorher gespeichertes Objekt
+      description: Ein Objekt wird anhand der ID gelesen und zurückgegeben.
       parameters:
       - name: id
         in: path
@@ -46,8 +52,10 @@ paths:
           format: int64
           type: integer
       responses:
-        "200":
-          description: OK
+        default:
+          description: "Daten waren lesbar, Objekt wurde gespeichert."
+        "404":
+          description: Kein Objekt mit dieser ID gefunden.
   /json-payload-ohne-bean-bindings/fields:
     post:
       tags:

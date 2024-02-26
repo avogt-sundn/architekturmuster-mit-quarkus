@@ -41,8 +41,10 @@ class BodyResource {
 
     Jsonb jsonb;
 
-    @Operation(summary = "erzeugt ein neues Objekt", description = "ein neues Objekt vom Typ wird angelegt und mit einer ID versehen. Die ID wird im Location Header mitgeteilt.")
-    @APIResponse(responseCode = "200", description = "error")
+    @Operation(summary = "erzeugt ein neues Objekt", description = """
+            Ein neues Objekt vom Typ wird angelegt und mit einer ID versehen.
+            Die ID wird im Location Header mitgeteilt.""")
+    @APIResponse(responseCode = "default", description = "Daten waren lesbar, Objekt wurde gespeichert.")
     /**
      * String Typ kann json im body empfangen, auch wenn der content-type header
      * nicht vom Client gesetzt wurde.
@@ -72,6 +74,13 @@ class BodyResource {
         return Response.created(URI.create(BASEURI + "/" + id)).build();
     }
 
+    @Operation(summary = "liest ein vorher gespeichertes Objekt", description = "Ein Objekt wird anhand der ID gelesen und zurückgegeben.")
+    @APIResponse(responseCode = "default", description = "Daten waren lesbar, Objekt wurde gespeichert.")
+    @APIResponse(responseCode = "404", description = "Kein Objekt mit dieser ID gefunden.")
+    /*
+     * Liefert das Objekt mit der ID zurück.
+     *
+     */
     @GET
     @Path("{id}")
     public Response load(@PathParam("id") Long id) {
