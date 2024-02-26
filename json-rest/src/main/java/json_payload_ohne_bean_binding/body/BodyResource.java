@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -36,16 +41,17 @@ class BodyResource {
 
     Jsonb jsonb;
 
+    @Operation(summary = "erzeugt ein neues Objekt", description = "ein neues Objekt vom Typ wird angelegt und mit einer ID versehen. Die ID wird im Location Header mitgeteilt.")
+    @APIResponse(responseCode = "200", description = "error")
     /**
-     * Genutzte Defaults: Diese Annotations sind redundant:
+     * String Typ kann json im body empfangen, auch wenn der content-type header
+     * nicht vom Client gesetzt wurde.
+     * Um das setzen des content-type zwingend zu fordern, nutzen wir diese
+     * annotation
      *
      * <pre>
      *  &#64;Consumes(MediaType.APPLICATION_JSON)
-     *  &#64;Produces(MediaType.APPLICATION_JSON)
      * </pre>
-     *
-     * Denn: Json ist Standard bei media handling (accepts) als auch beim response
-     * header (consumes).
      *
      * @param body
      *            - der http body wird als String übergeben.
@@ -53,7 +59,8 @@ class BodyResource {
      *         Header mit korrekter URL für GET
      */
     @POST
-    public Response saveObjectFromJson(String body) {
+    @Consumes("application/json")
+    public Response saveObjectFromJson(@Parameter(description = "json payload") String body) {
 
         long id = sequence.incrementAndGet();
         store.put(id, body);

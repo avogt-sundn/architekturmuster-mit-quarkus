@@ -49,7 +49,7 @@ class FieldResourceTest {
         Long id = getId(location);
 
         String expected = payload;
-        given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
+        given().with().pathParam("id", id).when().get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK))
                 .and().contentType(ContentType.JSON)
                 .and().body(not(containsString("\\")))

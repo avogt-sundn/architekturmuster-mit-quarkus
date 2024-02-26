@@ -63,15 +63,20 @@ class BodyResourceTest {
                     }
                 """.formatted(randomUUID);
 
-        final String location = given().with().contentType(ContentType.JSON).body(
-                payload).post().then()
+        final String location = given()
+                .with().contentType(ContentType.JSON)
+                .body(
+                        payload)
+                .post().then()
                 .statusCode(equalTo(HttpStatus.SC_CREATED))
                 .header("Location", matchesPattern(locationHeaderMatchingPattern)).and().extract().header("Location");
 
         Long id = getId(location);
 
         String expected = payload;
-        given().with().contentType(ContentType.JSON).pathParam("id", id).when().get("{id}").then()
+        given()
+                .with().contentType(ContentType.JSON).pathParam("id", id)
+                .get("{id}").then()
                 .statusCode(equalTo(HttpStatus.SC_OK))
                 .and().contentType(ContentType.JSON)
                 // escaping mit backslash zeigt falsche Serialisierung an
@@ -79,6 +84,17 @@ class BodyResourceTest {
                 .and().body("uuid", equalTo(randomUUID))
                 .body(sameJSONAs(expected));
 
+    }
+
+    @Test
+    void _ErrorOnOtherMedia() {
+
+        given().with().body(
+                "payload").post().then()
+                .statusCode(equalTo(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE));
+        given().with().contentType(ContentType.TEXT).body(
+                "payload").post().then()
+                .statusCode(equalTo(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE));
     }
 
     private Long getId(final String location) {
