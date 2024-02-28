@@ -1,7 +1,6 @@
 package quarkitecture;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -12,14 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import io.quarkiverse.openfga.client.AuthorizationModelClient;
 import io.quarkiverse.openfga.client.OpenFGAClient;
@@ -40,9 +42,16 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 class OpenFGATest {
 
     OpenFGAClient client;
+    private ObjectMapper objectMapper;
 
     public OpenFGATest(OpenFGAClient client) {
         this.client = client;
+        this.objectMapper = new JsonMapper()
+                .registerModule(new JavaTimeModule())
+                .registerModule(new Jdk8Module())
+                .registerModule(new ParameterNamesModule())
+        // .setSerializationInclusion(JsonInclude.Include.NON_NULL).enable(SerializationFeature.INDENT_OUTPUT)
+                ;
     }
 
     @SuppressWarnings("null")
@@ -79,7 +88,7 @@ class OpenFGATest {
         StoreClient storeClient = client.store(storeId);
         final ObjectMapper objectMapper = new ObjectMapper();
         // read file from classpath
-        String fileContents = Files.readString(Path.of("src/test/resources/auth-model.json"));
+        String fileContents = Files.readString(Path.of("auth-model.json"));
         // byte[] file =
         // this.getClass().getResourceAsStream("auth-model.json").readAllBytes();
 
@@ -121,12 +130,13 @@ class OpenFGATest {
 
         var typeDefs = new TypeDefinitions("1.1", List.of(useTypeDef, documentTypeDef));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         var json = objectMapper.writeValueAsString(typeDefs);
         Log.info("json:" + json);
         assertThat(json).contains("a");
-        
+
+        var readback =objectMapper.readValue(json, TypeDefinitions.class);
+        assertThat(readback.getSchemaVersion()).isEqualTo("1.1");
+
         var authModelId = storeClient.authorizationModels().create(typeDefs)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -149,6 +159,44 @@ class OpenFGATest {
         delete(storeId, storeClient);
     }
 
+    @SuppressWarnings("null")
+    @Test
+    void _CreateFromJson() throws IOException {
+        var schema = """
+        {"schema_version":"1.1","type_definitions":[{"type":"user","relations":{},"metadata":null},{"type":"document","relations":{"writer":{"this":{"b":2},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null},"reader":{"this":{"a":1},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null}},"metadata":{"relations":{"writer":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]},"reader":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]}}}}]}
+        """;
+        clean();
+        // create store
+        String storeId = client.createStore("test").await().indefinitely().getId();
+        // access store via store ID
+        StoreClient storeClient = client.store(storeId);
+
+        // ensure it has an auth model
+        
+        var typeDefs = objectMapper.readValue(schema, TypeDefinitions.class);
+        assertThat(typeDefs.getSchemaVersion()).isEqualTo("1.1");
+
+        var authModelId = storeClient.authorizationModels().create(typeDefs)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem();
+
+        AuthorizationModelClient authorizationModelClient = storeClient.authorizationModels().model(authModelId);
+        // write tuples
+        var tuples = List.of(
+                TupleKey.of("document:123", "reader", "user:me"));
+        var writes = authorizationModelClient.write(tuples, Collections.emptyList())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem();
+        assertThat(writes.entrySet()).hasSize(0);
+
+        Boolean check = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:me"), null).await()
+                .indefinitely();
+        assertThat(check).isTrue();
+        // delete store
+        delete(storeId, storeClient);
+    }
     private void clean() {
         client.listAllStores().await().indefinitely().forEach(s -> {
 
