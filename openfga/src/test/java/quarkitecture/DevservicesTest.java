@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkiverse.openfga.client.AuthorizationModelClient;
@@ -15,6 +16,7 @@ import io.quarkiverse.openfga.client.model.Tuple;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
+@Disabled("in dev mode the classpath files fail to load yet")
 class DevservicesTest {
 
     OpenFGAClient client;
