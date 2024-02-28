@@ -1,28 +1,40 @@
 package quarkitecture;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import io.quarkiverse.openfga.client.AuthorizationModelClient;
 import io.quarkiverse.openfga.client.OpenFGAClient;
 import io.quarkiverse.openfga.client.StoreClient;
+import io.quarkiverse.openfga.client.model.Metadata;
+import io.quarkiverse.openfga.client.model.RelationMetadata;
+import io.quarkiverse.openfga.client.model.RelationReference;
 import io.quarkiverse.openfga.client.model.Store;
 import io.quarkiverse.openfga.client.model.TupleKey;
+import io.quarkiverse.openfga.client.model.TypeDefinition;
 import io.quarkiverse.openfga.client.model.TypeDefinitions;
+import io.quarkiverse.openfga.client.model.Userset;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 @QuarkusTest
 class OpenFGATest {
@@ -57,15 +69,10 @@ class OpenFGATest {
 
     @SuppressWarnings("null")
     @Test
-    @Disabled("Not yet implemented")
+    @Disabled("failing")
     void _Run() throws IOException {
 
-        client.listAllStores().await().indefinitely().forEach(s -> {
-
-            if (s.getName().equals("test")) {
-                delete(s.getId(), client.store(s.getId()));
-            }
-        });
+        clean();
         // create store
         String storeId = client.createStore("test").await().indefinitely().getId();
         // access store via store ID
@@ -90,6 +97,65 @@ class OpenFGATest {
         assertThat(check).isTrue();
         // delete store
         delete(storeId, storeClient);
+    }
+
+    @SuppressWarnings("null")
+    @Test
+    void _CreateViaAPI() throws IOException {
+
+        clean();
+        // create store
+        String storeId = client.createStore("test").await().indefinitely().getId();
+        // access store via store ID
+        StoreClient storeClient = client.store(storeId);
+
+        // ensure it has an auth model
+        var useTypeDef = new TypeDefinition("user", Map.of());
+
+        var documentTypeDef = new TypeDefinition("document", Map.of(
+                "reader", Userset.direct("a", 1),
+                "writer", Userset.direct("b", 2)),
+                new Metadata(
+                        Map.of("reader", new RelationMetadata(List.of(new RelationReference("user"))),
+                                "writer", new RelationMetadata(List.of(new RelationReference("user"))))));
+
+        var typeDefs = new TypeDefinitions("1.1", List.of(useTypeDef, documentTypeDef));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        var json = objectMapper.writeValueAsString(typeDefs);
+        Log.info("json:" + json);
+        assertThat(json).contains("a");
+        
+        var authModelId = storeClient.authorizationModels().create(typeDefs)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem();
+
+        AuthorizationModelClient authorizationModelClient = storeClient.authorizationModels().model(authModelId);
+        // write tuples
+        var tuples = List.of(
+                TupleKey.of("document:123", "reader", "user:me"));
+        var writes = authorizationModelClient.write(tuples, Collections.emptyList())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem();
+        assertThat(writes.entrySet()).hasSize(0);
+
+        Boolean check = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:me"), null).await()
+                .indefinitely();
+        assertThat(check).isTrue();
+        // delete store
+        delete(storeId, storeClient);
+    }
+
+    private void clean() {
+        client.listAllStores().await().indefinitely().forEach(s -> {
+
+            if (s.getName().equals("test")) {
+                delete(s.getId(), client.store(s.getId()));
+            }
+        });
     }
 
     private void delete(String storeId, StoreClient storeClient) {
