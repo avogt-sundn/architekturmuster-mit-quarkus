@@ -44,14 +44,15 @@ class OpenFGATest {
     OpenFGAClient client;
     private ObjectMapper objectMapper;
 
+    // constructor injection
     public OpenFGATest(OpenFGAClient client) {
         this.client = client;
         this.objectMapper = new JsonMapper()
                 .registerModule(new JavaTimeModule())
                 .registerModule(new Jdk8Module())
+                // MUST have this ParameterNamesModule registered
                 .registerModule(new ParameterNamesModule())
-        // .setSerializationInclusion(JsonInclude.Include.NON_NULL).enable(SerializationFeature.INDENT_OUTPUT)
-                ;
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL).enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     @SuppressWarnings("null")
@@ -134,7 +135,7 @@ class OpenFGATest {
         Log.info("json:" + json);
         assertThat(json).contains("a");
 
-        var readback =objectMapper.readValue(json, TypeDefinitions.class);
+        var readback = objectMapper.readValue(json, TypeDefinitions.class);
         assertThat(readback.getSchemaVersion()).isEqualTo("1.1");
 
         var authModelId = storeClient.authorizationModels().create(typeDefs)
@@ -163,8 +164,8 @@ class OpenFGATest {
     @Test
     void _CreateFromJson() throws IOException {
         var schema = """
-        {"schema_version":"1.1","type_definitions":[{"type":"user","relations":{},"metadata":null},{"type":"document","relations":{"writer":{"this":{"b":2},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null},"reader":{"this":{"a":1},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null}},"metadata":{"relations":{"writer":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]},"reader":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]}}}}]}
-        """;
+                {"schema_version":"1.1","type_definitions":[{"type":"user","relations":{},"metadata":null},{"type":"document","relations":{"writer":{"this":{"b":2},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null},"reader":{"this":{"a":1},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null}},"metadata":{"relations":{"writer":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]},"reader":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]}}}}]}
+                """;
         clean();
         // create store
         String storeId = client.createStore("test").await().indefinitely().getId();
@@ -172,7 +173,7 @@ class OpenFGATest {
         StoreClient storeClient = client.store(storeId);
 
         // ensure it has an auth model
-        
+
         var typeDefs = objectMapper.readValue(schema, TypeDefinitions.class);
         assertThat(typeDefs.getSchemaVersion()).isEqualTo("1.1");
 
@@ -197,6 +198,7 @@ class OpenFGATest {
         // delete store
         delete(storeId, storeClient);
     }
+
     private void clean() {
         client.listAllStores().await().indefinitely().forEach(s -> {
 
