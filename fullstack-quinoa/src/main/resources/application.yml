@@ -2,3 +2,6 @@ quarkus:
   quinoa:
     enable-spa-routing: true
     build-dir: dist/example-ng/browser
+    package-manager-command:
+      test: run test
+
