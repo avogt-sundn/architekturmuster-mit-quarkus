@@ -16,6 +16,8 @@
         <quarkus.platform.version>3.6.6</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
+        <apicurio-registry-schema-validation.version>0.0.4.Final</apicurio-registry-schema-validation.version>
+
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -29,6 +31,21 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-json-schema</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-registry-schema-validation-jsonschema</artifactId>
+            <version>${apicurio-registry-schema-validation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.java-json-tools</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>2.2.14</version>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>

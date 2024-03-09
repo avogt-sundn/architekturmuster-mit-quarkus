@@ -1,56 +1,23 @@
-# schemas
+# Json Schema
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## OpenAPI
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+Aufzählung vieler openapi Tools:
 
-## Running the application in dev mode
+* <https://openapi.tools/>
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
-```
+Es gibt in der Aufzählung eine Bibliothek in Java, mit der json validiert werden kann gegen ein openapi Schema:
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+* <https://github.com/gcatanese/openapi-request-response-validation>
 
-## Packaging and running the application
+## JSON Schema
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+https://github.com/networknt/json-schema-validator
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+## Everit
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+https://github.com/everit-org/json-schema?tab=readme-ov-file
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+## 
+https://github.com/java-json-tools/json-schema-validator
 
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/schemas-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
