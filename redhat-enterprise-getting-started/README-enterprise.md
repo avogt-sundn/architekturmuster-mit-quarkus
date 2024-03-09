@@ -4,10 +4,16 @@
 
 Red Hat Quarkus ist ein Kubernetes-native Java-Stack, der für die OpenShift-Plattform entwickelt wurde. Es ist eine vollständig unterstützte Version von Quarkus, die für Unternehmen entwickelt wurde. Es bietet zusätzliche Funktionen, die für die Entwicklung, Bereitstellung und Verwaltung von Anwendungen in Produktionsumgebungen erforderlich sind.
 
+Details zu Red Hat Quarkus finden Sie unter
+
+* <https://access.redhat.com/documentation/en-us/red_hat_build_of_quarkus/3.2/>
+
+## Unterschiede zur Community Version
+
 Der Enterprise Build von Quarkus bietet:
 
-- **Langzeitunterstützung (LTS)**: Red Hat Quarkus bietet eine langfristige Unterstützung, die für Unternehmen erforderlich ist, um Anwendungen in Produktionsumgebungen zu betreiben.
-- **Zertifizierte Container Images**: Red Hat Quarkus bietet zertifizierte Container-Images, die auf Red Hat Enterprise Linux basieren und in OpenShift bereitgestellt werden können.
+* **Langzeitunterstützung (LTS)**: Red Hat Quarkus bietet eine langfristige Unterstützung, die für Unternehmen erforderlich ist, um Anwendungen in Produktionsumgebungen zu betreiben.
+* **Zertifizierte Container Images**: Red Hat Quarkus bietet zertifizierte Container-Images, die auf Red Hat Enterprise Linux basieren und in OpenShift bereitgestellt werden können.
 
 ## Umgebung einrichten, damit die redhat-dependencies verwendet werden können
 
@@ -64,4 +70,4 @@ registries:
   - registry.quarkus.io
 ```
 
-- `quarkus dev` greift dann auf die Red Hat Quarkus-Registry zu, um die Abhängigkeiten herunterzuladen.
+* `quarkus dev` greift dann auf die Red Hat Quarkus-Registry zu, um die Abhängigkeiten herunterzuladen.
