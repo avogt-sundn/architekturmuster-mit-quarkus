@@ -18,7 +18,7 @@
         <module>json-sql-postgres</module>
         <module>nonrepudiatable-repository</module>
         <module>openfga</module>
-        <module>schemas</module>
+        <module>json-schema</module>
         <module>unit-testing</module>
     </modules>
 
