@@ -1,25 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-
-    <groupId>quarkitecture</groupId>
-    <artifactId>architekturmuster-mit-quarkus</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>code-analyzing</module>
-        <module>fullstack-quinoa</module>
-        <module>jpa-versioning</module>
-        <module>json-rest</module>
-        <module>json-sql-oracle</module>
-        <module>json-sql-postgres</module>
-        <module>nonrepudiatable-repository</module>
-        <module>openfga</module>
-        <module>json-schema</module>
-        <module>unit-testing</module>
-    </modules>
-
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>quarkitecture</groupId>
+  <artifactId>architekturmuster-mit-quarkus</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>code-analyzing</module>
+    <module>fullstack-quinoa</module>
+    <module>jpa-versioning</module>
+    <module>json-rest</module>
+    <module>json-sql-oracle</module>
+    <module>json-sql-postgres</module>
+    <module>nonrepudiatable-repository</module>
+    <module>openfga</module>
+    <module>json-schema</module>
+    <module>unit-testing</module>
+    <module>getting-started</module>
+    <module>redhat-enterprise-getting-started</module>
+  </modules>
 </project>
