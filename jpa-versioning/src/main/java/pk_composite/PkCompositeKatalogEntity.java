@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class KatalogEntity extends PanacheEntityBase {
+public class PkCompositeKatalogEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(generator = "katalog-generator")

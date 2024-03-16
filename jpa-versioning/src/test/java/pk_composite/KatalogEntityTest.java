@@ -20,60 +20,61 @@ import jakarta.transaction.Transactional;
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class KatalogEntityTest {
+class PkCompositeKatalogEntityTest {
 
-    public KatalogEntityTest(Jsonb jsonb) {
+    public PkCompositeKatalogEntityTest(Jsonb jsonb) {
         this.jsonb = jsonb;
     }
 
     Jsonb jsonb;
 
-    KatalogEntity katalogEntity = KatalogEntity.builder().eintrag("Armin").isArbeitsversion(false).build();
+    PkCompositeKatalogEntity entity = PkCompositeKatalogEntity.builder().eintrag("Armin").isArbeitsversion(false)
+            .build();
 
     @Test
     @Order(1)
     void Create() {
-        katalogEntity.persist();
+        entity.persist();
 
-        assertThat(katalogEntity.id).isNotNull().isNotZero();
-        assertThat(katalogEntity.isArbeitsversion).isFalse();
+        assertThat(entity.id).isNotNull().isNotZero();
+        assertThat(entity.isArbeitsversion).isFalse();
 
     }
 
     @Test
     @Order(2)
     void AddArbeitsversion() {
-        assertThat(katalogEntity.id)
+        assertThat(entity.id)
                 .withFailMessage(
                         "Instanzvariable null! -> " + "bitte ergänze @TestInstance(TestInstance.Lifecycle.PER_CLASS)")
                 .isNotNull();
 
-        String json = jsonb.toJson(katalogEntity);
-        KatalogEntity duplicate = jsonb.fromJson(json, KatalogEntity.class);
+        String json = jsonb.toJson(entity);
+        PkCompositeKatalogEntity duplicate = jsonb.fromJson(json, PkCompositeKatalogEntity.class);
         duplicate.isArbeitsversion = true;
-        assertThat(duplicate.id).isEqualTo(katalogEntity.id);
+        assertThat(duplicate.id).isEqualTo(entity.id);
         duplicate.persist();
-        assertThat(duplicate.id).isEqualTo(katalogEntity.id);
+        assertThat(duplicate.id).isEqualTo(entity.id);
     }
 
     @Test
     @Order(3)
     void FindeHauptUndArbeitsversion() {
 
-        KatalogEntity arbeitsversion = KatalogEntity.findById(new KatalogId(katalogEntity.id, true));
-        assertThat(arbeitsversion.id).isEqualTo(katalogEntity.id);
+        PkCompositeKatalogEntity arbeitsversion = PkCompositeKatalogEntity.findById(new KatalogId(entity.id, true));
+        assertThat(arbeitsversion.id).isEqualTo(entity.id);
         assertThat(arbeitsversion.isArbeitsversion).isTrue();
 
-        KatalogEntity hauptversion = KatalogEntity.findById(new KatalogId(katalogEntity.id, false));
-        assertThat(hauptversion.id).isEqualTo(katalogEntity.id);
-        assertThat(katalogEntity.isHauptversion()).isTrue();
+        PkCompositeKatalogEntity hauptversion = PkCompositeKatalogEntity.findById(new KatalogId(entity.id, false));
+        assertThat(hauptversion.id).isEqualTo(entity.id);
+        assertThat(entity.isHauptversion()).isTrue();
     }
 
     @Test
     @Order(4)
     void FindLiefertBeide() {
 
-        List<KatalogEntity> list = KatalogEntity.find("id", katalogEntity.id).list();
+        List<PkCompositeKatalogEntity> list = PkCompositeKatalogEntity.find("id", entity.id).list();
 
         assertThat(list).hasSize(2);
 
@@ -89,13 +90,14 @@ class KatalogEntityTest {
     @Test
     @Order(5)
     void MergeInExistierendesEntity() {
-        KatalogEntity neuEntity = KatalogEntity.builder().eintrag("Johanna").isArbeitsversion(false).build();
-        neuEntity.setId(this.katalogEntity.id);
+        PkCompositeKatalogEntity neuEntity = PkCompositeKatalogEntity.builder().eintrag("Johanna")
+                .isArbeitsversion(false).build();
+        neuEntity.setId(this.entity.id);
 
-        KatalogEntity.getEntityManager().merge(neuEntity);
+        PkCompositeKatalogEntity.getEntityManager().merge(neuEntity);
 
-        KatalogEntity byId = KatalogEntity.findById(new KatalogId(katalogEntity.id, false));
-        assertThat(byId.id).isNotNull().isEqualTo(this.katalogEntity.id); 
+        PkCompositeKatalogEntity byId = PkCompositeKatalogEntity.findById(new KatalogId(entity.id, false));
+        assertThat(byId.id).isNotNull().isEqualTo(this.entity.id);
     }
 
 }

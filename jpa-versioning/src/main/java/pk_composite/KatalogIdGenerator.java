@@ -12,7 +12,7 @@ public class KatalogIdGenerator extends SequenceStyleGenerator {
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
 
-        if (object instanceof KatalogEntity entity) {
+        if (object instanceof PkCompositeKatalogEntity entity) {
             if (entity.getId() == null) {
                 return super.generate(session, object);
             } else {
