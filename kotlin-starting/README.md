@@ -16,4 +16,29 @@ quarkus create app quarkitecture:kotlin-starting  --extension='kotlin,resteasy-r
 
 ### Devcontainer
 
-Für Kotlin
+Für die Kommandozeile muss im Devcontainer nichts ergänzt werden:
+-  Der Kotlin Compiler wird als maven dependency eingebunden.
+
+Damit VS Code die Kotlin-Dateien korrekt anzeigt, muss das Kotlin-Plugin installiert werden.
+
+- in der .devcontainer.json ergänzt man die Extension:
+  ```json
+   "customizations": {
+          "vscode": {
+              "extensions": [
+                  // [...]
+                  "fwcd.kotlin"
+              ],
+  ```
+
+Das Projekt kann wie gewohnt gebaut und gestartet werden:
+
+- im interaktiven Quarkus-dev Modus mit `quarkus:dev`bzw. `./mvnw quarkus:dev`
+
+Oder man läßt nur bauen,
+entweder mit den maven lifecycle commands wie
+ - `./mvnw clean package`
+ - `./mvnw test`
+
+oder mit dem Quarkus-eigenen goal:
+ - `./mvnw quarkus:build`
