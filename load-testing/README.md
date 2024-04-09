@@ -109,4 +109,4 @@ Am Ende wird eine Statistik ausgegeben:
 
 Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refresh=5s&from=now-15m&to=now]() erscheint das Dashboard mit Daten, nachdem der Test gelaufen ist.
 
-![Alt text](src/main/grafana/screenshot1.png)
+![Alt text](grafana/screenshot1.png)
