@@ -7,7 +7,10 @@
         "dockerfile": "Dockerfile"
     },
     "features": {
-        "ghcr.io/devcontainers/features/java:1": {},
+        "ghcr.io/devcontainers/features/java:1": {
+            "installMaven": "true",
+            "installGradle": "false"
+        },
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
         "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
         "ghcr.io/devcontainers-contrib/features/json-server:1": {},
@@ -17,14 +20,13 @@
         "ghcr.io/dhoeric/features/k6:1": {},
         "ghcr.io/devcontainers/features/node:1.4.0": {},
         "ghcr.io/devcontainers/features/common-utils:2.4.2": {},
-		"ghcr.io/devcontainers-community/npm-features/prettier:1": {},
-		"ghcr.io/devcontainers/features/common-utils:2": {},
-		"ghcr.io/lukewiwa/features/shellcheck:0": {}
+        "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/lukewiwa/features/shellcheck:0": {}
     },
     "forwardPorts": [
         7071
     ],
-
     "mounts": [
         "source=localcache,target=/home/vscode/.m2,type=volume",
         "source=${env:HOME}${env:USERPROFILE}/.zsh_history,target=/home/vscode/.zsh_history,type=bind",
