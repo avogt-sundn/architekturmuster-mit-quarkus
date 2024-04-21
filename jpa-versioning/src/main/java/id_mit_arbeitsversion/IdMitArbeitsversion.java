@@ -1,4 +1,4 @@
-package pk_composite;
+package id_mit_arbeitsversion;
 
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class KatalogId implements Serializable {
+public class IdMitArbeitsversion implements Serializable {
     public Long id;
-    public Boolean isArbeitsversion;
+    public Boolean arbeitsversion;
 }

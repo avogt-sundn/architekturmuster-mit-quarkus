@@ -1,4 +1,4 @@
-package pk_composite;
+package id_mit_arbeitsversion;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -8,34 +8,28 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@IdClass(KatalogId.class)
+@IdClass(IdMitArbeitsversion.class)
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PkCompositeKatalogEntity extends PanacheEntityBase {
+public class EntityBaseMitArbeitsversion extends PanacheEntityBase implements UsingIdGenerator {
 
     @Id
-    @GeneratedValue(generator = "katalog-generator")
-    @GenericGenerator(name = "katalog-generator", type = KatalogIdGenerator.class)
+    @GeneratedValue(generator = "pkcomposite-generator")
+    @GenericGenerator(name = "pkcomposite-generator", type = IdGenerator.class)
     Long id;
 
     @Id
-    @Default // auch bei Benutzung des builders wird der Default-Wert auf false gesetzt
-    Boolean isArbeitsversion = false;
-
-    String eintrag;
+    Boolean arbeitsversion = false;
 
     public Boolean isHauptversion() {
-        return this.isArbeitsversion == null || !this.isArbeitsversion;
+        return this.arbeitsversion == null || !this.arbeitsversion;
     }
 
 }

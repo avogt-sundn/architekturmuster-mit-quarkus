@@ -1,25 +1,21 @@
-package pk_composite;
-
-import java.util.concurrent.atomic.AtomicLong;
+package id_mit_arbeitsversion;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
-public class KatalogIdGenerator extends SequenceStyleGenerator {
-
-    static AtomicLong nextId = new AtomicLong();
+public class IdGenerator extends SequenceStyleGenerator {
 
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
 
-        if (object instanceof PkCompositeKatalogEntity entity) {
+        if (object instanceof UsingIdGenerator entity) {
             if (entity.getId() == null) {
                 return super.generate(session, object);
             } else {
                 return entity.getId();
             }
-        }
-        throw new RuntimeException("wrong entity class: " + object.getClass());
+        } else
+            throw new FehlendesInterfaceException(object);
     }
 
 }
