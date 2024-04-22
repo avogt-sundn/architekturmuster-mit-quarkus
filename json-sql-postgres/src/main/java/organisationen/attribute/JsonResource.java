@@ -47,7 +47,7 @@ public class JsonResource {
     @Path("{id}")
     public Response load(@PathParam("id") Long id) {
 
-        AttributeEntity byId = PanacheEntityBase.findById(id);
+        AttributeEntity byId = AttributeEntity.findById(id);
         return Response.ok(jsonb.fromJson(byId.jsonString, JsonObject.class)).build();
     }
 
