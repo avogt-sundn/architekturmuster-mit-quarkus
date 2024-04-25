@@ -2,10 +2,14 @@ package id_mit_arbeitsversion;
 
 import jakarta.persistence.Entity;
 import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class MyPkCompositeEntity extends EntityBaseMitArbeitsversion {
 
     String stadt;

@@ -3,14 +3,13 @@ package id_mit_arbeitsversion.historized;
 import java.util.UUID;
 
 import id_mit_arbeitsversion.EntityBaseMitArbeitsversion;
-import id_mit_arbeitsversion.IdMitArbeitsversion;
 import jakarta.persistence.Entity;
-import jakarta.persistence.IdClass;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Entity()
-@IdClass(IdMitArbeitsversion.class)
-@EqualsAndHashCode(callSuper = false)
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class KatalogMitEnvers extends EntityBaseMitArbeitsversion {
 
     UUID fachlicherSchluessel;

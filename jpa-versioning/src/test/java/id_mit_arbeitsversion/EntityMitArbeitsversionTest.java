@@ -48,7 +48,7 @@ class MyPkCompositeEntityTest {
                 .withFailMessage(
                         "Instanzvariable null! -> " + "bitte ergänze @TestInstance(TestInstance.Lifecycle.PER_CLASS)")
                 .isNotNull();
-
+// 
         String json = jsonb.toJson(entity);
         MyPkCompositeEntity duplicate = jsonb.fromJson(json, MyPkCompositeEntity.class);
         duplicate.arbeitsversion = true;
