@@ -40,8 +40,6 @@ Maven kann den Quellcode des Projekts formatieren:
   mvn formatter:format
   ```
 
-   * sdsd
-
 Danach kann mit verify geprüft werden, ob die Formatierung korrekt ist:
 
   ```bash
@@ -55,12 +53,11 @@ Formatieren abschalten:
   mvn test -Dformat.skip=true
   ```
 
+Beim Prüfen führen Abweichungen in der Formatierung zum Abbruch:
 
- - beim Prüfen führen Abweichungen in der Formatierung zum Abbruch:
-
-    ```bash
-    [ERROR] Failed to execute goal net.revelc.code.formatter:formatter-maven-plugin:2.23.0:validate (default) on project code-analyzing: File '/workspaces/architekturmuster-mit-quarkus/code-analyzing/src/main/java/quarkitecture/GreetingResource.java' has not been previously formatted. Please format file (for example by invoking `mvn net.revelc.code.formatter:formatter-maven-plugin:2.23.0:format`) and commit before running validation! -> [Help 1]
-    ```
+```bash
+[ERROR] Failed to execute goal net.revelc.code.formatter:formatter-maven-plugin:2.23.0:validate (default) on project code-analyzing: File '/workspaces/architekturmuster-mit-quarkus/code-analyzing/src/main/java/quarkitecture/GreetingResource.java' has not been previously formatted. Please format file (for example by invoking `mvn net.revelc.code.formatter:formatter-maven-plugin:2.23.0:format`) and commit before running validation! -> [Help 1]
+```
 
 ## Checkstyle
 
@@ -77,18 +74,76 @@ Formatieren abschalten:
 
 ## Einstellungen des Formats in der XML Datei
 
-### Tabs oder Leerzeichen?
+### Tabs oder Leerzeichen)
 
 Gerade bei Tabs ist es sehr wichtig, dass die Einstellungen in der IDE und im Build Ablauf übereinstimmen
 
  - Leerzeichen:
 
    ```xml
+   <!-- java-formatter.xml -->
    <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space" />
    ```
 
  - Tabs:
 
    ```xml
+   <!-- java-formatter.xml -->
    <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="tab" />
    ```
+
+### Einrückung
+
+```xml
+<!-- java-formatter.xml -->
+<setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4" />
+```
+
+### Zeilenumbrüche
+
+Es gibt seit je her Unterschiede zwischen den Betriebssystemen:
+- Windows: CRLF
+- Mac und Linux: LF
+
+Auch hier gilt: alle einigen sich, damit die Entwickler sich nicht regelmäßig die Formatierung überschreiben.
+
+
+1. Jeder Entwickler sollte sein lokalen git Einstellung vornehmen:
+   ```bash
+   # ausführen in der Konsole
+   git config --global core.autocrlf input
+   ```
+
+1. git im Projekt eingestellt durch `.gitattributes`
+
+    ```bash
+    # .gitattributes
+    * text=auto
+    ```
+1. eclipse format settings
+
+    ```xml
+    <!-- java-formatter.xml -->
+    <setting id="org.eclipse.jdt.core.formatter.linefeed" value="LF" />
+    ```
+
+1. VS Code settings
+
+    ```json
+    # .vscode/settings.json
+    {
+        "files.eol": "\n"
+    }
+    ```
+
+    1. maven formatter plugin
+
+
+### Zeilenlänge
+
+  ```xml
+    <!-- java-formatter.xml -->
+    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120" />
+    ```
+
+
