@@ -239,7 +239,7 @@ Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden 
 
 ```xml
 <!-- java-formatter.xml -->
-<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120" />
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="140" />
 ```
 
 
