@@ -242,10 +242,44 @@ Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden 
 <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="140" />
 ```
 
+## Import Sortierung
+### Impsort Maven Plugin
 
-# known issues
+Das Impsort Maven Plugin sortiert die Imports in den Java Dateien.
 
-## die Datei src/main/resources/application.properties wird nicht formatiert
+```bash
+mvn impsort:sort
+```
+
+```xml
+<plugin></plugin>
+    <groupId>net.revelc.code</groupId>
+    <artifactId>impsort-maven-plugin</artifactId>
+    <version>1.9.0</version>
+    <configuration>
+        <groups>java.,javax.,jakarta.,org.,com.</groups>
+        <staticGroups>*</staticGroups>
+        <removeUnused>true</removeUnused>
+    </configuration>
+
+```
+
+### Checkstyle Regeln für Import Sortierung
+
+Der Import mittels `*` ist in der Regel nicht erlaubt, da er die Lesbarkeit des Codes erschwert. Es ist besser, die Klassen einzeln zu importieren.
+
+- statische Imports sollten aber `*`erlauben, da mit ihnen fluent APIs importiert und im content assist der IDE angezeigt werden.
+
+    ```xml
+    <module name="AvoidStarImport" >
+        <property name="allowStaticMemberImports" value="true" />
+    </module>
+    ````
+
+
+## Known issues
+
+### die Datei src/main/resources/application.properties wird nicht formatiert
 
 - den gesamten src folder anzugeben reicht nicht aus, um die Datei zu formatieren
 
@@ -257,9 +291,10 @@ Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden 
 
 # Quellen
 
-- Projekt website des Formatter Maven Plugin
-  - https://code.revelc.net/formatter-maven-plugin/examples.html
+- Formatter Maven Plugin
+  - Projekt: https://code.revelc.net/formatter-maven-plugin/examples.html
+  - Einstellungen:  https://code.revelc.net/formatter-maven-plugin/format-mojo.html
 
-- Einstellungen des Eclipse Code Formatter
-  - https://code.revelc.net/formatter-maven-plugin/format-mojo.html
-
+- Impsort Maven Plugin
+  - Projekt https://code.revelc.net/impsort-maven-plugin/
+  - Einstellungen: https://code.revelc.net/impsort-maven-plugin/sort-mojo.html
