@@ -1,0 +1,7 @@
+# by default all files get linux line endings LF
+# When text is set to "auto", the path is marked for automatic end-of-line normalization. If Git decides that the content is text, its line endings are normalized to LF on checkin.
+* text=auto
+
+# windows files get the windows line endings CRLF
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
