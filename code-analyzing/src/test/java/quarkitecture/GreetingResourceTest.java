@@ -15,12 +15,12 @@ import io.restassured.http.ContentType;
 @TestHTTPEndpoint(GreetingResource.class)
 class GreetingResourceTest {
 
-    @Test
-    void testHelloEndpoint() {
-        given().with().accept(ContentType.TEXT)
-                .when().get()
-                .then().statusCode(equalTo(HttpStatus.SC_OK))
-                .body(is("Hello from RESTEasy Reactive"));
-    }
+	@Test
+	void testHelloEndpoint() {
+		given().with().accept(ContentType.TEXT)
+				.when().get()
+				.then().statusCode(equalTo(HttpStatus.SC_OK))
+				.body(is("Hello from RESTEasy Reactive"));
+	}
 
 }
