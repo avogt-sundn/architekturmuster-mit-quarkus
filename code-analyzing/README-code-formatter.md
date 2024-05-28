@@ -33,7 +33,7 @@ Quellen
 ## Formatierung im Build Ablauf
 
 ### Wo ist die Formatierung definiert?
-Die Einstellungen für die Formatierung sind in der Datei `java-formatter.xml` im Projekt unter [.settings/java-formatter.xml](../.settings/java-formatter.xml) definiert.
+Die Einstellungen für die Formatierung sind in der Datei `java-formatter.xml` im Projekt unter [.settings/java-formatter.xml](../.config/java-formatter.xml) definiert.
 
 ### Wie wird die Formatierung ausgelöst?
 Maven kann den Quellcode des Projekts formatieren:
@@ -118,7 +118,7 @@ ist dieser Block einzufügen:
         </dependency>
     </dependencies>
     <configuration>
-        <configFile>${project.basedir}/.settings/java-formatter.xml</configFile>
+        <configFile>${project.basedir}/.config/java-formatter.xml</configFile>
         <lineEnding>LF</lineEnding>
         <encoding>UTF-8</encoding>
         <skip>${format.skip}</skip>

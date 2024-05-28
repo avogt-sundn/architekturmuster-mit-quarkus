@@ -123,6 +123,7 @@
                     </execution>
                 </executions>
                 <dependencies>
+                    <!-- https://repo.maven.apache.org/maven2/io/quarkus/quarkus-ide-config/2.5.1.Final/ -->
                     <dependency>
                         <artifactId>quarkus-ide-config</artifactId>
                         <groupId>io.quarkus</groupId>
@@ -130,13 +131,12 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configFile>${project.basedir}/.settings/java-formatter.xml</configFile>
+                    <configFile>${project.basedir}/.config/java-formatter.xml</configFile>
                     <lineEnding>LF</lineEnding>
                     <encoding>UTF-8</encoding>
                     <skip>${format.skip}</skip>
                     <compilerCompliance>${maven.compiler.source}</compilerCompliance>
                     <compilerCompliance>${maven.compiler.source}</compilerCompliance>
-
                 </configuration>
             </plugin>
             <plugin>
@@ -157,7 +157,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                    <configLocation>${project.basedir}/.checkstyle.xml</configLocation>
+                    <configLocation>${project.basedir}/.config/checkstyle.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
