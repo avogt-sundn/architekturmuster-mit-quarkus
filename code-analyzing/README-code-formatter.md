@@ -32,8 +32,10 @@ Quellen
 
 ## Formatierung im Build Ablauf
 
-Die Einstellungen für die Formatierung sind in der Datei `formatter.xml` [im Projekt unter ./.settings/java-formatter.xml](../.settings/java-formatter.xml) definiert.
+### Wo ist die Formatierung definiert?
+Die Einstellungen für die Formatierung sind in der Datei `java-formatter.xml` im Projekt unter [.settings/java-formatter.xml](../.settings/java-formatter.xml) definiert.
 
+### Wie wird die Formatierung ausgelöst?
 Maven kann den Quellcode des Projekts formatieren:
 
   ```bash
@@ -53,6 +55,8 @@ Formatieren abschalten:
   mvn test -Dformat.skip=true
   ```
 
+### Welche Fehler gibt es dabei?
+
 Beim Prüfen führen Abweichungen in der Formatierung zum Abbruch:
 
 ```bash
@@ -64,6 +68,8 @@ Hilfe dazu gibt es unter:
 ```bash
 mvn formatter:help -Ddetail=true -Dgoal=format
 ```
+
+### Maven Formatter Plugin in der pom.xml
 
 
 ## Checkstyle
@@ -80,6 +86,60 @@ mvn formatter:help -Ddetail=true -Dgoal=format
 ```
 
 ## Einstellungen des Formats in der XML Datei
+
+Unterhalb von
+```xml
+    <build>
+        <plugins>
+```
+ist dieser Block einzufügen:
+
+```xml
+<plugin>
+    <groupId>net.revelc.code.formatter</groupId>
+    <artifactId>formatter-maven-plugin</artifactId>
+    <version>2.23.0</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>validate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <!-- Quarkus eigene formatter Definition,
+        wird von unserer überlagert.
+        -->
+        <!-- https://repo.maven.apache.org/maven2/io/quarkus/quarkus-ide-config/2.5.1.Final/ -->
+        <dependency>
+            <artifactId>quarkus-ide-config</artifactId>
+            <groupId>io.quarkus</groupId>
+            <version>${quarkus.platform.version}</version>
+        </dependency>
+    </dependencies>
+    <configuration>
+        <configFile>${project.basedir}/.settings/java-formatter.xml</configFile>
+        <lineEnding>LF</lineEnding>
+        <encoding>UTF-8</encoding>
+        <skip>${format.skip}</skip>
+        <compilerCompliance>${maven.compiler.source}</compilerCompliance>
+        <compilerCompliance>${maven.compiler.source}</compilerCompliance>
+    </configuration>
+</plugin>
+<plugin>
+    <groupId>net.revelc.code</groupId>
+    <artifactId>impsort-maven-plugin</artifactId>
+    <version>1.9.0</version>
+    <configuration>
+        <!-- store outside of target to speed up formatting when mvn clean is used -->
+        <cachedir>.cache/impsort-maven-plugin-${impsort-maven-plugin.version}</cachedir>
+        <groups>java.,javax.,jakarta.,org.,com.</groups>
+        <staticGroups>*</staticGroups>
+        <skip>${format.skip}</skip>
+        <removeUnused>true</removeUnused>
+    </configuration>
+</plugin>
+```
 
 ### Tabs oder Leerzeichen)
 
