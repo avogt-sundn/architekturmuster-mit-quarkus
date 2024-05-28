@@ -5,6 +5,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
+/**
+ * GreetingResource
+ * This class is a RESTful resource that will be used to handle HTTP requests.
+ */
 @Path("/items")
 public class GreetingResource {
 

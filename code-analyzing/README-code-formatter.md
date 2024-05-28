@@ -22,7 +22,7 @@ In VS code werden Formatierungseinstellungen in der Datei `settings.json` im Pro
   ```json
   # .vscode/settings.json
   {
-     "java.format.settings.url": ".vscode/java-formatter.xml",
+     "java.format.settings.url": ".settings/java-formatter.xml",
   }
   ```
 
@@ -32,7 +32,7 @@ Quellen
 
 ## Formatierung im Build Ablauf
 
-Die Einstellungen für die Formatierung sind in der Datei `formatter.xml` [im Projekt unter ./.vscode/java-formatter.xml](../.vscode/java-formatter.xml) definiert.
+Die Einstellungen für die Formatierung sind in der Datei `formatter.xml` [im Projekt unter ./.settings/java-formatter.xml](../.settings/java-formatter.xml) definiert.
 
 Maven kann den Quellcode des Projekts formatieren:
 
@@ -58,6 +58,13 @@ Beim Prüfen führen Abweichungen in der Formatierung zum Abbruch:
 ```bash
 [ERROR] Failed to execute goal net.revelc.code.formatter:formatter-maven-plugin:2.23.0:validate (default) on project code-analyzing: File '/workspaces/architekturmuster-mit-quarkus/code-analyzing/src/main/java/quarkitecture/GreetingResource.java' has not been previously formatted. Please format file (for example by invoking `mvn net.revelc.code.formatter:formatter-maven-plugin:2.23.0:format`) and commit before running validation! -> [Help 1]
 ```
+
+Hilfe dazu gibt es unter:
+
+```bash
+mvn formatter:help -Ddetail=true -Dgoal=format
+```
+
 
 ## Checkstyle
 
@@ -136,8 +143,18 @@ Auch hier gilt: alle einigen sich, damit die Entwickler sich nicht regelmäßig 
     }
     ```
 
-    1. maven formatter plugin
+    1. maven formatter plugin:
 
+    ```xml
+        <plugin>
+    <groupId>net.revelc.code.formatter</groupId>
+    <artifactId>formatter-maven-plugin</artifactId>
+    <version>2.23.0</version>
+    <configuration>
+        <lineEnding>LF</lineEnding>
+        <encoding>UTF-8</encoding>
+    </configuration>
+    ```
 
 ### Zeilenlänge
 

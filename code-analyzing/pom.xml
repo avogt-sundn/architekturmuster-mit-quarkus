@@ -9,6 +9,8 @@
     <properties>
         <compiler-plugin.version>3.12.1</compiler-plugin.version>
         <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -128,10 +130,13 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configFile>${project.basedir}/.vscode/java-formatter.xml</configFile>
+                    <configFile>${project.basedir}/.settings/java-formatter.xml</configFile>
                     <lineEnding>LF</lineEnding>
                     <encoding>UTF-8</encoding>
                     <skip>${format.skip}</skip>
+                    <compilerCompliance>${maven.compiler.source}</compilerCompliance>
+                    <compilerCompliance>${maven.compiler.source}</compilerCompliance>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -152,7 +157,7 @@
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <version>3.1.1</version>
                         <configuration>
-                            <configLocation>checkstyle.xml</configLocation>
+                    <configLocation>${project.basedir}/.checkstyle.xml</configLocation>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
