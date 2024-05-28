@@ -5,7 +5,7 @@ Alle, die an einem Projekt arbeiten, sollten sich auf eine einheitliche Formatie
 
 Dazu müssen auch alle Editoren ihre Formatierungseinstellungen entsprechend anpassen.
 
-Dazu müssen alle beteiligten Werkzeuge dasselbe Format lesen und einheitlich umsetzen. In Java Projekten wird oft der **Eclipse Code Formatter** verwendet, da er seit Jahren in der Java Community etabliert ist und somit von allen gängigen IDEs unterstützt wird:
+Dazu müssen alle beteiligten Werkzeuge dasselbe Format lesen und einheitlich umsetzen. In Java Projekten wird oft der [Eclipse Code Formatter](https://code.revelc.net/formatter-maven-plugin/examples.html) verwendet, da er seit Jahren in der Java Community etabliert ist und somit von allen gängigen IDEs unterstützt wird:
 
 * IntelliJ
 * VS Code
@@ -216,11 +216,38 @@ Auch hier gilt: alle einigen sich, damit die Entwickler sich nicht regelmäßig 
     </configuration>
     ```
 
+
+### Zeilenumbruch am Dateiende
+
+Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden sollte oder nicht. Einige Editoren fügen automatisch einen Zeilenumbruch am Dateiende ein, andere nicht. Hier stellen wir checkstyle und den Eclipse Code Formatter so ein, dass ein Zeilenumbruch am Dateiende eingefügt wird.
+
+1. java-formatter.xml
+
+```xml
+<!-- java-formatter.xml -->
+<setting id="org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing" value="insert" />
+```
+
+1. Checkstyle
+
+```xml
+<module name="NewlineAtEndOfFile" />
+```
+
+
 ### Zeilenlänge
 
-  ```xml
-    <!-- java-formatter.xml -->
-    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120" />
-    ```
+```xml
+<!-- java-formatter.xml -->
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120" />
+```
 
+
+# Quellen
+
+- Projekt website des Formatter Maven Plugin
+  - https://code.revelc.net/formatter-maven-plugin/examples.html
+
+- Einstellungen des Eclipse Code Formatter
+  - https://code.revelc.net/formatter-maven-plugin/format-mojo.html
 
