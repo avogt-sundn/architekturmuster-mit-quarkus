@@ -131,7 +131,9 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configFile>${project.basedir}/.config/java-formatter.xml</configFile>
+                    <directories>
+                        <directory>${project.build.sourceDirectory}</directory>
+                    </directories>
                     <lineEnding>LF</lineEnding>
                     <encoding>UTF-8</encoding>
                     <skip>${format.skip}</skip>

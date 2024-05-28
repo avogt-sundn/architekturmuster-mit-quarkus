@@ -243,6 +243,18 @@ Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden 
 ```
 
 
+# known issues
+
+## die Datei src/main/resources/application.properties wird nicht formatiert
+
+- den gesamten src folder anzugeben reicht nicht aus, um die Datei zu formatieren
+
+```xml
+<directories>
+    <directory>${project.build.sourceDirectory}</directory>
+</directories>
+```
+
 # Quellen
 
 - Projekt website des Formatter Maven Plugin

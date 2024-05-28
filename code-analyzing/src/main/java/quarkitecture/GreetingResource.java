@@ -7,7 +7,9 @@ import jakarta.ws.rs.core.MediaType;
 
 /**
  * GreetingResource
+ * <p>
  * This class is a RESTful resource that will be used to handle HTTP requests.
+ * </p>
  */
 @Path("/items")
 public class GreetingResource {
