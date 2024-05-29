@@ -3,15 +3,20 @@
 Einheitliche Formatierung des Codes ist wichtig, um die Lesbarkeit zu erhöhen und die Zusammenarbeit zu erleichtern.
 Alle, die an einem Projekt arbeiten, sollten sich auf eine einheitliche Formatierung einigen.
 
-Dazu müssen auch alle Editoren ihre Formatierungseinstellungen entsprechend anpassen.
+Dazu müssen alle beteiligten Werkzeuge dasselbe Format lesen und einheitlich umsetzen, Editoren/IDEs sollten spätestens beim Speichern richtig formatieren. Build tools können eingecheckte Abweichungen korrigieren.
 
-Dazu müssen alle beteiligten Werkzeuge dasselbe Format lesen und einheitlich umsetzen. In Java Projekten wird oft der [Eclipse Code Formatter](https://code.revelc.net/formatter-maven-plugin/examples.html) verwendet, da er seit Jahren in der Java Community etabliert ist und somit von allen gängigen IDEs unterstützt wird:
+In Java Projekten wird oft der Eclipse Formatter verwendet, da er seit Jahren durch die Eclipse IDE etabliert ist und heute von allen gängigen IDEs unterstützt wird.
 
-* IntelliJ
-* VS Code
-* Eclipse
+- seine Konfigurationsdatei (im XML Format) kann in diese IDEs importiert werden kann:
 
-Im Build Ablauf setzen wir das `Formatter` maven-plugin ein, um die Formatierung zu prüfen und ggf. zu korrigieren.
+    * IntelliJ (kann importieren)
+    * VS Code
+    * und Eclipse (benutzen die XML Datei als Speicherort)
+
+Im Build Ablauf setzen wir ein maven-plugin ein, das wiederum dieselbe Konfigurationsdatei verwendet:
+
+* [Eclipse Code Formatter](https://code.revelc.net/formatter-maven-plugin/examples.html)
+* [Spotless](https://github.com/diffplug/spotless/tree/main/plugin-maven)
 
 ## Formatierung der IDE einrichten
 
@@ -39,37 +44,37 @@ Die Einstellungen für die Formatierung sind in der Datei `java-formatter.xml` i
 Maven kann den Quellcode des Projekts formatieren:
 
   ```bash
-  mvn formatter:format
+  # spotless plugin
+  mvn spotless:apply
   ```
 
-Danach kann mit verify geprüft werden, ob die Formatierung korrekt ist:
+Es kann auch nur geprüft werden, ob die Formatierung korrekt ist, ohne eine Korrektur vorzunehmen:
 
   ```bash
-  mvn verify
+  # spotless plugin
+  mvn spotless:check
+  # dasselbe, aber über maven lifecycle goal
+  mvn validate
   ```
 
-Formatieren abschalten:
-
-  ```bash
-  # auch bei jedem anderen maven goal kann mit skip abgeschaltet werden:
-  mvn test -Dformat.skip=true
-  ```
-
-### Welche Fehler gibt es dabei?
-
-Beim Prüfen führen Abweichungen in der Formatierung zum Abbruch:
+spotless zeigt Abweichungen praktischerweise auch gleich als Diff an:
 
 ```bash
-[ERROR] Failed to execute goal net.revelc.code.formatter:formatter-maven-plugin:2.23.0:validate (default) on project code-analyzing: File '/workspaces/architekturmuster-mit-quarkus/code-analyzing/src/main/java/quarkitecture/GreetingResource.java' has not been previously formatted. Please format file (for example by invoking `mvn net.revelc.code.formatter:formatter-maven-plugin:2.23.0:format`) and commit before running validation! -> [Help 1]
+[ERROR] Failed to execute goal com.diffplug.spotless:spotless-maven-plugin:2.43.0:check (default-cli) on project code-analyzing: The following files had format violations:
+[ERROR]     src/main/java/quarkitecture/GreetingResource.java
+[ERROR]         @@ -15,7 +15,7 @@
+[ERROR]          public·class·GreetingResource·{
+[ERROR]
+[ERROR]          ····@GET
+[ERROR]         -········@Produces(MediaType.TEXT_PLAIN)
+[ERROR]         +····@Produces(MediaType.TEXT_PLAIN)
+[ERROR]          ····public·String·getItem()·{
+[ERROR]
+[ERROR]          ········return·"Hello·from·RESTEasy·Reactive";
+[ERROR] Run 'mvn spotless:apply' to fix these violations.
+[ERROR] -> [Help 1]
 ```
-
-Hilfe dazu gibt es unter:
-
-```bash
-mvn formatter:help -Ddetail=true -Dgoal=format
-```
-
-### Maven Formatter Plugin in der pom.xml
+ - hier war die Zeile mit der `@Produces` annotation zu weit eingerückt (beginnt mit `-`), die vorgeschlagene Korrektur  beginnt mit `+`
 
 
 ## Checkstyle
@@ -83,62 +88,6 @@ mvn formatter:help -Ddetail=true -Dgoal=format
         "extensions": [
             "shengchen.vscode-checkstyle",
         ],
-```
-
-## Einstellungen des Formats in der XML Datei
-
-Unterhalb von
-```xml
-    <build>
-        <plugins>
-```
-ist dieser Block einzufügen:
-
-```xml
-<plugin>
-    <groupId>net.revelc.code.formatter</groupId>
-    <artifactId>formatter-maven-plugin</artifactId>
-    <version>2.23.0</version>
-    <executions>
-        <execution>
-            <goals>
-                <goal>validate</goal>
-            </goals>
-        </execution>
-    </executions>
-    <dependencies>
-        <!-- Quarkus eigene formatter Definition,
-        wird von unserer überlagert.
-        -->
-        <!-- https://repo.maven.apache.org/maven2/io/quarkus/quarkus-ide-config/2.5.1.Final/ -->
-        <dependency>
-            <artifactId>quarkus-ide-config</artifactId>
-            <groupId>io.quarkus</groupId>
-            <version>${quarkus.platform.version}</version>
-        </dependency>
-    </dependencies>
-    <configuration>
-        <configFile>${project.basedir}/.config/java-formatter.xml</configFile>
-        <lineEnding>LF</lineEnding>
-        <encoding>UTF-8</encoding>
-        <skip>${format.skip}</skip>
-        <compilerCompliance>${maven.compiler.source}</compilerCompliance>
-        <compilerCompliance>${maven.compiler.source}</compilerCompliance>
-    </configuration>
-</plugin>
-<plugin>
-    <groupId>net.revelc.code</groupId>
-    <artifactId>impsort-maven-plugin</artifactId>
-    <version>1.9.0</version>
-    <configuration>
-        <!-- store outside of target to speed up formatting when mvn clean is used -->
-        <cachedir>.cache/impsort-maven-plugin-${impsort-maven-plugin.version}</cachedir>
-        <groups>java.,javax.,jakarta.,org.,com.</groups>
-        <staticGroups>*</staticGroups>
-        <skip>${format.skip}</skip>
-        <removeUnused>true</removeUnused>
-    </configuration>
-</plugin>
 ```
 
 ### Tabs oder Leerzeichen)
@@ -203,19 +152,6 @@ Auch hier gilt: alle einigen sich, damit die Entwickler sich nicht regelmäßig 
     }
     ```
 
-    1. maven formatter plugin:
-
-    ```xml
-        <plugin>
-    <groupId>net.revelc.code.formatter</groupId>
-    <artifactId>formatter-maven-plugin</artifactId>
-    <version>2.23.0</version>
-    <configuration>
-        <lineEnding>LF</lineEnding>
-        <encoding>UTF-8</encoding>
-    </configuration>
-    ```
-
 
 ### Zeilenumbruch am Dateiende
 
@@ -242,7 +178,10 @@ Es gibt unterschiedliche Meinungen, ob eine Datei mit einem Zeilenumbruch enden 
 <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="140" />
 ```
 
-## Import Sortierung
+
+
+## Import statments Sortierung
+
 ### Impsort Maven Plugin
 
 Das Impsort Maven Plugin sortiert die Imports in den Java Dateien.
@@ -252,17 +191,36 @@ mvn impsort:sort
 ```
 
 ```xml
-<plugin></plugin>
+<plugin>
     <groupId>net.revelc.code</groupId>
     <artifactId>impsort-maven-plugin</artifactId>
-    <version>1.9.0</version>
+    <version>1.10.0</version>
     <configuration>
+        <!-- store outside of target to speed up formatting when mvn clean is used -->
+        <cachedir>.cache/impsort-maven-plugin-${impsort-maven-plugin.version}</cachedir>
         <groups>java.,javax.,jakarta.,org.,com.</groups>
         <staticGroups>*</staticGroups>
+        <skip>${format.skip}</skip>
         <removeUnused>true</removeUnused>
     </configuration>
-
+</plugin>
 ```
+
+Leider kann impsort nicht zwischen static und non-static imports bei der wildcard Nutzung differenzieren.
+
+Empfehlung: checkstyle und IDE sollten so eingerichtet werden, dass bei static imports wildcards zugelassen sind:
+
+- Beispiel:
+
+    ```java
+    # erlaubte wildcars nur bei static
+    import static io.restassured.RestAssured.*;
+    import static org.hamcrest.CoreMatchers.*;
+    import static org.hamcrest.Matchers.*;
+
+    # ausgeschriebene imports
+    import org.apache.http.HttpStatus;
+    ```
 
 ### Checkstyle Regeln für Import Sortierung
 
@@ -276,6 +234,7 @@ Der Import mittels `*` ist in der Regel nicht erlaubt, da er die Lesbarkeit des 
     </module>
     ````
 
+---
 
 ## Known issues
 

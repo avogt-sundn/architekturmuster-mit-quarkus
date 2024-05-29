@@ -64,6 +64,7 @@
                 "Angular.ng-template",
                 "redhat.vscode-quarkus",
                 "shengchen.vscode-checkstyle",
+                "yzhang.markdown-all-in-one",
                 "fwcd.kotlin"
             ],
             "settings": {

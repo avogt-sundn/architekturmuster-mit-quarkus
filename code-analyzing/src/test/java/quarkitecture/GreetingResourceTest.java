@@ -1,8 +1,7 @@
 package quarkitecture;
 
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
