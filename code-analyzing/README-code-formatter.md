@@ -89,6 +89,13 @@ spotless zeigt Abweichungen praktischerweise auch gleich als Diff an:
             "shengchen.vscode-checkstyle",
         ],
 ```
+```bash
+# .vscode/settings.json
+{
+    "java.checkstyle.configuration": "${workspaceFolder}/.config/checkstyle-config.xml"
+}
+```
+
 
 ### Tabs oder Leerzeichen)
 
