@@ -8,9 +8,9 @@
     <version>1.0.0-SNAPSHOT</version>
     <properties>
         <compiler-plugin.version>3.12.1</compiler-plugin.version>
-        <maven.compiler.release>17</maven.compiler.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -53,6 +53,11 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jacoco</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -129,7 +134,7 @@
                     <!-- <?m2e execute onConfiguration?> -->
                     <execution>
                         <id>apply-spotless</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>apply</goal>
                         </goals>
@@ -141,16 +146,19 @@
                 <artifactId>impsort-maven-plugin</artifactId>
                 <version>1.10.0</version>
                 <configuration>
+                    <compliance>18</compliance>
                     <!-- store outside of target to speed up formatting when mvn clean is used -->
-                    <cachedir>.cache/impsort-maven-plugin-${impsort-maven-plugin.version}</cachedir>
-                    <groups>java.,javax.,jakarta.,org.,com.</groups>
+                    <cachedir>target/.cache/impsort-maven-plugin</cachedir>
+                    <groups>*</groups>
                     <staticGroups>*</staticGroups>
+                    <staticAfter>true</staticAfter>
                     <skip>${format.skip}</skip>
                     <removeUnused>true</removeUnused>
                 </configuration>
                 <executions>
                     <execution>
                         <id>sort-imports</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>sort</goal>
                         </goals>
@@ -160,7 +168,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.1.2</version>
                 <configuration>
                     <configLocation>${project.basedir}/.config/checkstyle-config.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
