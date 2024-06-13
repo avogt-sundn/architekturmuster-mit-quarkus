@@ -87,11 +87,8 @@ class OpenFGATest {
         String storeId = client.createStore("test").await().indefinitely().getId();
         // access store via store ID
         StoreClient storeClient = client.store(storeId);
-        final ObjectMapper objectMapper = new ObjectMapper();
         // read file from classpath
         String fileContents = Files.readString(Path.of("auth-model.json"));
-        // byte[] file =
-        // this.getClass().getResourceAsStream("auth-model.json").readAllBytes();
 
         assertThat(fileContents).isNotNull();
         Log.info("file:" + fileContents);
@@ -151,11 +148,16 @@ class OpenFGATest {
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem();
-        assertThat(writes.entrySet()).hasSize(0);
+        assertThat(writes.entrySet()).isEmpty();
 
         Boolean check = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:me"), null).await()
                 .indefinitely();
         assertThat(check).isTrue();
+
+        Boolean failure = authorizationModelClient.check(TupleKey.of("document:123", "writer", "user:me"), null)
+                .await()
+                .indefinitely();
+        assertThat(failure).isFalse();
         // delete store
         delete(storeId, storeClient);
     }
@@ -164,7 +166,65 @@ class OpenFGATest {
     @Test
     void _CreateFromJson() throws IOException {
         var schema = """
-                {"schema_version":"1.1","type_definitions":[{"type":"user","relations":{},"metadata":null},{"type":"document","relations":{"writer":{"this":{"b":2},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null},"reader":{"this":{"a":1},"computedUserset":null,"tupleToUserset":null,"union":null,"intersection":null,"difference":null}},"metadata":{"relations":{"writer":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]},"reader":{"directly_related_user_types":[{"type":"user","relation":null,"wildcard":null,"condition":null}]}}}}]}
+                        {
+                            "schema_version": "1.1",
+                            "type_definitions": [
+                                {
+                                    "type": "user",
+                                    "relations": {},
+                                    "metadata": null
+                                },
+                                {
+                                    "type": "document",
+                                    "relations": {
+                                        "writer": {
+                                            "this": {
+                                                "b": 2
+                                            },
+                                            "computedUserset": null,
+                                            "tupleToUserset": null,
+                                            "union": null,
+                                            "intersection": null,
+                                            "difference": null
+                                        },
+                                        "reader": {
+                                            "this": {
+                                                "a": 1
+                                            },
+                                            "computedUserset": null,
+                                            "tupleToUserset": null,
+                                            "union": null,
+                                            "intersection": null,
+                                            "difference": null
+                                        }
+                                    },
+                                    "metadata": {
+                                        "relations": {
+                                            "writer": {
+                                                "directly_related_user_types": [
+                                                    {
+                                                        "type": "user",
+                                                        "relation": null,
+                                                        "wildcard": null,
+                                                        "condition": null
+                                                    }
+                                                ]
+                                            },
+                                            "reader": {
+                                                "directly_related_user_types": [
+                                                    {
+                                                        "type": "user",
+                                                        "relation": null,
+                                                        "wildcard": null,
+                                                        "condition": null
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
                 """;
         clean();
         // create store
@@ -185,16 +245,26 @@ class OpenFGATest {
         AuthorizationModelClient authorizationModelClient = storeClient.authorizationModels().model(authModelId);
         // write tuples
         var tuples = List.of(
-                TupleKey.of("document:123", "reader", "user:me"));
+                TupleKey.of("document:123", "reader", "user:der_leser"),
+                TupleKey.of("document:123", "writer", "user:der_autor")
+
+        );
         var writes = authorizationModelClient.write(tuples, Collections.emptyList())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem();
-        assertThat(writes.entrySet()).hasSize(0);
+        assertThat(writes.entrySet()).isEmpty();
 
-        Boolean check = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:me"), null).await()
+        Boolean success = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:der_leser"), null)
+                .await()
                 .indefinitely();
-        assertThat(check).isTrue();
+        assertThat(success).isTrue();
+
+        Boolean failure = authorizationModelClient.check(TupleKey.of("document:123", "writer", "user:der_leser"), null)
+                .await()
+                .indefinitely();
+
+        assertThat(failure).isFalse();
         // delete store
         delete(storeId, storeClient);
     }
