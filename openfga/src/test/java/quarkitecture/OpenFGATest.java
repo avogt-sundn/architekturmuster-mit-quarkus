@@ -143,13 +143,17 @@ class OpenFGATest {
         AuthorizationModelClient authorizationModelClient = storeClient.authorizationModels().model(authModelId);
         // write tuples
         var tuples = List.of(
-                TupleKey.of("document:123", "reader", "user:me"));
+                TupleKey.of("document:123", "reader", "user:me"),
+                TupleKey.of("document:123", "reader", "user:a"));
         var writes = authorizationModelClient.write(tuples, Collections.emptyList())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem();
         assertThat(writes.entrySet()).isEmpty();
 
+        Boolean a = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:a"), null).await()
+                .indefinitely();
+        assertThat(a).isTrue();
         Boolean check = authorizationModelClient.check(TupleKey.of("document:123", "reader", "user:me"), null).await()
                 .indefinitely();
         assertThat(check).isTrue();
