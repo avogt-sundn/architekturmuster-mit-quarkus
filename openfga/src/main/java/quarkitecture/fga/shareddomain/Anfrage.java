@@ -9,5 +9,5 @@ import quarkitecture.fga.arbeitsverteilung.Aufgabenart;
 public class Anfrage {
     BenutzerData wer;
     Aufgabenart was;
-    VorgangData wo;
+    Vorgang wo;
 }

@@ -7,10 +7,7 @@ import lombok.Data;
 @Builder
 public class BenutzerData {
 
-    Team istTeilVonTeam;
-    String name;
+    public Team istTeilVonTeam;
+    public String name;
 
-    public String toUpdate() {
-        return "BenutzerData(team:" + istTeilVonTeam + ",name" + name + ")";
-    }
 }
