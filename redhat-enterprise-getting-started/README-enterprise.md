@@ -71,3 +71,23 @@ registries:
 ```
 
 * `quarkus dev` greift dann auf die Red Hat Quarkus-Registry zu, um die Abhängigkeiten herunterzuladen.
+
+## Optional aktivieren per Profile
+
+Das Ändern der lokalen settings.xml wirkt sich auf alle Projekte auf dem Arbeitsplatz aus.
+
+Wenn das nicht gewünscht ist, kann das redhat maven repository mittels profile aktiviert werden:
+
+```shell script
+mvn -P red-hat-enterprise-maven-repository  clean test
+```
+
+Dazu ist in der Datei `~/.m2/settings.xml` das Profile zu benennen, aber nicht als default zu aktivieren:
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" ... >
+
+    <activeProfiles>
+        <activeProfile>red-hat-enterprise-maven-repository</activeProfile>
+    </activeProfiles>
+````
