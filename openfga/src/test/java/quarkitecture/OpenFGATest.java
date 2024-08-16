@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 @QuarkusTest
 class OpenFGATest {
 
+    boolean delete = false;
     OpenFGAClient client;
     private ObjectMapper objectMapper;
 
@@ -84,7 +86,7 @@ class OpenFGATest {
 
         clean();
         // create store
-        String storeId = client.createStore("test").await().indefinitely().getId();
+        String storeId = client.createStore(testStoreName()).await().indefinitely().getId();
         // access store via store ID
         StoreClient storeClient = client.store(storeId);
         // read file from classpath
@@ -100,10 +102,12 @@ class OpenFGATest {
 
         model.write(TupleKey.of("thing:1", "owner", "user:me")).await().indefinitely();
 
-        Boolean check = model.check(TupleKey.of("test", "test", "test"), null).await().indefinitely();
+        Boolean check = model.check(TupleKey.of(testStoreName(), testStoreName(), testStoreName()), null).await()
+                .indefinitely();
         assertThat(check).isTrue();
         // delete store
-        delete(storeId, storeClient);
+        if (delete)
+            delete(storeId, storeClient);
     }
 
     @SuppressWarnings("null")
@@ -112,7 +116,7 @@ class OpenFGATest {
 
         clean();
         // create store
-        String storeId = client.createStore("test").await().indefinitely().getId();
+        String storeId = client.createStore(testStoreName()).await().indefinitely().getId();
         // access store via store ID
         StoreClient storeClient = client.store(storeId);
 
@@ -163,7 +167,8 @@ class OpenFGATest {
                 .indefinitely();
         assertThat(failure).isFalse();
         // delete store
-        delete(storeId, storeClient);
+        if (delete)
+            delete(storeId, storeClient);
     }
 
     @SuppressWarnings("null")
@@ -232,7 +237,7 @@ class OpenFGATest {
                 """;
         clean();
         // create store
-        String storeId = client.createStore("test").await().indefinitely().getId();
+        String storeId = client.createStore(testStoreName()).await().indefinitely().getId();
         // access store via store ID
         StoreClient storeClient = client.store(storeId);
 
@@ -270,16 +275,27 @@ class OpenFGATest {
 
         assertThat(failure).isFalse();
         // delete store
-        delete(storeId, storeClient);
+        if (delete)
+            delete(storeId, storeClient);
+    }
+
+    private String testStoreName() {
+        String string = "utest-"+RandomStringUtils.randomAlphanumeric(6);
+        Log.info("creating store: "+ string);
+        return string;
     }
 
     private void clean() {
-        client.listAllStores().await().indefinitely().forEach(s -> {
+        if (delete) {
 
-            if (s.getName().equals("test")) {
-                delete(s.getId(), client.store(s.getId()));
-            }
-        });
+            client.listAllStores().await().indefinitely().forEach(s -> {
+
+                if (s.getName().equals(testStoreName())) {
+                    delete(s.getId(), client.store(s.getId()));
+                }
+            });
+
+        }
     }
 
     private void delete(String storeId, StoreClient storeClient) {

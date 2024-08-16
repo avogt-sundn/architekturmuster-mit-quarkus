@@ -1,7 +1,34 @@
 # openfga
 
-`mvn test` nutzt devcontainers um einen openfga container zu starten.
+## Test-Modus
 
+`mvn test` nutzt entweder
+
+1. devcontainers um einen openfga container zu starten.
+2. oder docker compose.yaml
+
+Nach dem Test kann openfga betrachtet werden unter
+- http://localhost:3000/playground
+
+
+Passend zum gewählten Modus muss die applicatiom.properties richtig konfiguriert werden
+
+- für devcontainer
+
+````properties
+quarkus.devservices.enabled=true
+#quarkus.openfga.url=http://localhost:8080
+````
+
+- für docker compose
+
+````properties
+quarkus.devservices.enabled=false
+quarkus.openfga.url=http://localhost:8080
+````
+
+- starten mit `docker compose up -d`
+-
 
 Vollständige und korrekte Ausgabe von mvn test sieht so aus:
 
@@ -125,4 +152,4 @@ Vollständige und korrekte Ausgabe von mvn test sieht so aus:
 # Quellen
 
 - Docker Beschreibung
-  - https://openfga.dev/docs/getting-started/setup-openfga/docker
+  - <https://openfga.dev/docs/getting-started/setup-openfga/docker>
