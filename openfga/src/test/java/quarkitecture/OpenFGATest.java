@@ -94,7 +94,7 @@ class OpenFGATest {
         Log.info("file:" + fileContents);
         TypeDefinitions modelFromFile = objectMapper.readValue(fileContents, TypeDefinitions.class);
         // create a tuple
-        String modelId = storeClient.authorizationModels().create(modelFromFile.getTypeDefinitions()).await()
+        String modelId = storeClient.authorizationModels().create(modelFromFile).await()
                 .indefinitely();
         AuthorizationModelClient model = storeClient.authorizationModels().model(modelId);
 
