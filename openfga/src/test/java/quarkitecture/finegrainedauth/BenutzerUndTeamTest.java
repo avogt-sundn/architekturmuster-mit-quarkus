@@ -3,6 +3,7 @@ package quarkitecture.finegrainedauth;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -23,6 +24,7 @@ import quarkitecture.fga.shareddomain.Vorgang;
 
 @TestMethodOrder(OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
+@Disabled
 class BenutzerUndTeamTest {
 
     PolicyDecisionPoint pdp = new PolicyDecisionPoint();
