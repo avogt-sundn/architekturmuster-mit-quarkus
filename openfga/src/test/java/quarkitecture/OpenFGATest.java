@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,6 @@ class OpenFGATest {
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL).enable(SerializationFeature.INDENT_OUTPUT);
     }
 
-    @SuppressWarnings("null")
     @Test
     void _StoresCreateDelete() {
 
@@ -79,7 +77,6 @@ class OpenFGATest {
         delete(storeId, storeClient);
     }
 
-    @SuppressWarnings("null")
     @Test
     @Disabled("failing")
     void _Run() throws IOException {
@@ -110,7 +107,6 @@ class OpenFGATest {
             delete(storeId, storeClient);
     }
 
-    @SuppressWarnings("null")
     @Test
     void _CreateViaAPI() throws IOException {
 
@@ -171,7 +167,6 @@ class OpenFGATest {
             delete(storeId, storeClient);
     }
 
-    @SuppressWarnings("null")
     @Test
     void _CreateFromJson() throws IOException {
         var schema = """
@@ -280,8 +275,8 @@ class OpenFGATest {
     }
 
     private String testStoreName() {
-        String string = "utest-"+RandomStringUtils.randomAlphanumeric(6);
-        Log.info("creating store: "+ string);
+        String string = "utest-" + RandomStringUtils.randomAlphanumeric(6);
+        Log.info("creating store: " + string);
         return string;
     }
 

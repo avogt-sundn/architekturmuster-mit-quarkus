@@ -2,7 +2,6 @@ package organisationen.attribute;
 
 import java.net.URI;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
