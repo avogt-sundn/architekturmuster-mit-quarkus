@@ -64,7 +64,9 @@
                 "Angular.ng-template",
                 "redhat.vscode-quarkus",
                 "shengchen.vscode-checkstyle",
-                "fwcd.kotlin"
+                "fwcd.kotlin",
+                "rhalaly.scope-to-this",
+                "yzhang.markdown-all-in-one"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"
