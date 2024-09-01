@@ -1,4 +1,4 @@
-package quarkitecture;
+package quarkitecture.liquibase;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

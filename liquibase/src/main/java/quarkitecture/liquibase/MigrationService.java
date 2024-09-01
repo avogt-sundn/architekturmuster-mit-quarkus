@@ -1,7 +1,8 @@
-package quarkitecture;
+package quarkitecture.liquibase;
 
 import java.util.List;
 
+import io.quarkus.liquibase.LiquibaseDataSource;
 import io.quarkus.liquibase.LiquibaseFactory;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,13 +13,14 @@ import liquibase.exception.LiquibaseException;
 
 @ApplicationScoped
 public class MigrationService {
+
     // You can Inject the object if you want to use it manually
     private final LiquibaseFactory liquibaseFactory;
 
-    @Inject
-    public MigrationService(LiquibaseFactory liquibaseFactory) {
-        this.liquibaseFactory = liquibaseFactory;
-    }
+    // @Inject
+    // public MigrationService(LiquibaseFactory liquibaseFactory) {
+    //     this.liquibaseFactory = liquibaseFactory;
+    // }
 
     public void checkMigration() throws LiquibaseException {
         // Get the list of liquibase change set statuses

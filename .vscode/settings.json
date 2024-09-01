@@ -8,5 +8,26 @@
     "maven.view": "flat",
     "java.compile.nullAnalysis.mode": "automatic",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
-    "java.checkstyle.configuration": "${workspaceFolder}/liquibase/src/main/resources/changelog.xml"
+    "java.checkstyle.configuration": "${workspaceFolder}/liquibase/src/main/resources/changelog.xml",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true,
+        "[!l]*/**": true,
+        "l[!i]*/**": true,
+        "li[!q]*/**": true,
+        "liq[!u]*/**": true,
+        "liqu[!i]*/**": true,
+        "liqui[!b]*/**": true,
+        "liquib[!a]*/**": true,
+        "liquiba[!s]*/**": true,
+        "liquibas[!e]*/**": true
+    }
 }

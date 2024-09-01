@@ -1,4 +1,4 @@
-package quarkitecture;
+package quarkitecture.liquibase;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
