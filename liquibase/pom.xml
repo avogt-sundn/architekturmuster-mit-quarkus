@@ -92,8 +92,8 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.29.1</version>
                 <configuration>
-                    <searchPath>${project.basedir}/src/main/resources</searchPath>
-                    <changeLogFile>changelog.xml</changeLogFile>
+                    <searchPath>${project.basedir}/src/main/resources/db</searchPath>
+                    <changeLogFile>changeLog.xml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
                     <url>jdbc:postgresql://${env.DB_HOST}:5432/katalog</url>
                     <username>postgres</username>
