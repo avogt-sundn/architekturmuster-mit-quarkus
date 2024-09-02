@@ -30,7 +30,8 @@ docker compose up -d postgres
 # stoppen
 docker compose down
 
-``
+````
+
 ## Das maven plugin für liquibase
 
 grundlegende Konfiguration muss unter `<build><plugins></plugins>` so angelegt werden:
