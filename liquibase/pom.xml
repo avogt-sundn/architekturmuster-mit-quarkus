@@ -92,12 +92,16 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.29.1</version>
                 <configuration>
-                    <searchPath>${project.basedir}/src/main/resources/db</searchPath>
+                    <url>jdbc:postgresql://${env.DB_HOST}:5432/katalog</url>
+                    <referenceUrl>jdbc:postgresql://${env.DB_HOST}:5432/referenz</referenceUrl>
+                    <referenceUsername>postgres</referenceUsername>
+                    <referencePassword>password</referencePassword>
+
+                <searchPath>${project.basedir}/src/main/resources/db</searchPath>
+                    <propertyFile>liquibase.properties</propertyFile>
                     <changeLogFile>changeLog.xml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
-                    <url>jdbc:postgresql://${env.DB_HOST}:5432/katalog</url>
-                    <username>postgres</username>
-                    <password>password</password>
+
                 </configuration>
             </plugin>
             <plugin>

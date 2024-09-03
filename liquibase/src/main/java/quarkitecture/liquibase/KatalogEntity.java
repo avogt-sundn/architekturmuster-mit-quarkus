@@ -24,4 +24,5 @@ public class KatalogEntity extends PanacheEntityBase {
     Long id;
 
     String eintrag;
+    String zweiterEintrag;
 }

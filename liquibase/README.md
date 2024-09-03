@@ -92,3 +92,10 @@ Gleichzeitig ist eine postgres Datenbank mit ihrem Treiber hinterlegt für den E
    - ....
  - `[ERROR] liquibase.exception.LiquibaseException: liquibase.exception.CommandValidationException: Output ChangeLogFile '/workspaces/architekturmuster-mit-quarkus/liquibase/target/generated-changelog.xml' already exists!`
    - einfach die Datei vorher löschen, denn das Kommando `mvn liquibase:generateChangeLog` vermeidet das stille Überschreiben der in er pom.xml deklarierten Ausgabedatei.
+
+
+## Links
+
+- Offizielles Docker image für postgres:
+  - https://hub.docker.com/_/postgres/
+  - darin beschrieben, wie man mit einem [init script](./src/test/docker/postgres/init-postgres.sh) eine zweite Datenbank erzeugt.
