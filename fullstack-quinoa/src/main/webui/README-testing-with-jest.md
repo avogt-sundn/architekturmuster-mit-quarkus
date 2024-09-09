@@ -2,7 +2,11 @@
 
     npm install jest jest-preset-angular --save-dev
 
+https://kulshekhar.github.io/ts-jest/docs/
 ## Quellen
+
+- Install ts-jest
+  -  https://kulshekhar.github.io/ts-jest/docs/
 
 - Install jest
   - https://medium.com/@redin.gaetan/jest-and-angular-cb70ad78ee3d

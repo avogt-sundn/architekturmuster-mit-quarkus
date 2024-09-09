@@ -9,9 +9,21 @@ import jakarta.ws.rs.core.MediaType;
 public class GreetingResource {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello from RESTEasy Reactive";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Antwort hello() {
+        return new Antwort("Hello from RESTEasy Reactive");
+
     }
 
+}
+
+/**
+ * ACHTUNG: nur public Felder werden nach json serialisiert!
+ */
+class Antwort {
+    public Antwort(String string) {
+        this.title = string; 
+    }
+
+    public String title;
 }
