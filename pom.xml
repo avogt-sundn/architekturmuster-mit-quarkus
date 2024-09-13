@@ -20,7 +20,6 @@
         <module>openfga</module>
         <module>json-schema</module>
         <module>unit-testing</module>
-        <module>getting-started</module>
         <module>redhat-enterprise-getting-started</module>
     </modules>
 </project>
