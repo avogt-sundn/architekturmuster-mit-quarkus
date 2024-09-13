@@ -50,7 +50,7 @@ RUN apt-get update && apt-get install -y iputils-ping dnsutils file
 
 #   BEGIN ------ install kompose and kubectl and helm
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo arm64; else echo amd64; fi) \
-    && echo "Loading Kompose for $ARCH" && curl -L -o /tmp/kompose.tgz https://github.com/kubernetes/kompose/releases/download/v1.27.0/kompose-linux-$ARCH.tar.gz \
+    && echo "Loading Kompose for $ARCH" && curl -L -o /tmp/kompose.tgz https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-linux-$ARCH.tar.gz \
     && cd /opt && tar xzf /tmp/kompose.tgz && rm /tmp/kompose.tgz \
     && ln -s /opt/kompose-linux-$ARCH /usr/local/bin/kompose
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo arm64; else echo amd64; fi) \
