@@ -97,9 +97,9 @@
                     <referenceUsername>postgres</referenceUsername>
                     <referencePassword>password</referencePassword>
 
-                <searchPath>${project.basedir}/src/main/resources/db</searchPath>
-                    <propertyFile>liquibase.properties</propertyFile>
-                    <changeLogFile>changeLog.xml</changeLogFile>
+                <searchPath>${project.basedir}/src/main/resources</searchPath>
+                    <propertyFile>db/liquibase.properties</propertyFile>
+                    <changeLogFile>db/changeLog.xml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
 
                 </configuration>
