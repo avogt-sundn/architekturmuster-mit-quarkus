@@ -17,6 +17,8 @@ Beim Schreiben von Code in diesem Projekt ist es wichtig, vorher den Quarkus Dev
 
 ## Bekannte Fehler
 
+Die `jest` Tests laufen auf Fehler, wenn sie innerhalb des Quarkus dev Modus ausgeführt werden.
+
 ```bash
 2024-03-01 16:52:00,673 ERROR [io.qua.test] (Test runner thread) Test AllWebUITest#runTest() failed
 : java.lang.RuntimeException: java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
