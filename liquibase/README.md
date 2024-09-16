@@ -109,7 +109,6 @@ Danach kann mit dem Befehl `psql` eine interaktive SQL-Befehlszeile gestartet we
 - Parameter `-U`: der username
 - Parameter `-d`: der Datenbankname
 
-
 Postgres gruppiert Tabellen in Schemata, und Schemata finden sich in Datenbanken, In einem Schema liegen dann die SQL Tabellen.
 
 - Der user `postgres` ist der sogenannte root und deshalb umfassend berechtigt, auf alle Schemata und Datenbanken zuzugreifen,
@@ -135,30 +134,40 @@ Mit diesen Informationen starten wir die SQL-Befehlszeile:
 
 
 ````bash
-root@a011eca056c9:/# psql -U postgres -d katalog
+root@a011eca056c9:/# psql -U katalog -d postgres
 # psql (14.1 (Debian 14.1-1.pgdg110+1))
 # Type "help" for help.
 
-katalog=# SELECT tablename FROM pg_tables WHERE schemaname = 'public';
-#        tablename
-# -----------------------
-#  databasechangeloglock
-#  databasechangelog
-#  hibernate_sequences
-#  katalogentity
-# (4 rows)
-postgres=# SELECT
-  n.nspname AS schema_name,
-  pg_catalog.PG_GET_USERBYID(n.nspowner) AS schema_owner
-FROM pg_catalog.pg_namespace n
-WHERE n.nspname NOT IN ('pg_catalog', 'information_schema')
-ORDER BY schema_name;
-#  schema_name | schema_owner
-# -------------+--------------
-#  pg_toast    | postgres
-#  public      | postgres
-# (2 rows)
- ````
+katalog=#
+````
+
+und können nun in die Datenbankstruktur schauen:
+- Listet alle Tabellen im Schema auf:
+
+    ````bash
+    SELECT tablename FROM pg_tables WHERE schemaname = 'public';
+    #        tablename
+    # -----------------------
+    #  databasechangeloglock
+    #  databasechangelog
+    #  hibernate_sequences
+    #  katalogentity
+    # (4 rows)
+    ````
+
+- zeigt die Spalten einer Tabelle samt Datentypen:
+-
+    ````bash
+    \d katalogentity
+    #                        Table "public.katalogentity"
+    #      Column     |          Type          | Collation | Nullable | Default
+    # ----------------+------------------------+-----------+----------+---------
+    #  id             | bigint                 |           | not null |
+    #  eintrag        | character varying(255) |           |          |
+    #  zweitereintrag | character varying(255) |           |          |
+    # Indexes:
+    #     "katalogentity_pkey" PRIMARY KEY, btree (id)
+    # ````
 
  Weitere Befehle finden sich z.B. hier:
 
@@ -198,13 +207,83 @@ So zeigt pgadmin die Struktur der Datenbank:
 # H2 im Test
 Im Projekt ist eine H2 als Test-Datenbank eingerichtet. Sie wird benutzt, wenn unit tests in der IDE oder mit `mvn test`ausgeführt werden.
 
-- in der `application.properties` finden sich diese EInträge dazu:
+- in der `application-test.properties` finden sich diese Einträge dazu.
+
+Die Einträge gehören zum `test`-Profil, da sie in einer Datei mit dem Muster
+
+-  `application-{profil}.(properties|yaml)`
+
+enthalten sind. Der Präfix `%test.` kann **und muss** innerhalb der so benannten Datei entfallen.
+
+Das test-Profil wird gestartet, wenn mvn test ausgeführt wird. Quarkus erlaubt weitere Profile zu aktivieren, die von links nach rechts höher priorisiert sind ("überschreibend"):
+
+-   ````bash
+    mvn test -Dquarkus.test.profile=test,validate
+    ````
+
+    - das Profile `validate` ergänzt mit seinen properties *oder* überschreibt properties aus test, die gleichen Namens sind.
+
 
 Gleichzeitig ist eine postgres Datenbank mit ihrem Treiber hinterlegt für den Einsatz in den Profilen `dev` oder  `prod`
-- https://quarkus.io/guides/hibernate-orm#setting-up-multiple-persistence-units
+
+
+## Initialisierung im Image
+
+ Der Postgres Container bietet die Möglichkeit, psql-Kommandos zum Start in einem bash-Skript einzuschleusen.
+Im Rahmen der container-basierten Entwicklung machen wir das in der [docker-compose.yml](docker-compose.yml), wo die image-Referenz ersetzt wird durch ein [build-file](src/test/docker/postgres/Dockerfile), welches unser [init-Skript](src/test/docker/postgres/init-postgres.sh) einbaut.
+
+## Schemaänderungen durchführen
+
+Arbeitsweise:
+1. Kodiere neue Entities oder anderen JPA Code.
+2. Kodiere die Schema-Änderungen in die [changeLog.xml](src/main/resources/db/changeLog.xml)
+3. Führe die Liquibase Schemaänderungen auf der Zieldatenbank aus.
+4. Starte den Quarkus Service.
+
+Nun gibt es Varianten und Hilfsmittel:
+
+Das Rücksetzen der Datenbank ist am einfachsten mit dem Kommando
+`(docker compose down;docker compose up -d postgres)`.
+
+2.a Erzeuge das Schema mit hibernate, generiere ein changeLog.xml zu bestehendem Schema
+
+````bash
+mvn test -Dquarkus.test.profile=prod,update
+mvn liquibase:generateChangeLog
+cp target/generated-changelog.xml src/main/resources/db/changeLog.xml
+````
+
+validate:
+
+- Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [eintra2g] in table [KatalogEntity]
 
 ### troubleshooting
 
+- [ERROR] Error setting up or running Liquibase:
+[ERROR] liquibase.exception.LiquibaseException: liquibase.exception.MigrationFailedException: Migration failed for changeset changeLog.xml::1725208825608-1::vscode (generated):
+[ERROR]      Reason: liquibase.exception.DatabaseException: ERROR: relation "hibernate_sequences" already exists [Failed SQL: (0) CREATE TABLE hibernate_sequences (next_val BIGINT, sequence_name VARCHAR(255) NOT NULL, CONSTRAINT hibernate_sequences_pkey PRIMARY KEY (sequence_name))]
+  - hier hilft ein mvn liquibase:changelogSync
+  - Ursache kann sein, dass in der databasechangelog Tabelle die changes mit verschiedenen filenames auftauchen:
+    ````
+        katalog=# select * from databasechangelog;
+        id        |       author       |     filename     |        dateexecuted        | orderexecuted | exectype |               md
+    5sum               |                description                | comments | tag | liquibase | contexts | labels | deployment_id
+    -----------------+--------------------+------------------+----------------------------+---------------+----------+-----------------
+    -------------------+-------------------------------------------+----------+-----+-----------+----------+--------+---------------
+    1725208825608-1 | vscode (generated) | db/changeLog.xml | 2024-09-16 17:29:31.872321 |             1 | EXECUTED | 9:b9668c95a312c4
+    d7dbaaef738b0f7dfb | createTable tableName=hibernate_sequences |          |     | 4.25.1    |          |        | 6507771831
+    1725208825608-2 | vscode (generated) | db/changeLog.xml | 2024-09-16 17:29:31.891662 |             2 | EXECUTED | 9:3284275c30003a
+    692f29975518a0c338 | createTable tableName=katalogentity       |          |     | 4.25.1    |          |        | 6507771831
+    zwei            | avogt              | db/changeLog.xml | 2024-09-16 17:29:31.905749 |             3 | EXECUTED | 9:9e5e9ed52ae04a
+    a84aa3ed4c1e213748 | addColumn tableName=katalogentity         |          |     | 4.25.1    |          |        | 6507771831
+    1725208825608-1 | vscode (generated) | changeLog.xml    | 2024-09-16 17:36:26.281936 |             4 | EXECUTED | 9:b9668c95a312c4
+    d7dbaaef738b0f7dfb | createTable tableName=hibernate_sequences |          |     | 4.25.1    |          |        | 6508186297
+    1725208825608-2 | vscode (generated) | changeLog.xml    | 2024-09-16 17:36:26.309986 |             5 | EXECUTED | 9:3284275c30003a
+    692f29975518a0c338 | createTable tableName=katalogentity       |          |     | 4.25.1    |          |        | 6508186297
+    zwei            | avogt              | changeLog.xml    | 2024-09-16 17:36:26.313523 |             6 | EXECUTED | 9:9e5e9ed52ae04a
+    a84aa3ed4c1e213748 | addColumn tableName=katalogentity         |          |     | 4.25.1    |          |        | 6508186297
+    (6 rows)
+    ````
 - java.lang.IllegalStateException: The named datasource 'default-reactive' has not been properly configured. See https://quarkus.io/guides/datasource#multiple-datasources for information on how to do that.
 - `[error]: Build step io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor#configurationDescriptorBuilding threw an exception: io.quarkus.runtime.configuration.ConfigurationException: Datasource must be defined for persistence unit 'h2test'. Refer to https://quarkus.io/guides/datasource for guidance.`
    - `quarkus.hibernate-orm."pg".datasource=pg`
@@ -220,3 +299,8 @@ Gleichzeitig ist eine postgres Datenbank mit ihrem Treiber hinterlegt für den E
 - Offizielles Docker image für postgres:
   - https://hub.docker.com/_/postgres/
   - darin beschrieben, wie man mit einem [init script](./src/test/docker/postgres/init-postgres.sh) eine zweite Datenbank erzeugt.
+
+- liquibase diffs
+  - https://www.liquibase.com/blog/liquibase-diffs#what-types-of-diff-based-commands-are-available-in-liquibase
+-  postgres
+   -  https://postgresql-tutorial.com/postgresql-how-to-list-all-columns-of-a-table/
