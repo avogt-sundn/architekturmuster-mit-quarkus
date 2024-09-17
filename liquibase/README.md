@@ -19,6 +19,7 @@ quarkus extension list
 #
 # To get more information, append `--full` to your command line.
 ````
+
 - h2 für schnelle in-memory datenbank Tests mit JPA
 - postgres für eine containerisierte Datenbank im dev Modus
 
@@ -47,6 +48,7 @@ grundlegende Konfiguration muss unter `<build><plugins></plugins>` so angelegt w
             </configuration>
         </plugin>
 ````
+
 Die Konfiguration des liquibase plugin im Abschnitt `<configuration>`:
 
 ````xml
@@ -60,12 +62,15 @@ Die Konfiguration des liquibase plugin im Abschnitt `<configuration>`:
         <password>password</password>
 </configuration>
 ````
+
 - die Umgebungsvariable DB_HOST wird in der vscode Konfiguration gesetzt und berücksichtigt, ob die postgres Datenbank unter localhost oder per docker network unter ihrem hostname `postgres` zu erreichen ist.
 
 ## Arbeiten mit liquibase zur Schemagenerierung
 
 Idee:
+
 1. eine vormals generierte
+
 ````bash
 mvn liquibase:generateChangeLog
 ````
@@ -90,6 +95,7 @@ rm target/generated-changelog.xml
 mvn liquibase:generateChangeLog
 diff src/main/resources/db/changeLog.xml target/generated-changelog.xml
 ````
+
 ## psql Befehle auf Kommandozeile
 
 Um in die Datenbank hineinzuschauen, muss gegeben sein:
@@ -104,6 +110,7 @@ Starte `psql` im Container mit dem `exec` Befehl von `docker`:
 docker compose exec postgres bash
 # root@a011eca056c9:/#
 ````
+
 Danach kann mit dem Befehl `psql` eine interaktive SQL-Befehlszeile gestartet werden. Das neue prompt erlaubt nun SQL direkt an die Datenbank zu schicken:
 
 - Parameter `-U`: der username
@@ -132,9 +139,8 @@ Postgres gruppiert Tabellen in Schemata, und Schemata finden sich in Datenbanken
 
 Mit diesen Informationen starten wir die SQL-Befehlszeile:
 
-
 ````bash
-root@a011eca056c9:/# psql -U katalog -d postgres
+root@a011eca056c9:/# psql -d katalog -U postgres
 # psql (14.1 (Debian 14.1-1.pgdg110+1))
 # Type "help" for help.
 
@@ -142,6 +148,7 @@ katalog=#
 ````
 
 und können nun in die Datenbankstruktur schauen:
+
 - Listet alle Tabellen im Schema auf:
 
     ````bash
@@ -157,6 +164,7 @@ und können nun in die Datenbankstruktur schauen:
 
 - zeigt die Spalten einer Tabelle samt Datentypen:
 -
+
     ````bash
     \d katalogentity
     #                        Table "public.katalogentity"
@@ -171,8 +179,8 @@ und können nun in die Datenbankstruktur schauen:
 
  Weitere Befehle finden sich z.B. hier:
 
- - https://www.devart.com/dbforge/postgresql/studio/postgres-list-schemas.html#what-is-schema
- - ****
+- <https://www.devart.com/dbforge/postgresql/studio/postgres-list-schemas.html#what-is-schema>
+- ****
 
 ## Arbeiten mit GUI Admin-Wekzeug 'pgadmin'
 
@@ -181,11 +189,12 @@ So zeigt pgadmin die Struktur der Datenbank:
 ![alt text](.images/SCR-20240903-ooj.png)
 
 - starte den Container mit
+
     ````bash
     docker compose up -d pgadmin
     ````
 
-- öffne im Browser unter http://localhost:9008/browser/
+- öffne im Browser unter <http://localhost:9008/browser/>
 - Logindaten kommn von [hier](docker-compose.yml):
 
     ````bash
@@ -195,37 +204,37 @@ So zeigt pgadmin die Struktur der Datenbank:
         PGADMIN_DEFAULT_EMAIL: admin@admin.com
         PGADMIN_DEFAULT_PASSWORD: root
     ````
+
 - klick auf das Icon mit dem Titel `Add New Server`:
-  -  General
-     -  Name: z.b. `local`
-  -  Connection (müssen übereinstimmen mit denem im [docker-compose.yml](docker-compose.yml)):
-     -   Host name/adress: `postgres` (wenn im Devcontainer arbeitend)
-     -   Username: `postgres`
-     -   Password: `password`
-  -  ![alt text](.images/SCR-20240903-ox7.png)
+  - General
+    - Name: z.b. `local`
+  - Connection (müssen übereinstimmen mit denem im [docker-compose.yml](docker-compose.yml)):
+    - Host name/adress: `postgres` (wenn im Devcontainer arbeitend)
+    - Username: `postgres`
+    - Password: `password`
+  - ![alt text](.images/SCR-20240903-ox7.png)
 
 # H2 im Test
+
 Im Projekt ist eine H2 als Test-Datenbank eingerichtet. Sie wird benutzt, wenn unit tests in der IDE oder mit `mvn test`ausgeführt werden.
 
 - in der `application-test.properties` finden sich diese Einträge dazu.
 
 Die Einträge gehören zum `test`-Profil, da sie in einer Datei mit dem Muster
 
--  `application-{profil}.(properties|yaml)`
+- `application-{profil}.(properties|yaml)`
 
 enthalten sind. Der Präfix `%test.` kann **und muss** innerhalb der so benannten Datei entfallen.
 
 Das test-Profil wird gestartet, wenn mvn test ausgeführt wird. Quarkus erlaubt weitere Profile zu aktivieren, die von links nach rechts höher priorisiert sind ("überschreibend"):
 
--   ````bash
+- ````bash
     mvn test -Dquarkus.test.profile=test,validate
     ````
 
-    - das Profile `validate` ergänzt mit seinen properties *oder* überschreibt properties aus test, die gleichen Namens sind.
-
+  - das Profile `validate` ergänzt mit seinen properties *oder* überschreibt properties aus test, die gleichen Namens sind.
 
 Gleichzeitig ist eine postgres Datenbank mit ihrem Treiber hinterlegt für den Einsatz in den Profilen `dev` oder  `prod`
-
 
 ## Initialisierung im Image
 
@@ -235,6 +244,7 @@ Im Rahmen der container-basierten Entwicklung machen wir das in der [docker-comp
 ## Schemaänderungen durchführen
 
 Arbeitsweise:
+
 1. Kodiere neue Entities oder anderen JPA Code.
 2. Kodiere die Schema-Änderungen in die [changeLog.xml](src/main/resources/db/changeLog.xml)
 3. Führe die Liquibase Schemaänderungen auf der Zieldatenbank aus.
@@ -264,6 +274,7 @@ validate:
 [ERROR]      Reason: liquibase.exception.DatabaseException: ERROR: relation "hibernate_sequences" already exists [Failed SQL: (0) CREATE TABLE hibernate_sequences (next_val BIGINT, sequence_name VARCHAR(255) NOT NULL, CONSTRAINT hibernate_sequences_pkey PRIMARY KEY (sequence_name))]
   - hier hilft ein mvn liquibase:changelogSync
   - Ursache kann sein, dass in der databasechangelog Tabelle die changes mit verschiedenen filenames auftauchen:
+
     ````
         katalog=# select * from databasechangelog;
         id        |       author       |     filename     |        dateexecuted        | orderexecuted | exectype |               md
@@ -284,23 +295,23 @@ validate:
     a84aa3ed4c1e213748 | addColumn tableName=katalogentity         |          |     | 4.25.1    |          |        | 6508186297
     (6 rows)
     ````
-- java.lang.IllegalStateException: The named datasource 'default-reactive' has not been properly configured. See https://quarkus.io/guides/datasource#multiple-datasources for information on how to do that.
-- `[error]: Build step io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor#configurationDescriptorBuilding threw an exception: io.quarkus.runtime.configuration.ConfigurationException: Datasource must be defined for persistence unit 'h2test'. Refer to https://quarkus.io/guides/datasource for guidance.`
-   - `quarkus.hibernate-orm."pg".datasource=pg`
-   - Lösung: sobald mehr als eine persistenceunit benutzt wird, muss diese konfigurativ eindeutig mit einer definierten datasource verbunden werden!
- - `[error]: Build step io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor#configurationDescriptorBuilding threw an exception: io.quarkus.runtime.configuration.ConfigurationException: Packages must be configured for persistence unit 'guitars'.`
-   - ....
- - `[ERROR] liquibase.exception.LiquibaseException: liquibase.exception.CommandValidationException: Output ChangeLogFile '/workspaces/architekturmuster-mit-quarkus/liquibase/target/generated-changelog.xml' already exists!`
-   - einfach die Datei vorher löschen, denn das Kommando `mvn liquibase:generateChangeLog` vermeidet das stille Überschreiben der in er pom.xml deklarierten Ausgabedatei.
 
+- java.lang.IllegalStateException: The named datasource 'default-reactive' has not been properly configured. See <https://quarkus.io/guides/datasource#multiple-datasources> for information on how to do that.
+- `[error]: Build step io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor#configurationDescriptorBuilding threw an exception: io.quarkus.runtime.configuration.ConfigurationException: Datasource must be defined for persistence unit 'h2test'. Refer to https://quarkus.io/guides/datasource for guidance.`
+  - `quarkus.hibernate-orm."pg".datasource=pg`
+  - Lösung: sobald mehr als eine persistenceunit benutzt wird, muss diese konfigurativ eindeutig mit einer definierten datasource verbunden werden!
+- `[error]: Build step io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor#configurationDescriptorBuilding threw an exception: io.quarkus.runtime.configuration.ConfigurationException: Packages must be configured for persistence unit 'guitars'.`
+  - ....
+- `[ERROR] liquibase.exception.LiquibaseException: liquibase.exception.CommandValidationException: Output ChangeLogFile '/workspaces/architekturmuster-mit-quarkus/liquibase/target/generated-changelog.xml' already exists!`
+  - einfach die Datei vorher löschen, denn das Kommando `mvn liquibase:generateChangeLog` vermeidet das stille Überschreiben der in er pom.xml deklarierten Ausgabedatei.
 
 ## Links
 
 - Offizielles Docker image für postgres:
-  - https://hub.docker.com/_/postgres/
+  - <https://hub.docker.com/_/postgres/>
   - darin beschrieben, wie man mit einem [init script](./src/test/docker/postgres/init-postgres.sh) eine zweite Datenbank erzeugt.
 
 - liquibase diffs
-  - https://www.liquibase.com/blog/liquibase-diffs#what-types-of-diff-based-commands-are-available-in-liquibase
--  postgres
-   -  https://postgresql-tutorial.com/postgresql-how-to-list-all-columns-of-a-table/
+  - <https://www.liquibase.com/blog/liquibase-diffs#what-types-of-diff-based-commands-are-available-in-liquibase>
+- postgres
+  - <https://postgresql-tutorial.com/postgresql-how-to-list-all-columns-of-a-table/>
