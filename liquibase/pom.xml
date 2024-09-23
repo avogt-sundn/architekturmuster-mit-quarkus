@@ -82,7 +82,6 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-h2</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -92,14 +91,10 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.29.1</version>
                 <configuration>
-                    <url>jdbc:postgresql://${env.DB_HOST}:5432/katalog</url>
-                    <referenceUrl>jdbc:postgresql://${env.DB_HOST}:5432/referenz</referenceUrl>
-                    <referenceUsername>postgres</referenceUsername>
-                    <referencePassword>password</referencePassword>
-
-                <searchPath>${project.basedir}/src/main/resources</searchPath>
+                    <url>jdbc:h2:file:./target/h2db;DB_CLOSE_DELAY=-1</url>
+                    <searchPath>${project.basedir}/src/main/resources</searchPath>
                     <propertyFile>db/liquibase.properties</propertyFile>
-                    <changeLogFile>db/changeLog.xml</changeLogFile>
+                    <changeLogFile>db/changelog/changesets/changeLog.xml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
 
                 </configuration>
