@@ -32,6 +32,11 @@ docker compose up -d postgres
 docker compose down
 
 ````
+## Quarkus Konfiguration per YAML
+
+Wird hier benutzt.
+
+yaml Dateien können nicht mit .properties Dateien gleichzeitig zur Konfiguration eingesetzt werden!
 
 ## Das maven plugin für liquibase
 
