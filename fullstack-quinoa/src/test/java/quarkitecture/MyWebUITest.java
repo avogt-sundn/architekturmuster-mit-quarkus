@@ -36,7 +36,7 @@ class MyWebUITest {
         page.waitForLoadState();
 
         String title = page.title();
-        Assertions.assertEquals("ExampleNg", title);
+        Assertions.assertEquals("MyApp", title);
 
     }
 }

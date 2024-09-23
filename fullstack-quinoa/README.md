@@ -17,11 +17,33 @@ Beim Schreiben von Code in diesem Projekt ist es wichtig, vorher den Quarkus Dev
 
 ## Bekannte Fehler
 
-Die `jest` Tests laufen auf Fehler, wenn sie innerhalb des Quarkus dev Modus ausgeführt werden.
+Die Tests laufen auf Fehler, wenn sie innerhalb des Quarkus dev Modus ausgeführt werden.
 
 ```bash
-2024-03-01 16:52:00,673 ERROR [io.qua.test] (Test runner thread) Test AllWebUITest#runTest() failed
-: java.lang.RuntimeException: java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.60 s -- in quarkitecture.MyWebUITest
+[INFO] Running quarkitecture.AllWebUITest
+2024-09-22 09:23:36,370 INFO  [io.quarkus] (main) fullstack-quinoa stopped in 0.012s
+2024-09-22 09:23:38,097 INFO  [io.qua.qui.dep.fra.FrameworkType] (build-27) Quinoa detected 'ANGULAR' frameworkType from package.json file.
+2024-09-22 09:23:38,121 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) Running Quinoa package manager test command: npm run test
+2024-09-22 09:23:38,281 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9)
+2024-09-22 09:23:38,281 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) > example-ng@0.0.0 test
+2024-09-22 09:23:38,281 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) > ng test --no-watch --no-progress --browsers=ChromeHeadless
+2024-09-22 09:23:38,281 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9)
+2024-09-22 09:23:40,140 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) 22 09 2024 09:23:40.139:INFO [karma-server]: Karma v6.4.2 server started at http://localhost:9876/
+2024-09-22 09:23:40,140 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) 22 09 2024 09:23:40.140:INFO [launcher]: Launching browsers ChromeHeadless with concurrency unlimited
+2024-09-22 09:23:40,144 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) 22 09 2024 09:23:40.144:INFO [launcher]: Starting browser ChromeHeadless
+2024-09-22 09:23:40,355 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) 22 09 2024 09:23:40.355:INFO [Chrome Headless 120.0.6099.224 (Linux aarch64)]: Connected on socket v5kp5x_1ldINxmJaAAAB with id 38902576
+2024-09-22 09:23:40,380 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) Chrome Headless 120.0.6099.224 (Linux aarch64): Executed 0 of 0 SUC
+                                                                                  Chrome Headless 120.0.6099.224 (Linux aarch64): Executed 0 of 0 SUCCESS (0 secs / 0 secs)1 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9)
+2024-09-22 09:23:40,381 INFO  [io.qua.qui.dep.pac.PackageManagerRunner] (build-9) TOTAL: 0 SUCCESS
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.099 s <<< FAILURE! -- in quarkitecture.AllWebUITest
+[ERROR] quarkitecture.AllWebUITest.runTest -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.RuntimeException:
+java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+        [error]: Build step io.quarkiverse.quinoa.deployment.QuinoaProcessor#processBuild threw an exception: java.lang.RuntimeException: Error in Quinoa while running package manager test command: npm run test
+        at io.quarkiverse.quinoa.deployment.packagemanager.PackageManagerRunner.test(PackageManagerRunner.java:95)
+....
+Caused by: java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
         [error]: Build step io.quarkiverse.quinoa.deployment.QuinoaProcessor#processBuild threw an exception: java.lang.RuntimeException: Error in Quinoa while running package manager test command: npm run test
 ```
 

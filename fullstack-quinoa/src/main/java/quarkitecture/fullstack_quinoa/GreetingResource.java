@@ -11,6 +11,6 @@ class GreetingResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Antwort hello() {
-        return new Antwort("Hello from RESTEasy Reactive");
+        return new Antwort("mein lieber!");
     }
 }
