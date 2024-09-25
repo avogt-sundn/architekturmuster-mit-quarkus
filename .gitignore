@@ -49,6 +49,7 @@ nb-configuration.xml
 
 # Node
 **/dist/**
+**/node_modules/**
 
 # compressed files
 *.zip
