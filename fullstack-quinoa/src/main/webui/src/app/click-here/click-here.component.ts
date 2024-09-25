@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 @Component({
     selector: 'app-click-here',
     templateUrl: './click-here.component.html',
-    styleUrl: './click-here.component.css'
+    styleUrl: './click-here.component.css',
+    standalone: true
 })
 
 export class ClickHereComponent {

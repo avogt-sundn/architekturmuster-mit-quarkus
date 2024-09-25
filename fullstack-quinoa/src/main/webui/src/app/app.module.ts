@@ -7,13 +7,11 @@ import { AppComponent } from './app.component';
 import { ClickHereComponent } from './click-here/click-here.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        ClickHereComponent,
-    ],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
-        AppRoutingModule
+        AppRoutingModule,
+        ClickHereComponent
     ],
     providers: [provideHttpClient()
     ],

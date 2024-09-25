@@ -9,8 +9,9 @@ describe('ClickHereComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-        declarations: [ClickHereComponent], providers: [provideHttpClient()]
-    })
+    imports: [ClickHereComponent],
+    providers: [provideHttpClient()]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ClickHereComponent);

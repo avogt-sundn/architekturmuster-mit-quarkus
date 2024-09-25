@@ -7,15 +7,13 @@ import { ClickHereComponent } from './click-here/click-here.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterModule.forRoot([])
-      ],
-      declarations: [
-            AppComponent,
-            ClickHereComponent
-        ],
-        providers: [provideHttpClient()]
-    }).compileComponents();
+    imports: [
+        RouterModule.forRoot([]),
+        ClickHereComponent
+    ],
+    declarations: [AppComponent],
+    providers: [provideHttpClient()]
+}).compileComponents();
   });
 
   it('should create the app', () => {
