@@ -17,6 +17,7 @@
             </column>
             <column name="eintra2g" type="VARCHAR(255)" />
             <column name="eintrag" type="VARCHAR(255)" />
+            <column name="langertext" type="clob" />
         </createTable>
     </changeSet>
 </databaseChangeLog>

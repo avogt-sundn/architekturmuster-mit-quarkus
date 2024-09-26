@@ -6,9 +6,7 @@ networks:
 services:
 
   postgres:
-    build:
-      context: src/test/docker/postgres
-      dockerfile: Dockerfile
+    image: postgres:14.1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
