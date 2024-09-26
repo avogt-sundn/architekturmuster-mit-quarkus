@@ -33,7 +33,7 @@
         "source=${env:HOME}${env:USERPROFILE}/.zsh_history,target=/home/vscode/.zsh_history,type=bind",
         "source=${env:HOME}${env:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind"
     ],
-    "postCreateCommand": "sudo chown -R vscode.vscode /home/vscode/.m2",
+    "postCreateCommand": "sudo chown -R vscode.vscode /home/vscode/.m2;mkdir -p /home/vscode/.redhat/; echo '{\"disabled\":true}' > /home/vscode/.redhat/io.quarkus.analytics.localconfig",
 
     "containerEnv": {
         "DOCKER_NETWORK": "docker-default-network",
