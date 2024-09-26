@@ -4,11 +4,16 @@ import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-click-here',
-    templateUrl: './click-here.component.html',
     styleUrl: './click-here.component.css',
-    standalone: true
+    standalone: true,
+    template:
+        `
+        <div>
+        <p> Willkommen, {{ greeting }} </p>
+                <button (click)="click()" >Knopf</button>
+        <div>
+            `
 })
-
 export class ClickHereComponent {
     private http = inject(HttpClient);
     greeting = "(Bitte Knopf drücken)";
