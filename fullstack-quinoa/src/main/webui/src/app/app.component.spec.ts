@@ -9,9 +9,9 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
     imports: [
         RouterModule.forRoot([]),
-        ClickHereComponent
+        ClickHereComponent,
+        AppComponent
     ],
-    declarations: [AppComponent],
     providers: [provideHttpClient()]
 }).compileComponents();
   });
