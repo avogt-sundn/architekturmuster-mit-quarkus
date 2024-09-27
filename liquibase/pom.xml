@@ -97,10 +97,8 @@
                 <configuration>
                     <url>jdbc:h2:file:./target/h2db;DB_CLOSE_DELAY=-1</url>
                     <searchPath>${project.basedir}/src/main/resources</searchPath>
-                    <propertyFile>db/liquibase.properties</propertyFile>
                     <changeLogFile>db/changelog/changesets/changeLog.xml</changeLogFile>
                     <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
-
                 </configuration>
             </plugin>
             <plugin>

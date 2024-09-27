@@ -32,11 +32,6 @@ docker compose up -d postgres
 docker compose down
 
 ````
-## Quarkus Konfiguration per YAML
-
-Wird hier benutzt.
-
-yaml Dateien können nicht mit .properties Dateien gleichzeitig zur Konfiguration eingesetzt werden!
 
 ## Das maven plugin für liquibase
 
@@ -57,51 +52,45 @@ grundlegende Konfiguration muss unter `<build><plugins></plugins>` so angelegt w
 Die Konfiguration des liquibase plugin im Abschnitt `<configuration>`:
 
 ````xml
+<plugin>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-maven-plugin</artifactId>
+    <version>4.29.1</version>
     <configuration>
-
-        <searchPath>${project.basedir}/src/main/resources/db</searchPath>
-        <changeLogFile>changeLog.xml</changeLogFile>
+        <url>jdbc:h2:file:./target/h2db;DB_CLOSE_DELAY=-1</url>
+        <searchPath>${project.basedir}/src/main/resources</searchPath>
+        <propertyFile>db/liquibase.properties</propertyFile>
+        <changeLogFile>db/changelog/changesets/changeLog.xml</changeLogFile>
         <outputChangeLogFile>${project.basedir}/target/generated-changelog.xml</outputChangeLogFile>
-        <url>jdbc:postgresql://${env.DB_HOST}:5432/katalog</url>
-        <username>postgres</username>
-        <password>password</password>
-</configuration>
+    </configuration>
+</plugin>
 ````
-
-- die Umgebungsvariable DB_HOST wird in der vscode Konfiguration gesetzt und berücksichtigt, ob die postgres Datenbank unter localhost oder per docker network unter ihrem hostname `postgres` zu erreichen ist.
 
 ## Arbeiten mit liquibase zur Schemagenerierung
 
-Idee:
-
-1. eine vormals generierte
 
 ````bash
 mvn liquibase:generateChangeLog
 ````
 
-- schreibt in die Datei`generated-changelog.xml`
-  - der Name ist in der pom.xml konfiguriert unter
-     `<outputChangeLogFile>generated-changelog.xml</outputChangeLogFile>`
+- schreibt in die Datei `target/generated-changelog.xml`
+- der Name ist in der pom.xml konfiguriert
 
 ````bash
-# zum löschen der Datenbank einfach Container löschen mit: down
 docker compose down
-# dadurch wird hier eine neue Instanz erzeugt: up
+# zum löschen der Datenbank einfach Container löschen mit: down
 docker compose up -d postgres
-# die zwei Schemata
-mvn test -Dquarkus.test.profile=referenz
-mvn test -Dquarkus.test.profile=prod
-mvn liquibase:diff
-mvn test -Dquarkus.test.profile=prod
-mvn liquibase:diff
+# dadurch wird hier eine neue Instanz erzeugt: up
+
+mvn clean
+# H2 und vormals erzeugtes log löschen
+quarkus dev -Dquarkus.hibernate-orm.database.generation=drop-and-create
+# Schema durch Hibernate anlegen lassen
+
 mvn liquibase:generateChangeLog
-rm target/generated-changelog.xml
-mvn liquibase:generateChangeLog
-diff src/main/resources/db/changeLog.xml target/generated-changelog.xml
 ````
 
-## psql Befehle auf Kommandozeile
+## Einblick in postgres: psql Befehle auf Kommandozeile
 
 Um in die Datenbank hineinzuschauen, muss gegeben sein:
 
@@ -136,11 +125,15 @@ Postgres gruppiert Tabellen in Schemata, und Schemata finden sich in Datenbanken
         POSTGRES_DB: "katalog"
     ````
 
-    ````bash
-    # application.properties:
-    quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST:localhost}:5432/katalog
-    # der Datenbankname lautet: katalog
-    ````
+````bash
+# application.properties:
+quarkus.datasource.jdbc.url=jdbc:postgresql://${DB_HOST:localhost}:5432/katalog
+# der Datenbankname lautet: katalog
+````
+
+
+- die Umgebungsvariable DB_HOST wird in der vscode Konfiguration gesetzt und berücksichtigt, ob die postgres Datenbank unter localhost oder per docker network unter ihrem hostname `postgres` zu erreichen ist.
+
 
 Mit diesen Informationen starten wir die SQL-Befehlszeile:
 
@@ -157,18 +150,19 @@ und können nun in die Datenbankstruktur schauen:
 - Listet alle Tabellen im Schema auf:
 
     ````bash
-    SELECT tablename FROM pg_tables WHERE schemaname = 'public';
-    #        tablename
-    # -----------------------
-    #  databasechangeloglock
-    #  databasechangelog
-    #  hibernate_sequences
-    #  katalogentity
-    # (4 rows)
+    \d
+                    List of relations
+    Schema |         Name          | Type  |  Owner
+    --------+-----------------------+-------+----------
+    public | databasechangelog     | table | postgres
+    public | databasechangeloglock | table | postgres
+    public | hibernate_sequences   | table | postgres
+    public | katalogentity         | table | postgres
+    (4 rows)
     ````
 
 - zeigt die Spalten einer Tabelle samt Datentypen:
--
+
 
     ````bash
     \d katalogentity
@@ -202,7 +196,7 @@ So zeigt pgadmin die Struktur der Datenbank:
 - öffne im Browser unter <http://localhost:9008/browser/>
 - Logindaten kommn von [hier](docker-compose.yml):
 
-    ````bash
+    ````yaml
     pgadmin:
         image: dpage/pgadmin4
         environment:
@@ -219,7 +213,7 @@ So zeigt pgadmin die Struktur der Datenbank:
     - Password: `password`
   - ![alt text](.images/SCR-20240903-ox7.png)
 
-# H2 im Test
+## H2 im Test
 
 Im Projekt ist eine H2 als Test-Datenbank eingerichtet. Sie wird benutzt, wenn unit tests in der IDE oder mit `mvn test`ausgeführt werden.
 
@@ -227,19 +221,29 @@ Im Projekt ist eine H2 als Test-Datenbank eingerichtet. Sie wird benutzt, wenn u
 
 Die Einträge gehören zum `test`-Profil, da sie in einer Datei mit dem Muster
 
-- `application-{profil}.(properties|yaml)`
+- `application-{profil}.properties`
 
 enthalten sind. Der Präfix `%test.` kann **und muss** innerhalb der so benannten Datei entfallen.
 
-Das test-Profil wird gestartet, wenn mvn test ausgeführt wird. Quarkus erlaubt weitere Profile zu aktivieren, die von links nach rechts höher priorisiert sind ("überschreibend"):
+## Quarkus dev-Profil mit H2 oder Postgres
 
-- ````bash
-    mvn test -Dquarkus.test.profile=test,validate
-    ````
+Das `dev`-Profil wird mit H2 gestartet, dabei ist diese H2 datei-basiert.
+Es benutzt liquibase und testet so das geschriebene changeset gegen H2.
+Hibernate validiert lediglich danach, führt aber selber keine Schemaänderung aus.
 
-  - das Profile `validate` ergänzt mit seinen properties *oder* überschreibt properties aus test, die gleichen Namens sind.
+````bash
+quarkus dev
+# mvn quarkus:dev
 
-Gleichzeitig ist eine postgres Datenbank mit ihrem Treiber hinterlegt für den Einsatz in den Profilen `dev` oder  `prod`
+# nutzt also H2 persistent, abgelegt in der Datei im target Ordner
+mvn clean; quarkus dev
+# löscht die Datenbanb und legt H2 neu an, rollt liquibase aus
+
+quarkus dev -Dquarkus.profile=prod -Dquarkus.test.profile=prod
+# startet den Service gegen die postgres Datenbank
+# und läßt Unit Tests gegen dieselbe postgres laufen
+````
+
 
 ## Initialisierung im Image
 
@@ -271,6 +275,27 @@ cp target/generated-changelog.xml src/main/resources/db/changeLog.xml
 validate:
 
 - Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [eintra2g] in table [KatalogEntity]
+
+### Umgang mit H2 und Postgres Inkompatibilitäten
+
+Im Beispielcode findet sich ein `@Lob String`, der also auf eine große Spalte abgebildet werden soll. Liquibase muss hier differenzieren:
+
+- h2 will als SQL Typ 'CHARACTER LARGE OBJECT', im changeset generiert liquibase dazu den Typ 'text'
+- postgres will als SQL Typ 'OID', das generierte `text`wird leider nicht darauf abgebildet.
+
+Darum werden getrennt changesets angelegt in [002-langertext.xml](src/main/resources/db/changelog/changesets/002-langertext.xml). In den Profilen werden nun unterschiedliche labels aktiviert, die die changesets auswählen:
+
+- `quarkus.liquibase.labels=postgres-changeset-only`
+
+- wählt alle changesets mit dem label *zusätzlich* zu den nicht markierten aus:
+
+    ````xml
+    <changeSet author="team-architekturmuster" id="3" labels="postgres-changeset-only">
+        <addColumn tableName="katalogentity">
+            <column name="langertext" type="oid" />
+        </addColumn>
+    </changeSet>
+    ````
 
 ### troubleshooting
 
