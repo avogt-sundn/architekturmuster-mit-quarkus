@@ -7,7 +7,7 @@
     "java.project.explorer.showNonJavaResources": false,
     "maven.view": "flat",
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
     "java.checkstyle.configuration": "${workspaceFolder}/liquibase/src/main/resources/changelog.xml",
     "files.exclude": {
         "**/.git": true,
@@ -19,22 +19,6 @@
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
-        "**/.factorypath": true,
-        "[!f]*/**": true,
-        "f[!u]*/**": true,
-        "fu[!l]*/**": true,
-        "ful[!l]*/**": true,
-        "full[!s]*/**": true,
-        "fulls[!t]*/**": true,
-        "fullst[!a]*/**": true,
-        "fullsta[!c]*/**": true,
-        "fullstac[!k]*/**": true,
-        "fullstack[!-]*/**": true,
-        "fullstack-[!q]*/**": true,
-        "fullstack-q[!u]*/**": true,
-        "fullstack-qu[!i]*/**": true,
-        "fullstack-qui[!n]*/**": true,
-        "fullstack-quin[!o]*/**": true,
-        "fullstack-quino[!a]*/**": true
+        "**/.factorypath": true
     }
 }
