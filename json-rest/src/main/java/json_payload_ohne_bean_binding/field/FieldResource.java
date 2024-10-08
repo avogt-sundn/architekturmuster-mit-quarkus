@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import io.quarkus.logging.Log;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.ws.rs.GET;
@@ -39,10 +41,12 @@ class FieldResource {
         return Response.created(URI.create(BASEURI + "/" + id)).build();
     }
 
+    @RunOnVirtualThread
     @GET
     @Path("{id}")
     public Response load(@PathParam("id") Long id) {
 
+        Log.info("GET ist angekommen");
         Organisation org = store.get(id);
         return Response.ok(org).build();
     }
