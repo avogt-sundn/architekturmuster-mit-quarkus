@@ -1,14 +1,13 @@
 package quarkitecture;
 
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.CoreMatchers.*;
-
-import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Test;
-
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.CoreMatchers.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(GreetingResource.class)
