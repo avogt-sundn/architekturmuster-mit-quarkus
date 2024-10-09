@@ -3,6 +3,7 @@ package organisationen.attribute;
 import java.net.URI;
 
 import io.quarkus.logging.Log;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
@@ -21,6 +22,7 @@ import jakarta.ws.rs.core.Response;
  */
 @Path("jsonresource")
 @ApplicationScoped
+@RunOnVirtualThread
 public class JsonResource {
 
     Jsonb jsonb;
