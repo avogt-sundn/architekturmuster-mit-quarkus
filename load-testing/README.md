@@ -3,7 +3,7 @@
 k6 ist ein Lastgenerator und ein Projekt von Grafana.
 
 - https://grafana.com/docs/k6/latest/
-  
+
 ## Starten der Umgebung mit docker compose
 
 ```bash
@@ -122,3 +122,17 @@ Am Ende wird eine Statistik ausgegeben:
 Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refresh=5s&from=now-15m&to=now]() erscheint das Dashboard mit Daten, nachdem der Test gelaufen ist.
 
 ![Alt text](grafana/screenshot1.png)
+
+## Schreiben der Test-Skripte
+
+1. IDE Extension
+
+   kann installiert werden für vs code und intellij.
+
+2. Typescript Types
+
+    ````bash
+    npm install --save-dev @types/k6
+    ````
+
+- https://grafana.com/docs/k6/latest/set-up/configure-your-code-editor/
