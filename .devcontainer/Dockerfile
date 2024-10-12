@@ -45,7 +45,7 @@ RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) 
     && ln -s /opt/mandrel-java21-23.1.1.0-Final /opt/mandrel
 
 # BEGIN ------ install common utils: ping, dig, ncat, file
-RUN apt-get update && apt-get install -y iputils-ping dnsutils file
+RUN apt-get update && apt-get install -y iputils-ping dnsutils file httpie
 #   END ------ install common utils: ping, dig, ncat, file
 
 #   BEGIN ------ install kompose and kubectl and helm
