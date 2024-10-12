@@ -1,30 +1,42 @@
 # Load testing mit K6
 
+k6 ist ein Lastgenerator und ein Projekt von Grafana.
+
+- https://grafana.com/docs/k6/latest/
+  
 ## Starten der Umgebung mit docker compose
 
 ```bash
-docker compose -f docker-compose-k6.yml up -d
+docker compose up -d
 ```
 
-## k6 auf Kommandozeile benutzen
+## Wie kann ich k6 aufrufen?
 
-k6 ist ein Kommandozeilentool.
-
-k6 kann auf dem eigenen Rechner installiert werden oder im Docker Container `k6` der mit dem compose gestartet wurde.
-
-Im Container `k6` kann eine Kommandozeile geöffnet werden durch `exec`, aufgerufen im VSCode-Terminal:
+k6 ist
+- ein Kommandozeilen-Tool
+- ein server, der den Lasttest ausführt
 
 
-```bash
-docker compose -f docker-compose-k6.yml exec k6 /bin/ash
-# /home/k6 #
-```
+ 1. Der k6 Server wird in diesem Projekt als Container  aus dem [docker-compose.yml](docker-compose.yml) gestartet.
 
-Es benötigt zwei Parameter:
+1. Das k6 Kommando ist im VS Code Devcontainer bereits installiert. UNter WSL2 oder MacOS muss es manuell installiert werden mittels
+
+   - WSL2: `sudo apt install k6`
+   - MacOS: `brew install k6`
+   - Windows ohne WSL2: Hier kann das k6 Kommando innerhalb des k6 Containers interaktiv benutzt werden, in dem dazu eine shell dort geöffnet wird:
+
+    ```bash
+    docker compose exec k6 /bin/ash
+    # /home/k6 #
+    # jetzt kann k6 ausgeführt werden
+    ```
+
+## k6 Kommando startet die Testläufe
+
+`k6`  benötigt zwei Parameter:
 
 1. das Test-Skript
 1. die URL der influxdb-Zeitreihendatenbank
-
    - das Ausgabeziel ist als Umgebungsvariable K6_OUT hinterlegt:
         ```bash
         export K6_OUT=influxdb=http://influxdb:8086/k6
@@ -37,7 +49,7 @@ Es benötigt zwei Parameter:
         k6 run /scripts/script.js --out influxdb=http://influxdb:8086/k6
         ```
 
-## Starten im VS Code - Devcontainer
+### Starten im VS Code - Devcontainer
 
 Das Projekt sollte im Dev Container ("reopen in devcontainer") gestartet werden, damit alle tools verfügbar sind.
 

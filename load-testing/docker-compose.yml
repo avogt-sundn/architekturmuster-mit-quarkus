@@ -1,4 +1,3 @@
-version: "3.8"
 networks:
   default:
     name: docker-default-network
@@ -21,9 +20,8 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
 
   grafana:
-    image: k6-grafana
     build:
-      context: src/main/grafana
+      context: src/docker/grafana
       dockerfile: Dockerfile
 #    entrypoint: /bin/sh
 #    user: root
@@ -46,5 +44,3 @@ services:
       - "6565:6565"
     environment:
       - K6_OUT=influxdb=http://influxdb:8086/k6
-    volumes:
-      - ./src/main/grafana/scripts:/scripts
