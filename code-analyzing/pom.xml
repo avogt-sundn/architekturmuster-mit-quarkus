@@ -160,9 +160,9 @@
                     </java>
                 </configuration>
                 <executions>
-                    <!-- nicht in der IDE aktivieren! -->
-                    <!-- <?m2e execute onConfiguration?> -->
                     <execution>
+                        <!-- nicht in der IDE aktivieren! -->
+                        <?m2e ignore?>
                         <id>apply-spotless</id>
                         <phase>compile</phase>
                         <goals>
