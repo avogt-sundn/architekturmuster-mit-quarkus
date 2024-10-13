@@ -5,6 +5,14 @@ networks:
 
 services:
 
+# docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti grafana/otel-lgtm
+  otel:
+    image: grafana/otel-lgtm
+    ports:
+      - 4317:4317
+      - 4318:4318
+      - 3318:3000
+
   influxdb:
     image: influxdb:1.8
     ports:
@@ -44,3 +52,20 @@ services:
       - "6565:6565"
     environment:
       - K6_OUT=influxdb=http://influxdb:8086/k6
+
+
+  postgres:
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: katalog
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+    mem_limit: 512m
+    mem_reservation: 128m

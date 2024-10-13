@@ -1,0 +1,70 @@
+---
+openapi: 3.0.3
+info:
+  title: myservice API
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
+paths:
+  /resourcewithmetrics:
+    post:
+      tags:
+      - Resource With Metrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                $ref: "#/components/schemas/JsonValue"
+      responses:
+        "200":
+          description: OK
+  /resourcewithmetrics/classic:
+    get:
+      tags:
+      - Resource With Metrics
+      responses:
+        "200":
+          description: OK
+  /resourcewithmetrics/virtual:
+    get:
+      tags:
+      - Resource With Metrics
+      responses:
+        "200":
+          description: OK
+  /resourcewithmetrics/{id}:
+    get:
+      tags:
+      - Resource With Metrics
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    JsonValue:
+      type: object
+      properties:
+        valueType:
+          $ref: "#/components/schemas/ValueType"
+    ValueType:
+      enum:
+      - ARRAY
+      - OBJECT
+      - STRING
+      - NUMBER
+      - "TRUE"
+      - "FALSE"
+      - "NULL"
+      type: string

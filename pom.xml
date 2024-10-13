@@ -13,6 +13,7 @@
         <module>jpa-versioning</module>
         <module>kotlin-starting</module>
         <module>liquibase</module>
+        <module>load-testing</module>
         <module>json-rest</module>
         <module>json-sql-oracle</module>
         <module>json-sql-postgres</module>
