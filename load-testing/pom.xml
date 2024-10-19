@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>quarkitecture</groupId>
-    <artifactId>json-sql-postgres</artifactId>
+    <artifactId>load-testing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
         <sonar.host.url>http://host.docker.internal:9000</sonar.host.url>
@@ -37,6 +37,22 @@
             <artifactId>quarkus-opentelemetry</artifactId>
         </dependency>
 
+
+       
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.micrometer.registry</groupId>
+            <artifactId>quarkus-micrometer-registry-otlp</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+        <!-- <dependency>
+            <groupId>io.quarkiverse.micrometer.registry</groupId>
+            <artifactId>quarkus-micrometer-registry-jmx</artifactId>
+            <version>3.2.4</version>
+        </dependency> -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>

@@ -6,12 +6,12 @@ networks:
 services:
 
 # docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti grafana/otel-lgtm
-  otel:
-    image: grafana/otel-lgtm
-    ports:
-      - 4317:4317
-      - 4318:4318
-      - 3318:3000
+  # otel:
+  #   image: grafana/otel-lgtm
+  #   ports:
+  #     - 4317:4317
+  #     - 4318:4318
+  #     - 3318:3000
 
   influxdb:
     image: influxdb:1.8
@@ -27,14 +27,16 @@ services:
       - DOCKER_INFLUXDB_INIT_RETENTION=1w
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
 
-  grafana:
+  otel:
     build:
       context: src/docker/grafana
       dockerfile: Dockerfile
 #    entrypoint: /bin/sh
 #    user: root
     ports:
-      - "3000:3000"
+      - 4317:4317
+      - 4318:4318
+      - 3000:3000
     environment:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -42,16 +44,16 @@ services:
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
       - INFLUX_TOKEN=my-super-secret-auth-token
 
-  k6:
-    image: grafana/k6
-    entrypoint: /bin/sleep
-    command:
-      - "infinity"
-    user: root
-    ports:
-      - "6565:6565"
-    environment:
-      - K6_OUT=influxdb=http://influxdb:8086/k6
+  # k6:
+  #   image: grafana/k6
+  #   entrypoint: /bin/sleep
+  #   command:
+  #     - "infinity"
+  #   user: root
+  #   ports:
+  #     - "6565:6565"
+  #   environment:
+  #     - K6_OUT=influxdb=http://influxdb:8086/k6
 
 
   postgres:
@@ -67,5 +69,3 @@ services:
       interval: 10s
       timeout: 30s
       retries: 5
-    mem_limit: 512m
-    mem_reservation: 128m

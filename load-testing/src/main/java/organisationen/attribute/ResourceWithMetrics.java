@@ -32,8 +32,8 @@ public class ResourceWithMetrics {
     public ResourceWithMetrics(Jsonb jsonb, Meter meter) {
 
         this.jsonb = jsonb;
-        counter = meter.counterBuilder("hello-metrics")
-                .setDescription("hello-metrics")
+        counter = meter.counterBuilder("my-metrics")
+                .setDescription("my-metrics")
                 .setUnit("invocations")
                 .build();
     }

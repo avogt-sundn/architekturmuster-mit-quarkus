@@ -1,4 +1,4 @@
-FROM grafana/grafana:8.5.21
+FROM grafana/otel-lgtm
 
 COPY grafana-dashboard.yaml /etc/grafana/provisioning/dashboards/main.yaml
 COPY grafana-datasource.yaml /etc/grafana/provisioning/datasources/datasource.yaml

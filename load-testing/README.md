@@ -10,6 +10,23 @@ k6 ist ein Lastgenerator und ein Projekt von Grafana.
 docker compose up -d
 ```
 
+## Grafana Open Telemetry Docker image
+
+```bash
+docker compose up -d
+
+docker compose logs -f
+# [Die  Log-Ausgabe endet mit den Zeilen:]
+#
+# otel-1  | The OpenTelemetry collector and the Grafana LGTM stack are up and running. (created /tmp/ready)
+# otel-1  | Open ports:
+# otel-1  |  - 4317: OpenTelemetry GRPC endpoint
+# otel-1  |  - 4318: OpenTelemetry HTTP endpoint
+# otel-1  |  - 3000: Grafana. User: admin, password: admin
+```
+
+- https://grafana.com/docs/k6/latest/results-output/real-time/opentelemetry/
+-
 ## Wie kann ich k6 aufrufen?
 
 k6 ist
@@ -68,11 +85,25 @@ Vor dem Testlauf ist das quarkus Projekt mit `quarkus dev` zu starten, so dass e
    - `host.docker.interal` ist der hostname, so wie das Gastsystem aus einem Devcontainer aus erreicht werden kann
 
 
-### Starten des k6 Tests
+### Starten der Applikation
+
+Für Lasttests sollte die Quarkus Applikation wie für Produktion gebaut werden. Der Dev Modus beeinflusst die Leistung und das Fehler-handling.
+
+````bash
+# erzeugt ein runner.jar
+mvn package
+java -jar target/load-testing-1.0.0-SNAPSHOT-runner.jar
+````
+
+- in der [application.properties](src/main/*resources**/application.properties) wurde dazu das packaging Modell auf `uber-jar` eingestellt:
+    - `quarkus.package.jar.type=uber-jar`
+    -
+## Starten des k6 Tests
 
 Mit der Ausführung erscheint diese Meldung und der Test startet.
 
 Am Ende wird eine Statistik ausgegeben:
+
 ```bash
 
 # /home/k6 # k6 run /scripts/script.js
@@ -136,3 +167,12 @@ Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refres
     ````
 
 - https://grafana.com/docs/k6/latest/set-up/configure-your-code-editor/
+
+
+## troubleshooting
+
+- Caused by: jakarta.enterprise.inject.UnsatisfiedResolutionException: Unsatisfied dependency for type io.opentelemetry.api.metrics.Meter and qualifiers [@Default]
+  - Ursache: in der application.properties fehlt `quarkus.otel.metrics.enabled=true`
+- 11:59:04 WARNING traceId=, parentId=, spanId=, sampled= [io.op.ex.in.gr.GrpcExporter] (vert.x-eventloop-thread-2) Failed to export metrics. Server responded with gRPC status code 2. Error message: Failed to export MetricsRequestMarshalers. The request could not be executed. Full error message: Connection refused: localhost/127.0.0.1:4317
+  -  12:04:16 WARN  traceId=, parentId=, spanId=, sampled= [io.mi.re.ot.OtlpMeterRegistry] (otlp-metrics-publisher-5) Failed to publish metrics to OTLP receiver (context: url=http://localhost:4318/v1/metrics, resource-attributes={}): java.net.ConnectException: Connection refused
+     -  Ursache: in der application.properties fehlt `quarkus.micrometer.export.otlp.url=http://otel:4318`
