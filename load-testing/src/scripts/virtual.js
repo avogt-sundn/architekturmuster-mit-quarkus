@@ -19,7 +19,7 @@ export const options = {
         { duration: "3s", target: target_vus },
 
         // Stay at rest on TARGET_VUS VUs for 50s
-        { duration: "1s", target: target_vus * 2 },
+        { duration: "1s", target: target_vus * 4 },
 
         // Stay at rest on TARGET_VUS VUs for 50s
         { duration: "10s", target: target_vus },

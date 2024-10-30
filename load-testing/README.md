@@ -65,6 +65,7 @@ k6 ist
         ```bash
         k6 run /scripts/script.js --out influxdb=http://influxdb:8086/k6
         ```
+   > der hostname `influxdb` funktioniert nur, wenn k6 im Docker-container ausgeführt wird. Das ist der Fall, wenn VS Code im Devcontainer gestartet wird. Wenn k6 auf dem host installiert ist, muss hier die url auf http://localhost:8086/k6 geändert werden.
 
 ### Starten im VS Code - Devcontainer
 
@@ -171,8 +172,13 @@ Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refres
 
 ## troubleshooting
 
-- Caused by: jakarta.enterprise.inject.UnsatisfiedResolutionException: Unsatisfied dependency for type io.opentelemetry.api.metrics.Meter and qualifiers [@Default]
+#### Caused by: jakarta.enterprise.inject.UnsatisfiedResolutionException: Unsatisfied dependency for type io.opentelemetry.api.metrics.Meter and qualifiers [@Default]
   - Ursache: in der application.properties fehlt `quarkus.otel.metrics.enabled=true`
-- 11:59:04 WARNING traceId=, parentId=, spanId=, sampled= [io.op.ex.in.gr.GrpcExporter] (vert.x-eventloop-thread-2) Failed to export metrics. Server responded with gRPC status code 2. Error message: Failed to export MetricsRequestMarshalers. The request could not be executed. Full error message: Connection refused: localhost/127.0.0.1:4317
-  -  12:04:16 WARN  traceId=, parentId=, spanId=, sampled= [io.mi.re.ot.OtlpMeterRegistry] (otlp-metrics-publisher-5) Failed to publish metrics to OTLP receiver (context: url=http://localhost:4318/v1/metrics, resource-attributes={}): java.net.ConnectException: Connection refused
-     -  Ursache: in der application.properties fehlt `quarkus.micrometer.export.otlp.url=http://otel:4318`
+
+#### 11:59:04 WARNING traceId=, parentId=, spanId=, sampled= [io.op.ex.in.gr.GrpcExporter] (vert.x-eventloop-thread-2) Failed to export metrics. Server responded with gRPC status code 2. Error message: Failed to export MetricsRequestMarshalers. The request could not be executed. Full error message: Connection refused: localhost/127.0.0.1:4317
+
+#### 12:04:16 WARN  traceId=, parentId=, spanId=, sampled= [io.mi.re.ot.OtlpMeterRegistry] (otlp-metrics-publisher-5) Failed to publish metrics to OTLP receiver (context: url=http://localhost:4318/v1/metrics, resource-attributes={}): java.net.ConnectException: Connection refused
+-  Ursache: in der application.properties fehlt `quarkus.micrometer.export.otlp.url=http://otel:4318`
+
+### Aufruf K6 mit otlp
+export K6_OTEL_EXPORTER_OTLP_PROTOCOL=grpc K6_OTEL_GRPC_EXPORTER_INSECURE=true K6_OTEL_METRIC_PREFIX=k6_ K6_OTEL_GRPC_EXPORTER_ENDPOINT=localhost:4317;  k6 run  src/scripts/classic.js  --out experimental-opentelemetry
