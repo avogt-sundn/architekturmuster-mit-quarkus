@@ -1,4 +1,3 @@
-version: "3.8"
 networks:
   default:
     name: docker-default-network
@@ -8,9 +7,6 @@ networks:
 services:
   postgres:
     image: postgres:14
-    container_name: postgres
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -25,27 +21,42 @@ services:
       postgres:
         condition: service_healthy
     image: openfga/openfga:latest
-    container_name: migrate
     command: migrate
     environment:
       - OPENFGA_DATASTORE_ENGINE=postgres
       - OPENFGA_DATASTORE_URI=postgres://postgres:password@postgres:5432/postgres?sslmode=disable
+
 
   openfga:
     depends_on:
       migrate:
         condition: service_completed_successfully
     image: openfga/openfga:latest
-    container_name: openfga
     environment:
       - OPENFGA_DATASTORE_ENGINE=postgres
       - OPENFGA_DATASTORE_URI=postgres://postgres:password@postgres:5432/postgres?sslmode=disable
       - OPENFGA_LOG_FORMAT=json
     command: run
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/local/bin/grpc_health_probe", "-addr=:8081"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # ports:
+    #   # Needed for the http server
+    #   - "8080:8080"
+    #   # Needed for the grpc server (if used)
+    #   - "8081:8081"
+    #   # Needed for the playground (Do not enable in prod!)
+    #   - "3000:3000"
+
+
+  openfga-gw:
+    depends_on:
+      openfga:
+        condition: service_started
+    build:
+      context: src/docker/nginx
+      dockerfile: Dockerfile
     ports:
-      # Needed for the http server
-      - "8080:8080"
-      # Needed for the grpc server (if used)
-      - "8081:8081"
-      # Needed for the playground (Do not enable in prod!)
-      - "3000:3000"
+      - 3000:3000

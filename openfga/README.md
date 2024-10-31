@@ -17,7 +17,7 @@ Passend zum gewählten Modus muss die applicatiom.properties richtig konfigurier
 
 ````properties
 quarkus.devservices.enabled=true
-#quarkus.openfga.url=http://localhost:8080
+#quarkus.openfga.url=http://localhost:3000
 ````
 
 - für docker compose
