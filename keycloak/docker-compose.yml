@@ -1,0 +1,24 @@
+networks:
+  default:
+    name: docker-default-network
+    external: true
+
+services:
+  keycloak:
+    build:
+      context: src/docker/keycloak
+      dockerfile: Dockerfile
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8543:8443
+      - 8580:8080
+    command:
+      [
+                "start-dev", "--import-realm"
+
+      ]
+
+
+# docker run --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -p 8543:8443 -v "$(pwd)"/config/keycloak-keystore.jks:/etc/keycloak-keystore.jks quay.io/keycloak/keycloak:{keycloak.version} start  --hostname-strict=false --https-key-store-file=/etc/keycloak-keystore.jks
