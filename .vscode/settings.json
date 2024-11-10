@@ -19,18 +19,6 @@
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
-        "**/.factorypath": true,
-        "[!l]*/**": true,
-        "l[!o]*/**": true,
-        "lo[!a]*/**": true,
-        "loa[!d]*/**": true,
-        "load[!-]*/**": true,
-        "load-[!t]*/**": true,
-        "load-t[!e]*/**": true,
-        "load-te[!s]*/**": true,
-        "load-tes[!t]*/**": true,
-        "load-test[!i]*/**": true,
-        "load-testi[!n]*/**": true,
-        "load-testin[!g]*/**": true
+        "**/.factorypath": true
     }
 }
