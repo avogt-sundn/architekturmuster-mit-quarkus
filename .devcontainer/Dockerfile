@@ -12,7 +12,6 @@ ENV IGNORE_NOTICE=true
 RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils python3-pip \
     && pip install yq
 #   END ------ install common utils: ping, dig, ncat, pip, yq
-
 # BEGIN ------ Playwright Chromium
 RUN apt-get install -y libglib2.0-0 \
         libnss3 \
@@ -60,6 +59,16 @@ RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo arm64; else echo amd64; fi) \
 RUN cd  /opt/ && git clone https://github.com/ahmetb/kubectx \
     && ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx \
     && ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+
+#   END ----- kompose
+# BEGIN ollama
+RUN sudo apt install python3 python3-pip git
+RUN curl -fsSL https://ollama.com/install.sh | sh
+# END ollama
+
+# BEGIN plantuml extension
+RUN apt-get update && apt-get install -y graphviz
+# END   plantuml extension
 
 LABEL traefik.enable="true" \
     traefik.http.services.organization-service.loadbalancer.server.port="8080" \

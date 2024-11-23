@@ -41,7 +41,8 @@
         "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current",
         "DB_HOST": "postgres",
         "OTEL_HOST": "grafana-otel-lgtm",
-        "CHROME_BIN": "/usr/bin/chromium"
+        "CHROME_BIN": "/usr/bin/chromium",
+        "OLLAMA_HOST": "host.docker.internal"
     },
     // Use 'initializeCommand' to run commands on the host before container gets created.
     "initializeCommand": "touch ${localEnv:HOME}/.vscode/.zsh_history;docker network create docker-default-network || echo Fine. Using existing network.",
@@ -69,7 +70,9 @@
                 "fwcd.kotlin",
                 "rhalaly.scope-to-this",
                 "yzhang.markdown-all-in-one",
-                "redhat.vscode-yaml"
+                "redhat.vscode-yaml",
+                "jebbs.plantuml",
+                "Continue.continue"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"

@@ -1,0 +1,26 @@
+@startuml
+
+title Ollama is a client server architecture
+
+actor "User" as user
+
+package "Ollama CLI" {
+    actor "Ollama CLI" as cli
+}
+
+package "Ollama Server" {
+    component "localhost:11434" as server
+    package "Models" {
+        component "Model A" as modelA
+        component "Model B" as modelB
+        component "Model C" as modelC
+    }
+}
+
+user --> cli : interacts with
+cli --> server : sends commands
+server --> modelA : loads and uses model
+server --> modelB : loads and uses model
+server --> modelC : loads and uses model
+
+@enduml
