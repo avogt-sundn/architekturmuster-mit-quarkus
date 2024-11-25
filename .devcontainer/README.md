@@ -48,6 +48,8 @@ sed -i 's;^ZSH_THEME=".*"$;ZSH_THEME="powerlevel10k/powerlevel10k";' ~/.zshrc
 
 Ändere den Font in den Einstellungen (`CTRL`+`,`), dort unter `Standardwerte` und weiter unter `Schriftart`:
 
+![Terminal Settings](../.images/winterminalsettings.png)
+
 ### Powerlevel10k Fonts in VS Code
 
 Bleibt nur noch das theme mit dem besonderen Prompt auch in VS Code korrekt darzustellen. In VS Code muss noch der richtige Font explizit konfiguriert werden:
