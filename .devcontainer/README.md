@@ -5,7 +5,6 @@ Das lokale Setup für Deinen Entwicklungsrechner beginnt mit dem Schritt nach Li
 - unter Windows installieren wir WSL2 und das Windows Terminal von Microsoft, in WSL2 wählen wir die Ubuntu Distro und installieren `sudo apt install zsh`.
 - unter MacOS finden wir bereits eine linux-kompatible Shell mit der `zsh` und ein gutes Terminal-Programm, ergänzen das aber mit `iterm` von [https://iterm2.com/].
 
-
 ## iterm (nur für MacOS)
 
 Am besten installiert man mit `brew`, dem Paketmanager für MacOS.
@@ -21,7 +20,7 @@ brew install --cask iterm2
 
 ## Oh-my-zsh
 
-Das ` Oh-my-zsh` Projekt erweitert die zsh mit einem Paketmanagement und schönen Voreinstellungen für Prompt und Zeilenvervollständingung.
+Das `Oh-my-zsh` Projekt erweitert die zsh mit einem Paketmanagement und schönen Voreinstellungen für Prompt und Zeilenvervollständingung.
 
 ## Powerlevel10k
 
@@ -38,6 +37,7 @@ Ein besonders beliebtes Theme für die z-Shell ist `powerlevel10k`. Dies läßt 
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
     ````
 
+## Powerlevel10k Fonts im Windows Terminal
 
 ### Powerlevel10k Fonts in VS Code
 
@@ -53,6 +53,7 @@ Bleibt nur noch das theme mit dem besonderen Prompt auch in VS Code korrekt darz
     # durch:
     "terminal.integrated.fontFamily": "'Source Code Pro for Powerline', 'Hack Nerd Font'",
     `````
+
 1. Nun sollte der Prompt sofort korrekt dargestellt werden im Terminal Fenster von VS Code (`CTRL`+`SHIFT`+`;`)
 
 Aktiviere das Theme durch Ändern in der .zshrc:
@@ -68,4 +69,5 @@ sed -i 's;^ZSH_THEME=".*"$;ZSH_THEME="powerlevel10k/powerlevel10k";' ~/.zshrc
   - https://github.com/romkatv/powerlevel10k
 - powerlevel10k einrichten:
   - <https://dev.to/abdfnx/oh-my-zsh-powerlevel10k-cool-terminal-1no0>
-  -
+- Fonts
+  - https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#meslo-nerd-font-patched-for-powerlevel10k
