@@ -38,6 +38,7 @@ Ein besonders beliebtes Theme für die z-Shell ist `powerlevel10k`. Dies läßt 
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
     ````
 
+
 ### Powerlevel10k Fonts in VS Code
 
 Bleibt nur noch das theme mit dem besonderen Prompt auch in VS Code korrekt darzustellen. In VS Code muss noch der richtige Font explizit konfiguriert werden:
@@ -54,6 +55,12 @@ Bleibt nur noch das theme mit dem besonderen Prompt auch in VS Code korrekt darz
     `````
 1. Nun sollte der Prompt sofort korrekt dargestellt werden im Terminal Fenster von VS Code (`CTRL`+`SHIFT`+`;`)
 
+Aktiviere das Theme durch Ändern in der .zshrc:
+
+````bash
+# ersetzt eingestelltes Theme durch das neue, direkt in der .zshrc Datei des Benutzers
+sed -i 's;^ZSH_THEME=".*"$;ZSH_THEME="powerlevel10k/powerlevel10k";' ~/.zshrc
+````
 
 ## Links
 
