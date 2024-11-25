@@ -9,8 +9,10 @@ Das lokale Setup für Deinen Entwicklungsrechner beginnt mit dem Schritt nach Li
 ## iterm (nur für MacOS)
 
 Am besten installiert man mit `brew`, dem Paketmanager für MacOS.
+
 1. `Terminal.app` öffnen mittels Tastenfolge `CMD+SPACE` `terminal` `ENTER`
 2. Darin ausführen:
+
 ````bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # und danach:
@@ -23,23 +25,40 @@ Das ` Oh-my-zsh` Projekt erweitert die zsh mit einem Paketmanagement und schöne
 
 ## Powerlevel10k
 
-````bash
-# gh cli
-gh repo clone romkatv/powerlevel10k $ZSH_CUSTOM/themes/powerlevel10k
+Ein besonders beliebtes Theme für die z-Shell ist `powerlevel10k`. Dies läßt sich so installieren:
 
-# git
-git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-````
+- MacOS:
+
+  - `brew install powerlevel10k`
+
+- Windows:
+
+  - ````bash
+    # wird direkt in den ZSH custom-Ordner ge-clone-t
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    ````
 
 ### Powerlevel10k Fonts in VS Code
 
-MacOS: [~/Library/Application Support/Code/User/settings.json]()
+Bleibt nur noch das theme mit dem besonderen Prompt auch in VS Code korrekt darzustellen. In VS Code muss noch der richtige Font explizit konfiguriert werden:
 
+1. öffne dazu die `user settings (json)`, indem du in der command palette (`F1` oder `CTRL`+`P`) danach suchst,
+1. ändere diese Eigenschaft:
+
+    ````bash
+    # settings.json:
+    # ersetze diese:
+    #    "terminal.integrated.fontFamily": "monospace",
+    # durch:
     "terminal.integrated.fontFamily": "'Source Code Pro for Powerline', 'Hack Nerd Font'",
+    `````
+1. Nun sollte der Prompt sofort korrekt dargestellt werden im Terminal Fenster von VS Code (`CTRL`+`SHIFT`+`;`)
 
 
 ## Links
 
+- powerlevel10k
+  - https://github.com/romkatv/powerlevel10k
 - powerlevel10k einrichten:
   - <https://dev.to/abdfnx/oh-my-zsh-powerlevel10k-cool-terminal-1no0>
   -
