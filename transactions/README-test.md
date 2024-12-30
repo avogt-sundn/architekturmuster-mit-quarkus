@@ -1,7 +1,14 @@
-# Wie ich teste
+# Szenarien
+
+1. XA Transaktion mit zwei sql dbs
+   1. mit H2 in-memory (XA fähig): [zum Test](./src/test/java/quarkitecture/RegisterNewCustomersResourceTest.java)
+   2. 
+2. sd
 
 
-## Kommandozeile mit httpie
+## Wie wird getestet
+
+### Von der Kommandozeile mit httpie
 
 Das Kommando `http` wird von dem tool httpie implementiert (im Devcontainer enthalten).
 
