@@ -2,8 +2,7 @@ package quarkitecture;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
@@ -17,16 +16,7 @@ import quarkitecture.logentry.LogEntry;
  * transactions
  */
 @QuarkusTest
-class GreetingResourceTest {
-
-    @Test
-    void testHelloEndpoint() {
-        given()
-                .when().get("/hello")
-                .then()
-                .statusCode(200)
-                .body(is("Hello from Quarkus REST"));
-    }
+class RegisterNewCustomersResourceTest {
 
     @Test
     void testPostHelloEndpoint() {

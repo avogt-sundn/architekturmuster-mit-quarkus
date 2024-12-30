@@ -1,4 +1,4 @@
-package quarkitecture.greeting;
+package quarkitecture.customer;
 
 import org.jboss.resteasy.reactive.ResponseStatus;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -17,20 +16,14 @@ import jakarta.ws.rs.core.Response;
 import quarkitecture.logentry.LogEntry;
 
 @Path("/hello")
-public class GreetingResource {
-
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello from Quarkus REST";
-    }
+public class RegisterNewCustomersResource {
 
     @TransactionScoped
     String scoped;
 
     /**
      *
-     * @param name
+     * @param customer
      * @return
      */
     @POST
@@ -38,7 +31,7 @@ public class GreetingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Greeting postHello(JsonNode json) {
+    public CustomerRegistration postHello(JsonNode json) {
 
         final String name = json.get("name").asText();
         scoped = name;
@@ -47,14 +40,14 @@ public class GreetingResource {
         logEntry.persist();
 
         try {
-            Greeting greeting = new Greeting();
-            greeting.name = name;
-            greeting.persist();
-            return greeting;
+            CustomerRegistration registration = new CustomerRegistration();
+            registration.name = name;
+            registration.persist();
+            return registration;
 
         } catch (Exception e) {
             throw new RuntimeException("""
-                    // hier wird eine ConstraintViolation nicht gefangen, weil die erst beim commit entsteht!\n"
+                    hier wird eine ConstraintViolation nicht gefangen, weil die erst beim commit entsteht!
                                """);
 
         }
