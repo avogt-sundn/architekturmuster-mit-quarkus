@@ -40,6 +40,8 @@
         "GRAALVM_HOME": "/opt/mandrel",
         "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current",
         "DB_HOST": "postgres",
+        "AMQ_HOST": "artemis",
+        "KAFKA_BOOTSTRAP": "kafka",
         "OTEL_HOST": "grafana-otel-lgtm",
         "CHROME_BIN": "/usr/bin/chromium",
         "OLLAMA_HOST": "host.docker.internal"

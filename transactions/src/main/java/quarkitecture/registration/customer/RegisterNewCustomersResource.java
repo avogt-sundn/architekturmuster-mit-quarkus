@@ -1,4 +1,4 @@
-package quarkitecture.customer;
+package quarkitecture.registration.customer;
 
 import org.jboss.resteasy.reactive.ResponseStatus;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
@@ -13,7 +13,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import quarkitecture.logentry.LogEntry;
+import quarkitecture.registration.logentry.LogEntry;
 
 @Path("/hello")
 public class RegisterNewCustomersResource {

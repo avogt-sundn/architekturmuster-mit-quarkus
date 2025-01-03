@@ -9,7 +9,7 @@ ENV IGNORE_NOTICE=true
 
 
 # BEGIN ------ install common utils: ping, dig, ncat, pip, yq
-RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils python3-pip httpie \
+RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils python3-pip httpie telnet \
     && pip install yq
 #   END ------ install common utils: ping, dig, ncat, pip, yq
 # BEGIN ------ Playwright Chromium

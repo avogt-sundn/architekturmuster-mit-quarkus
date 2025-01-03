@@ -1,4 +1,4 @@
-package quarkitecture;
+package quarkitecture.registration;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

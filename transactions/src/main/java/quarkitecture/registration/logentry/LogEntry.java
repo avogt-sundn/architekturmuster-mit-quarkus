@@ -1,18 +1,16 @@
-package quarkitecture.customer;
+package quarkitecture.registration.logentry;
 
 import java.time.LocalDateTime;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class CustomerRegistration extends PanacheEntity {
+public class LogEntry extends PanacheEntity {
 
-    @Column(unique = true)
-    public String name;
+    public String message;
     @Temporal(TemporalType.TIMESTAMP)
     public LocalDateTime timestamp;
 }

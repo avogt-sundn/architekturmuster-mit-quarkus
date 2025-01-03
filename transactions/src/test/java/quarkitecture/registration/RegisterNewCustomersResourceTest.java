@@ -1,4 +1,4 @@
-package quarkitecture;
+package quarkitecture.registration;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.*;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import quarkitecture.logentry.LogEntry;
+import quarkitecture.registration.logentry.LogEntry;
 
 /**
  * transactions

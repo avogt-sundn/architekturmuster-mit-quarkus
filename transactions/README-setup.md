@@ -1,6 +1,18 @@
 #
 
-## Mehrere datasources
+## Verteilte Transaktionen XA
+
+Diese Voraussetzungen sind zu klären:
+
+1. alle Treiber (jdbc, amqp, kafka ...) müssen XA unterstützen (also implementieren)
+   - maximal eine Datasource kann auch ohne XA bedient werden als [letzte Instanz](https://www.narayana.io/docs/project/index.html#_last_resource_commit_optimization_lrco)
+1. Der backend server muss XA fähig sein und dies auch richtig konfiguriert haben.
+1. Quarkus muss auf jeder beteiligten datasource aktiviert sein,
+- das passiert automatisch, sobald mehr als eine datasource in einer Transaktion auftritt
+- besser noch man aktiviert XA explizit:
+ `quarkus.datasource[.optional name].jdbc.transactions=xa`
+
+## Mehrere datasources definieren und zuweisen
 
 Es müssen properties für die datasource als auch für Hibnerate ORM gesetzt werden:
 
@@ -29,4 +41,12 @@ customerResourceTest#testHelloEndpoint() java.lang.RuntimeException: io.quarkus.
         at io.quarkus.hibernate.orm.deployment.HibernateOrmProcessor.handleHibernateORMWithNoPersistenceXml(HibernateOrmProcessor.java:871)
 
 ````
-- https://quarkus.io/guides/hibernate-orm#multiple-persistence-units
+
+#### Links
+
+- Quarkus Guide
+  - https://quarkus.io/guides/hibernate-orm#multiple-persistence-units
+
+  - https://quarkus.io/guides/datasource#datasource-multiple-single-transaction
+- last resource commit optimization (nicht XA arbeitet mit XAs zusammen):
+  - https://www.narayana.io/docs/project/index.html#_last_resource_commit_optimization_lrco
