@@ -1,0 +1,257 @@
+{
+    "notebook.experimental.variablesView": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "git.suggestSmartCommit": false,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.project.importOnFirstTimeStartup": "automatic",
+    "redhat.telemetry.enabled": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "quarkus.tools.alwaysShowWelcomePage": false,
+    "workbench.startupEditor": "none",
+    "vs-kubernetes": {
+        "vscode-kubernetes.helm-path.mac": "/Users/avogt/.vs-kubernetes/tools/helm/darwin-amd64/helm",
+        "vscode-kubernetes.kubectl-path.mac": "/Users/avogt/.vs-kubernetes/tools/kubectl/kubectl",
+        "vscode-kubernetes.minikube-path.mac": "/Users/avogt/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vscode-kubernetes.minikube-path.linux": "/home/avogt/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
+        "vscode-kubernetes.minikube-path-mac": "/Users/avogt/.vs-kubernetes/tools/minikube/darwin-arm64/minikube"
+    },
+    "pasteImage.basePath": "${currentFileDir}/img",
+    "workbench.fontAliasing": "auto",
+    "boot-java.change-detection.on": true,
+    "[xml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -javaagent:\"/Users/avogt/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+    "git.ignoreRebaseWarning": true,
+    "git.autoStash": true,
+    "git.fetchOnPull": true,
+    "git.showPushSuccessNotification": true,
+    "qute.validation.enabled": true,
+    "microprofile.alwaysShowOverview": false,
+    "snyk.yesWelcomeNotification": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "terminal.integrated.fontFamily": "monospace",
+    "editor.fontLigatures": false,
+    "editor.formatOnPaste": true,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.cursorBlinking": true,
+    "git-autoconfig.configList": [
+        {},
+        {
+            "user.email": "armin.vogt@sn-invent.de",
+            "user.name": "Armin Vogt"
+        }
+    ],
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "editor.formatOnSave": true,
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+        "diffEditor.codeLens": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.formatOnSave": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500,
+    "java.debug.settings.showHex": true,
+    "window.title": "${rootPath}",
+    "editor.guides.highlightActiveIndentation": false,
+    "editor.stickyScroll.enabled": true,
+    "zoomer.zoomIncrement": 0.5,
+    "editor.renderWhitespace": "trailing",
+    "workbench.editor.closeOnFileDelete": true,
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "sqltools.connections": [],
+    "csharp.suppressDotnetInstallWarning": true,
+    "java.completion.favoriteStaticMembers": [
+        "org.assertj.core.api.Assertions.*",
+        "org.junit.jupiter.api.Assertions.*",
+        "org.junit.jupiter.api.Assumptions.*",
+        "org.junit.jupiter.api.DynamicContainer.*",
+        "org.junit.jupiter.api.DynamicTest.*",
+        "org.mockito.Mockito.*",
+        "org.mockito.ArgumentMatchers.*",
+        "org.mockito.Answers.*",
+        "io.restassured.RestAssured.*",
+        "org.hamcrest.Matchers.*",
+        "java.util.Stream.*",
+        "java.util.*"
+    ],
+    "sonarlint.rules": {
+        "java:S3252": {
+            "level": "off"
+        },
+        "java:S1172": {
+            "level": "off"
+        },
+        "java:S4449": {
+            "level": "off"
+        },
+        "java:S1104": {
+            "level": "off"
+        }
+    },
+    "editor.detectIndentation": false,
+    "files.trimTrailingWhitespace": true,
+    "boot-java.rewrite.reconcile": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "typescriptHero.imports.organizeOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.codeActionsOnSave.rules": null,
+    "angular.suggest.includeCompletionsWithSnippetText": false,
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "eslint.lintTask.enable": true,
+    "editor.folding": false,
+    "prettier.printWidth": 60,
+    "git.openRepositoryInParentFolders": "always",
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "yaml": false
+    },
+    "editor.codeActionsOnSave": {
+        "source.formatOnSave": "explicit",
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit",
+        "source.sortImports": "explicit"
+    },
+    "screencastMode.fontSize": 26,
+    "screencastMode.mouseIndicatorSize": 40,
+    "screencastMode.onlyKeyboardShortcuts": true,
+    "vscode-edge-devtools.webhint": false,
+    "go.toolsManagement.autoUpdate": true,
+    "eslint.nodePath": "/C/Program Files/jade/Sonstiges/JavaScriptIDE_VSCode/node-v18.17.1",
+    "yaml.schemas": {
+        "file:///c%3A/Program%20Files/jade/Sonstiges/JavaScriptIDE_VSCode/data/extensions/atlassian.atlascode-3.0.5/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    },
+    "git-graph.dialog.rebase.launchInteractiveRebase": true,
+    "terminal.external.windowsExec": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "java.test.config": {},
+    "xml.format.maxLineWidth": 200,
+    "sonarlint.connectedMode.connections.sonarqube": [],
+    "editor.formatOnType": true,
+    "notebook.formatOnSave.enabled": true,
+    "java.completion.filteredTypes": [
+        "org.jboss.resteasy.annotations.jaxrs.*",
+        "java.awt.*",
+        "com.google.inject.*",
+        "com.google.common.*",
+        "org.glassfish.*",
+        "org.gradle.*",
+        "net.bytebuddy.*",
+        "com.oracle.*",
+        "com.sun.*",
+        "sun.*",
+        "jdk.*",
+        "org.graalvm.*",
+        "io.micrometer.shaded.*"
+    ],
+    "java.maven.downloadSources": true,
+    "java.import.exclusions": [
+        "**/node_modules/**",
+        "**/.metadata/**",
+        "**/archetype-resources/**",
+        "**/META-INF/maven/**"
+    ],
+    "java.sources.organizeImports.staticStarThreshold": 1,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "sonarlint.focusOnNewCode": true,
+    "oracledevtools.bookmarkFileFolder": "/home/winman/Oracle/oracle.oracledevtools",
+    "oracledevtools.download.otherFolder": "/home/winman/downloads",
+    "oracledevtools.connectionConfiguration.configFilesFolder": "/home/winman/Oracle/network/admin",
+    "[oraclesql]": {
+        "editor.suggest.showSnippets": true,
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        }
+    },
+    "oracledevtools.connectionConfiguration.walletFileFolder": "/home/winman/Oracle/network/admin",
+    "oracledevtools.connections": [
+        {
+            "authenticationType": 2,
+            "dBAPrivilege": "None",
+            "userID": "ORACLE",
+            "passwordSaved": true,
+            "password": "password",
+            "dataSource": "localhost:1521/KATALOG",
+            "connectionType": 2,
+            "databaseHostName": "localhost",
+            "databasePortNumber": "1521",
+            "databaseServiceName": "KATALOG",
+            "tnsAdmin": "/home/winman/Oracle/network/admin",
+            "name": "ORACLE.KATALOG",
+            "color": "none",
+            "currentSchema": "",
+            "addSettingsScopeToConnectionName": false,
+            "addCurrentSchemaToConnectionName": false,
+            "filters": [],
+            "useCompatibleNamesDirectoryPath": true
+        }
+    ],
+    "gitlens.ai.experimental.provider": "openai",
+    "gitlens.ai.experimental.openai.model": "gpt-4-1106-preview",
+    "gitlens.mode.active": "zen",
+    "remote.autoForwardPortsSource": "hybrid",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.accessibilitySupport": "off",
+    "npm.keybindingsChangedWarningShown": true,
+    "playwright.reuseBrowser": true,
+    "playwright.showTrace": false,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "github.copilot.editor.enableAutoCompletions": true,
+    "kotlin.languageServer.enabled": false,
+    "kotlin.debugAdapter.enabled": false,
+    "maven.excludedFolders": [
+        "**/.*",
+        "**/node_modules",
+        "**/target",
+        "**/bin",
+        "**/archetype-resources"
+    ],
+    "hediet.vscode-drawio.zoomFactor": 1,
+    "window.zoomPerWindow": false,
+    "window.zoomLevel": 1.5,
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "oracledevtools.connectionConfiguration.showPromptForPasswordStoreMigrationToSecretStorage": false,
+    "[quarkus-properties]": {
+        "editor.defaultFormatter": "redhat.vscode-microprofile"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.suggest.matchOnWordStartOnly": false,
+    "workbench.iconTheme": "vscode-icons",
+    "vsicons.dontShowNewVersionMessage": true,
+    "workbench.colorTheme": "Winter is Coming (Dark Black)",
+    "dev.containers.executeInWSL": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
+}
