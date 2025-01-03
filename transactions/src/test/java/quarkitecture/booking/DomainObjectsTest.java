@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -23,9 +21,11 @@ import quarkitecture.booking.domain.Car;
 import quarkitecture.booking.domain.Flight;
 import quarkitecture.booking.domain.Hotel;
 import quarkitecture.booking.domain.Tour;
+import quarkitecture.booking.ordering.Order;
 
 class DomainObjectsTest {
 
+    private static final String ORDER_JSON_FILE = "target/order.json";
     private static final String IDX7710 = "IDX7710";
 
     @Test
@@ -42,27 +42,29 @@ class DomainObjectsTest {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "request.json", })
-    void generateJsonForTesting(String fileName) throws StreamWriteException, DatabindException, IOException {
+    @Test
+    void generateJsonForTesting() throws StreamWriteException, DatabindException, IOException {
 
+        Order order = new Order();
         Tour tour = new Tour();
+        order.tour = tour;
         tour.includedBookings = new HashSet<>();
         final LocalDateTime lift = LocalDateTime.of(2025, Month.AUGUST, 28, 5, 20);
         tour.includedBookings.addAll(
                 Set.of(
                         new Flight(IDX7710, "PAD", "TLS", lift),
                         new Hotel(), new Car()));
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-        objectMapper.writeValue(new File("json"), tour);
-        File jsonFile = new File("json");
+        objectMapper.writeValue(new File(ORDER_JSON_FILE), order);
+        File jsonFile = new File(ORDER_JSON_FILE);
         String jsonContent = new String(java.nio.file.Files.readAllBytes(jsonFile.toPath()));
         assertThat(jsonContent).contains("PAD");
 
-        Tour value = objectMapper.readValue(jsonContent, Tour.class);
-        assertThat(value.includedBookings).anyMatch(
+        Order value = objectMapper.readValue(jsonContent, Order.class);
+        assertThat(value.tour.includedBookings).anyMatch(
                 r -> {
                     if (r instanceof Flight f)
                         return f.flightNumber.equals(IDX7710);
