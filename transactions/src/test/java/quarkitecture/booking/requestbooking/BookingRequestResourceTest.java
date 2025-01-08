@@ -5,18 +5,25 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 
-public class BookingRequestResourceTest {
+@QuarkusTest
+class BookingRequestResourceTest {
     @Test
-    void testCreateRequest() {
-   given().body(""
-               )
+    void postHello() {
+
+        given().body(
+                """
+                {
+                        "name": "john"
+                }
+                """)
                 .header("Content-Type", "application/json")
                 .when().post("/hello")
                 .then()
                 .statusCode(201)
                 .contentType(ContentType.JSON)
-                .body("name", equalTo(""));
+                .body("name", equalTo("john"));
     }
 }

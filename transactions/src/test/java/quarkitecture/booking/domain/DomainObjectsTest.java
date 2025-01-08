@@ -1,4 +1,4 @@
-package quarkitecture.booking;
+package quarkitecture.booking.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,7 +25,6 @@ import quarkitecture.booking.ordering.Order;
 
 class DomainObjectsTest {
 
-    private static final String ORDER_JSON_FILE = "target/order.json";
     private static final String IDX7710 = "IDX7710";
 
     @Test
@@ -58,8 +57,8 @@ class DomainObjectsTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-        objectMapper.writeValue(new File(ORDER_JSON_FILE), order);
-        File jsonFile = new File(ORDER_JSON_FILE);
+        objectMapper.writeValue(new File(TestConstants.ORDER_JSON_FILE), order);
+        File jsonFile = new File(TestConstants.ORDER_JSON_FILE);
         String jsonContent = new String(java.nio.file.Files.readAllBytes(jsonFile.toPath()));
         assertThat(jsonContent).contains("PAD");
 

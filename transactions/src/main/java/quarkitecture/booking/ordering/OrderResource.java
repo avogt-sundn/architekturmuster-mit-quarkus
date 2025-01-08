@@ -22,7 +22,7 @@ import quarkitecture.booking.domain.Tour;
 @Path("booking-requests")
 public class OrderResource {
 
-    @Channel("orders")
+    @Channel("orders-outgoing")
     Emitter<Order> orderEmitter; // <1>
 
     @Channel("reservations")
@@ -36,12 +36,12 @@ public class OrderResource {
      * AMQP queue using the emitter.
      */
     @POST
-    @Path("/booking")
     @ResponseStatus(201)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void createAnOrder(Order order) {
-        orderEmitter.send(order); // <2>
+
+        orderEmitter.send(order);
     }
 
     /**
