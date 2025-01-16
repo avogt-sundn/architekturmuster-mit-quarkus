@@ -12,15 +12,9 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import quarkitecture.booking.domain.Car;
-import quarkitecture.booking.domain.Flight;
-import quarkitecture.booking.domain.Hotel;
-import quarkitecture.booking.domain.Tour;
 import quarkitecture.booking.ordering.Order;
 
 class DomainObjectsTest {
@@ -42,7 +36,7 @@ class DomainObjectsTest {
     }
 
     @Test
-    void generateJsonForTesting() throws StreamWriteException, DatabindException, IOException {
+    void generateJsonForTesting() throws IOException {
 
         Order order = new Order();
         Tour tour = new Tour();
