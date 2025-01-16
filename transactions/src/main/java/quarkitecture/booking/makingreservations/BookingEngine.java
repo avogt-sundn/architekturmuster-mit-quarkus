@@ -28,6 +28,7 @@ public class BookingEngine {
         Log.info("---- order is being processed to new reservations. ----");
         Optional<Reservation> flight = order.tour.includedBookings.stream().filter(Flight.class::isInstance)
                 .findFirst();
+        flight.get().booked = true;
         return flight.get();
     }
 }

@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public abstract class Reservation {
 
     public UUID id;
-
+    public boolean booked;
+    
     protected Reservation() {
         this.id = UUID.randomUUID();
     }
@@ -25,5 +26,6 @@ public abstract class Reservation {
     protected Reservation(UUID uuid) {
         this.id = uuid;
     }
+
 
 }

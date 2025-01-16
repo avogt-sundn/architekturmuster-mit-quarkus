@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -17,7 +16,6 @@ import quarkitecture.registration.logentry.LogEntry;
  * transactions
  */
 @QuarkusTest
-@Disabled
 class RegisterNewCustomersResourceTest {
 
     @Test
