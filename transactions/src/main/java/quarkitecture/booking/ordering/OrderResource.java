@@ -34,7 +34,7 @@ public class OrderResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void createAnOrder(Order order) {
-        Log.fatal("---- order is being forwarded. ----");
+        Log.info("---- order is being forwarded. ----");
 
         orderEmitter.send(order);
     }
