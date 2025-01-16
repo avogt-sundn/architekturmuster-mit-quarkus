@@ -19,11 +19,11 @@ import quarkitecture.booking.ordering.Order;
 public class BookingEngine {
 
     @Incoming("orders")
-    @Outgoing("reservations")
+    @Outgoing("reservations-outgoing")
     @Blocking
     public Reservation process(Order order) {
 
-        Log.fatal("---- Request is being answered. ----");
+        Log.fatal("---- order is being processed to new reservations. ----");
         return new Hotel();
     }
 }
