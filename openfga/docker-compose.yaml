@@ -6,7 +6,7 @@ networks:
 
 services:
   postgres:
-    image: postgres:14
+    image: postgres:14.1
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -25,7 +25,6 @@ services:
     environment:
       - OPENFGA_DATASTORE_ENGINE=postgres
       - OPENFGA_DATASTORE_URI=postgres://postgres:password@postgres:5432/postgres?sslmode=disable
-
 
   openfga:
     depends_on:
@@ -49,7 +48,6 @@ services:
     #   - "8081:8081"
     #   # Needed for the playground (Do not enable in prod!)
     #   - "3000:3000"
-
 
   openfga-gw:
     depends_on:
