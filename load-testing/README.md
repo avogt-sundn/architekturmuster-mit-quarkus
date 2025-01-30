@@ -155,6 +155,11 @@ Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refres
 
 ![Alt text](grafana/screenshot1.png)
 
+### Welche Dashboards gibt es
+
+https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+
+
 ## Schreiben der Test-Skripte
 
 1. IDE Extension
@@ -171,6 +176,25 @@ Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refres
 
 
 ## troubleshooting
+
+#### Welche metriken werden wirklich gesendet?
+
+Dazu gibt es auf der Quarkus app immer diesen endpunkt:
+
+- http://localhost:8080/q/metrics
+
+#### Zeitverzögerung in grafana
+
+Verkürze die Meldezeiten von alle 60 Sekunden auf jede Sekunde:
+
+````bash
+export OTEL_METRIC_EXPORT_INTERVAL=1000
+quarkus dev
+# -- es erscheint diese Zeile im Laufe der Ausgabe
+# 13:29:39 INFO  traceId=, parentId=, spanId=, sampled= [io.mi.co.in.pu.PushMeterRegistry] (main) Publishing metrics for OtlpMeterRegistry every 1s to http://grafana-otel-lgtm:4318/v1/metrics with resource attributes {}
+````
+
+- https://grafana.com/blog/2024/03/13/an-opentelemetry-backend-in-a-docker-image-introducing-grafana/otel-lgtm/
 
 #### Caused by: jakarta.enterprise.inject.UnsatisfiedResolutionException: Unsatisfied dependency for type io.opentelemetry.api.metrics.Meter and qualifiers [@Default]
   - Ursache: in der application.properties fehlt `quarkus.otel.metrics.enabled=true`

@@ -30,7 +30,7 @@ export const options = {
 };
 
 export default function () {
-    const url = "http://host.docker.internal:8080/jsonresource/classic";
+    const url = "http://localhost:8080/resourcewithmetrics/classic";
 
     const r0 = http.get(url, { headers: { Accepts: "application/json" } });
     check(r0, { "status is 200": (r) => r.status === 200 });

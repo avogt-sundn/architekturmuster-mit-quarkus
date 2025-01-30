@@ -1,79 +1,5 @@
 {
-  "openapi" : "3.0.3",
-  "info" : {
-    "title" : "myservice API",
-    "version" : "1.0.0-SNAPSHOT"
-  },
-  "servers" : [ {
-    "url" : "http://localhost:8080",
-    "description" : "Auto generated value"
-  }, {
-    "url" : "http://0.0.0.0:8080",
-    "description" : "Auto generated value"
-  } ],
-  "paths" : {
-    "/resourcewithmetrics" : {
-      "post" : {
-        "tags" : [ "Resource With Metrics" ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "type" : "object",
-                "additionalProperties" : {
-                  "$ref" : "#/components/schemas/JsonValue"
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK"
-          }
-        }
-      }
-    },
-    "/resourcewithmetrics/classic" : {
-      "get" : {
-        "tags" : [ "Resource With Metrics" ],
-        "responses" : {
-          "200" : {
-            "description" : "OK"
-          }
-        }
-      }
-    },
-    "/resourcewithmetrics/virtual" : {
-      "get" : {
-        "tags" : [ "Resource With Metrics" ],
-        "responses" : {
-          "200" : {
-            "description" : "OK"
-          }
-        }
-      }
-    },
-    "/resourcewithmetrics/{id}" : {
-      "get" : {
-        "tags" : [ "Resource With Metrics" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "format" : "int64",
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK"
-          }
-        }
-      }
-    }
-  },
+  "openapi" : "3.1.0",
   "components" : {
     "schemas" : {
       "JsonValue" : {
@@ -85,9 +11,88 @@
         }
       },
       "ValueType" : {
-        "enum" : [ "ARRAY", "OBJECT", "STRING", "NUMBER", "TRUE", "FALSE", "NULL" ],
-        "type" : "string"
+        "type" : "string",
+        "enum" : [ "ARRAY", "OBJECT", "STRING", "NUMBER", "TRUE", "FALSE", "NULL" ]
       }
     }
-  }
+  },
+  "paths" : {
+    "/resourcewithmetrics" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "$ref" : "#/components/schemas/JsonValue"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Save Object From Json",
+        "tags" : [ "Resource With Metrics" ]
+      }
+    },
+    "/resourcewithmetrics/classic" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Get All Classic",
+        "tags" : [ "Resource With Metrics" ]
+      }
+    },
+    "/resourcewithmetrics/virtual" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Get All Virtual",
+        "tags" : [ "Resource With Metrics" ]
+      }
+    },
+    "/resourcewithmetrics/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Load",
+        "tags" : [ "Resource With Metrics" ]
+      }
+    }
+  },
+  "info" : {
+    "title" : "loadtesting API",
+    "version" : "1.0.0-SNAPSHOT"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Auto generated value"
+  }, {
+    "url" : "http://0.0.0.0:8080",
+    "description" : "Auto generated value"
+  } ]
 }

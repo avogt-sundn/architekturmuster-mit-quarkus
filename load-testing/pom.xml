@@ -6,19 +6,17 @@
     <artifactId>load-testing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
-        <sonar.host.url>http://host.docker.internal:9000</sonar.host.url>
-        <sonar.login>sqp_caecdb168ba6f90da634cab62744cebcc7691180</sonar.login>
+
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <maven.compiler.release>21</maven.compiler.release>
-        <org.projectlombok.version>1.18.30</org.projectlombok.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.15.1</quarkus.platform.version>
+        <quarkus.platform.version>3.18.1</quarkus.platform.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.3.1</surefire-plugin.version>
+        <surefire-plugin.version>3.5.2</surefire-plugin.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -35,12 +33,20 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-opentelemetry</artifactId>
+         </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+            <artifactId>quarkus-observability-devservices-lgtm</artifactId>
         </dependency>
-        <dependency>
+        <!-- <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+        </dependency> -->
+        <!-- <dependency>
             <groupId>io.quarkiverse.micrometer.registry</groupId>
             <artifactId>quarkus-micrometer-registry-otlp</artifactId>
             <version>3.2.4</version>
@@ -49,7 +55,7 @@
             <groupId>io.quarkiverse.micrometer.registry</groupId>
             <artifactId>quarkus-micrometer-registry-jmx</artifactId>
             <version>3.2.4</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>io.opentelemetry.instrumentation</groupId>
             <artifactId>opentelemetry-jdbc</artifactId>
