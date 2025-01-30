@@ -9,7 +9,7 @@ ENV IGNORE_NOTICE=true
 
 
 # BEGIN ------ install common utils: ping, dig, ncat, pip, yq
-RUN apt-get update && apt-get install -y iputils-ping dnsutils apache2-utils python3-pip httpie telnet \
+RUN apt-get update && apt-get install -y iputils-ping dnsutils file apache2-utils python3-pip httpie telnet \
     && pip install yq
 #   END ------ install common utils: ping, dig, ncat, pip, yq
 # BEGIN ------ Playwright Chromium
@@ -43,10 +43,6 @@ RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) 
     && cd /opt && tar xzf /tmp/mandrel.tgz && rm /tmp/mandrel.tgz \
     && ln -s /opt/mandrel-java21-23.1.1.0-Final /opt/mandrel
 
-# BEGIN ------ install common utils: ping, dig, ncat, file
-RUN apt-get update && apt-get install -y iputils-ping dnsutils file httpie
-#   END ------ install common utils: ping, dig, ncat, file
-
 #   BEGIN ------ install kompose and kubectl and helm
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo arm64; else echo amd64; fi) \
     && echo "Loading Kompose for $ARCH" && curl -L -o /tmp/kompose.tgz https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-linux-$ARCH.tar.gz \
@@ -62,7 +58,8 @@ RUN cd  /opt/ && git clone https://github.com/ahmetb/kubectx \
 
 #   END ----- kompose
 # BEGIN ollama
-RUN sudo apt install python3 python3-pip git
+RUN apt-get install -y python3 python3-pip git
+
 RUN curl -fsSL https://ollama.com/install.sh | sh
 # END ollama
 
