@@ -5,10 +5,18 @@ import http from 'k6/http';
 
 const isNumeric = (value) => /^\d+$/.test(value);
 
-const default_vus = 50;
+const default_vus = 200;
 
 const target_vus_env = `${__ENV.TARGET_VUS}`;
 const target_vus = isNumeric(target_vus_env) ? Number(target_vus_env) : default_vus;
+
+const service_url_env = `${__ENV.SERVICE_URL}`;
+const service_url = typeof service_url_env === undefined || "http://localhost:8080";
+// console.log(`Service URL: >${service_url}<`);
+
+const path_env = `${__ENV.URL_PATH}`;
+const path = typeof path_env === undefined || "virtual";
+// console.log(`Path: >${path}<`);
 
 export const options = {
     stages: [
@@ -16,24 +24,18 @@ export const options = {
         { duration: "5s", target: target_vus },
 
         // Stay at rest on TARGET_VUS VUs for 50s
-        { duration: "3s", target: target_vus },
-
-        // Stay at rest on TARGET_VUS VUs for 50s
-        { duration: "1s", target: target_vus * 4 },
-
-        // Stay at rest on TARGET_VUS VUs for 50s
-        { duration: "10s", target: target_vus },
+        { duration: "20s", target: target_vus },
 
         // Ramp-down from TARGET_VUS to 0 VUs for 5s
-        { duration: "3s", target: 0 }
+        { duration: "1s", target: 0 }
     ]
 };
 
 export default function () {
-    const url = "http://localhost:8080/resourcewithmetrics/virtual";
+
+    // import console output to see the path
+    const url = service_url + "/resourcewithmetrics/" + path;
 
     const r0 = http.get(url, { headers: { Accepts: "application/json" } });
     check(r0, { "status is 200": (r) => r.status === 200 });
-    sleep(.100);
-
 }

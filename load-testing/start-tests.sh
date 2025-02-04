@@ -1,15 +1,39 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
-# es gibt kein quarkus property quarkus.envotel.metric.export.interval:
 export OTEL_METRIC_EXPORT_INTERVAL=5000
 
 docker compose up -d
 
-ping -c 1 influxdb >/dev/null || { echo "influxdb nicht erreichbar"; exit 1; }
-curl http://host.docker.internal:8080/q >/dev/null || { echo "quarkus dev nicht erreichbar"; exit 1; }
+SERVICE=server;
+
+if ping -c 1 $SERVICE >/dev/null 2>&1 ; then
+ echo
+else
+    echo "ping auf $SERVICE fehlgeschlagen. versuche localhost.";
+    SERVICE=localhost;
+    if curl http://$SERVICE:8080 >/dev/null 2>&1; then
+       echo "curl auf $SERVICE erfolgreich.";
+    else
+       echo "curl auf $SERVICE fehlgeschlagen. beende.";
+       exit 1;
+    fi
+fi
+export SERVICE_URL=http://$SERVICE:8080
+
+INFLUX_HOST=influxdb
+if ping -c 1 $INFLUX_HOST >/dev/null 2>&1 ; then
+    echo "$INFLUX_HOST erreichbar";
+else
+    echo "influxdb nicht erreichbar. versuche localhost:8086";
+    INFLUX_HOST=localhost;
+    if curl http://$INFLUX_HOST:8086 >/dev/null 2>&1; then
+       echo "curl auf $INFLUX_HOST:8086 erfolgreich.";
+    else
+       echo "curl auf $INFLUX_HOST:8086 fehlgeschlagen. beende.";
+       exit 1;
+    fi
+fi
 
 
-k6 run  src/scripts/virtual.js --out influxdb=http://influxdb:8086/k6
-sleep 5
-k6 run  src/scripts/classic.js --out influxdb=http://influxdb:8086/k6
+k6 run  src/scripts/run.js --out influxdb=http://$INFLUX_HOST:8086/k6
