@@ -69,3 +69,8 @@ services:
       interval: 10s
       timeout: 30s
       retries: 5
+    mem_limit: 512m
+    mem_reservation: 128m
+    cpus: 0.5
+
+
