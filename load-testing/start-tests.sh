@@ -1,14 +1,13 @@
 #!/bin/bash
 
 set -e
-export OTEL_METRIC_EXPORT_INTERVAL=5000
 
 docker compose up -d
 
 SERVICE=server;
 
 if ping -c 1 $SERVICE >/dev/null 2>&1 ; then
- echo
+ echo "ping auf $SERVICE erfolgreich.";
 else
     echo "ping auf $SERVICE fehlgeschlagen. versuche localhost.";
     SERVICE=localhost;
@@ -19,6 +18,8 @@ else
        exit 1;
     fi
 fi
+
+sleep 1
 export SERVICE_URL=http://$SERVICE:8080
 
 INFLUX_HOST=influxdb
@@ -34,6 +35,5 @@ else
        exit 1;
     fi
 fi
-
 
 k6 run  src/scripts/run.js --out influxdb=http://$INFLUX_HOST:8086/k6
