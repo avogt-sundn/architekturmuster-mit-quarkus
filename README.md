@@ -37,7 +37,7 @@ Jedes Projekt hat diese Eigenschaften:
 1. Benutze diesen Aufruf, um ein Quarkus Projekt zu generieren:
 
     ```bash
-    quarkus create app quarkitecture:jpa-versioning --java=17 --wrapper
+    quarkus create app quarkitecture:jpa-versioning --java=21 --wrapper
     ```
 
     * ein directory `jpa-versioning` wird erzeugt
