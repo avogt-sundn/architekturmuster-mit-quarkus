@@ -1,0 +1,33 @@
+
+404 - Resource Not Found
+------------------------
+
+Resource Endpoints
+	- /resourcewithmetrics
+		- POST
+	- /resourcewithmetrics/{id}
+		- GET
+	- /resourcewithmetrics/classic
+		- GET (produces:application/json)
+	- /resourcewithmetrics/virtual
+		- GET (produces:application/json)
+
+Static resources
+	- /organizations.html
+
+Additional endpoints
+	- /q/arc
+		- CDI Overview
+	- /q/arc/beans
+		- Active CDI Beans
+	- /q/arc/observers
+		- Active CDI Observers
+	- /q/arc/removed-beans
+		- Removed CDI Beans
+	- /q/dev-ui
+		- Dev UI
+	- /q/openapi
+		- Open API Schema document
+	- /q/swagger-ui
+		- Open API UI
+

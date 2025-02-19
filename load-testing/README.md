@@ -54,18 +54,21 @@ k6 ist
 
 1. das Test-Skript
 1. die URL der influxdb-Zeitreihendatenbank
+
    - das Ausgabeziel ist als Umgebungsvariable K6_OUT hinterlegt:
         ```bash
-        export K6_OUT=influxdb=http://influxdb:8086/k6
+        export INFLUXDB=host.docker.internal
+        export K6_OUT=influxdb=http://$INFLUXDB:8086/k6
         k6 run /scripts/script.js
         ```
 
    - oder mit Kommandozeilenparameter `--out`:
 
         ```bash
-        k6 run /scripts/script.js --out influxdb=http://influxdb:8086/k6
+        export INFLUXDB=host.docker.internal
+        k6 run /scripts/script.js --out influxdb=http://$INFLUXDB:8086/k6
         ```
-   > der hostname `influxdb` funktioniert nur, wenn k6 im Docker-container ausgeführt wird. Das ist der Fall, wenn VS Code im Devcontainer gestartet wird. Wenn k6 auf dem host installiert ist, muss hier die url auf http://localhost:8086/k6 geändert werden.
+   > der hostname `influxdb` funktioniert nur, wenn k6 im Docker-container ausgeführt wird. Das ist der Fall, wenn VS Code im Devcontainer gestartet wird. Wenn k6 auf dem host installiert ist, muss hier die url auf http://localhost:8086/k6 geändert werden, alternativ funktioniert in beiden Fällen auch http://host.docker.internal:8086/k6
 
 ### Starten im VS Code - Devcontainer
 
@@ -92,7 +95,7 @@ Für Lasttests sollte die Quarkus Applikation wie für Produktion gebaut werden.
 
 ````bash
 # erzeugt ein runner.jar
-mvn package
+mvn package -DskipTests
 java -jar target/load-testing-1.0.0-SNAPSHOT-runner.jar
 ````
 
@@ -158,6 +161,10 @@ Unter der URL [http://localhost:3000/d/k6/k6-load-testing-results?orgId=1&refres
 ### Welche Dashboards gibt es
 
 https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+
+- k6 tool
+
+https://grafana.com/grafana/dashboards/2587-k6-load-testing-results/
 
 
 ## Schreiben der Test-Skripte

@@ -27,15 +27,21 @@ import jakarta.ws.rs.core.Response;
 public class ResourceWithMetrics {
 
     Jsonb jsonb;
-    private final LongCounter counter;
+    private final LongCounter counterVirtual;
+    private final LongCounter counterClassic;
 
     public ResourceWithMetrics(Jsonb jsonb, Meter meter) {
 
         this.jsonb = jsonb;
-        counter = meter.counterBuilder("my-metrics")
-                .setDescription("my-metrics")
-                .setUnit("invocations")
-                .build();
+                counterVirtual = meter.counterBuilder("virtual-metrics")
+                    .setDescription("virtual-metrics")
+                    .setUnit("invocations")
+                    .build();
+
+                counterClassic = meter.counterBuilder("classic-metrics")
+                    .setDescription("classic-metrics")
+                    .setUnit("invocations")
+                    .build();
     }
 
     @POST
@@ -54,7 +60,6 @@ public class ResourceWithMetrics {
     @GET
     @Path("{id}")
     public Response load(@PathParam("id") Long id) {
-        counter.add(1);
         AttributeEntity byId = AttributeEntity.findById(id);
         return Response.ok(jsonb.fromJson(byId.jsonString, JsonObject.class)).build();
     }
@@ -64,7 +69,7 @@ public class ResourceWithMetrics {
     @RunOnVirtualThread
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllVirtual() {
-        counter.add(1);
+        counterVirtual.add(1);
         List<AttributeEntity> list = AttributeEntity.findAll().list();
         return Response.ok(list).build();
     }
@@ -73,7 +78,7 @@ public class ResourceWithMetrics {
     @Path("classic")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllClassic() {
-        counter.add(1);
+        counterClassic.add(1);
         List<AttributeEntity> list = AttributeEntity.findAll().list();
         return Response.ok(list).build();
     }

@@ -36,4 +36,11 @@ else
     fi
 fi
 
+export TARGET_VUS=10
+
+export URL_PATH=/resourcewithmetrics/virtual
+k6 run  src/scripts/run.js --out influxdb=http://$INFLUX_HOST:8086/k6
+sleep 5
+
+export URL_PATH=/resourcewithmetrics/classic
 k6 run  src/scripts/run.js --out influxdb=http://$INFLUX_HOST:8086/k6
