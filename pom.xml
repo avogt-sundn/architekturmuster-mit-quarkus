@@ -7,6 +7,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>api-specs</module>
         <module>code-analyzing</module>
         <module>fullstack-quinoa</module>
         <module>jpa-versioning</module>
