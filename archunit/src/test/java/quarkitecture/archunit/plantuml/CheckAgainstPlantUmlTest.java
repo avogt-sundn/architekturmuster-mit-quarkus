@@ -14,6 +14,10 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.EvaluationResult;
 
+/**
+ * Hier werden nicht die Junit5 annotations genutzt, weil der Test einen Fehler provozieren soll.
+ * Der Test ist also grün, genau wenn die ArchRule rot ist.
+ */
 class CheckAgainstPlantUmlTest {
 
     static final URL ARCH_PUML_DATEI = CheckAgainstPlantUmlTest.class.getResource("arch.puml");
@@ -25,7 +29,7 @@ class CheckAgainstPlantUmlTest {
 
         JavaClasses importedClasses = new ClassFileImporter().importPackages("quarkitecture.archunit.plantuml.classes");
         EvaluationResult result = myRule.evaluate(importedClasses);
-        
+
         System.out.println(result.getFailureReport().toString());
 
         assertTrue(result.filterDescriptionsMatching(

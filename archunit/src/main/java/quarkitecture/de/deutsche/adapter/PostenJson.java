@@ -1,6 +1,6 @@
-package de.deutsche.adapter;
+package quarkitecture.de.deutsche.adapter;
 
-import de.deutsche.domain.Posten;
+import quarkitecture.de.deutsche.domain.Posten;
 
 public record PostenJson(String produkt, int anzahl) {
 

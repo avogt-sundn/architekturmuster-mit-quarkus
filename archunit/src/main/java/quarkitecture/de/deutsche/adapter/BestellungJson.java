@@ -1,8 +1,8 @@
-package de.deutsche.adapter;
+package quarkitecture.de.deutsche.adapter;
 
 import java.util.List;
 
-import de.deutsche.domain.Bestellung;
+import quarkitecture.de.deutsche.domain.Bestellung;
 
 public record BestellungJson(
         List<PostenJson> posten,

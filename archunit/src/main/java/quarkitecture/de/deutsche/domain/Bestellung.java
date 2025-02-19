@@ -1,4 +1,4 @@
-package de.deutsche.domain;
+package quarkitecture.de.deutsche.domain;
 
 import java.util.List;
 import java.util.Optional;

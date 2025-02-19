@@ -1,4 +1,4 @@
-package de.deutsche.domain;
+package quarkitecture.de.deutsche.domain;
 
 import java.util.UUID;
 
@@ -9,11 +9,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class Kunde {
-    public Kundennummer id;
-    public String name;
-}
-
-class Kundennummer {
-    UUID id;
+public class ProduktId {
+    public UUID id;
 }

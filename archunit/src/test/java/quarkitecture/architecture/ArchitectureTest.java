@@ -20,15 +20,15 @@ import com.tngtech.archunit.lang.conditions.ArchConditions;
 
 import jakarta.inject.Inject;
 
-//@AnalyzeClasses(packages = "quarkitecture", importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packages = "quarkitecture", importOptions = ImportOption.DoNotIncludeTests.class)
 final class ArchitectureTest {
 
     private static final String DE_DEUTSCHE = "de.deutsche.";
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule HEXAGONAL_ARCHITECTURE_IS_RESPECTED;
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule HEXAGONAL_ARCHITECTURE_CIRCUMVENTION_CHECK;
 
     static {
@@ -48,18 +48,18 @@ final class ArchitectureTest {
                 .should(hexagonalArchitecture.circumventTheArchitecture()).allowEmptyShould(true);
     }
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule DOMAIN_COMPONENTS = classes().that().resideInAnyPackage("de.deutscherv.odv.domain..").should()
             .onlyDependOnClassesThat().resideInAnyPackage("de.deutscherv.odv.domain..", "java..",
                     "lombok..", "com.fasterxml.jackson..", "de.deutscherv.generic.model..",
                     "jakarta.json.bind.annotation..", "org.slf4j..");
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule APPLICATION_COMPONENTS = noClasses().that().haveSimpleNameEndingWith("UseCase").or()
             .haveSimpleNameEndingWith("Port")
             .should().resideOutsideOfPackage("de.deutscherv.odv.application..");
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule CHECK_IMPORTS = classes().should(DependencyCondition
             .onlyHaveDependenciesToPackages(
                     // core and spec
@@ -99,7 +99,7 @@ final class ArchitectureTest {
             .butAllowClassesThat(resideInAPackage("de.deutscherv.rvsm.qs.fap.application.quarkus"))
             .toDependOnAdditionalPackages("io.quarkus..", "io.vertx.core.."));
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule NO_IMPLIED_INJECT;
 
     static {
@@ -120,7 +120,7 @@ final class ArchitectureTest {
                 .allowEmptyShould(true);
     }
 
-    // @ArchTest
+    @ArchTest
     static final ArchRule NO_FIELD_INJECTION = noFields().that().areDeclaredInClassesThat()
             .areNotMetaAnnotatedWith(Mapper.class).should(BE_ANNOTATED_WITH_AN_INJECTION_ANNOTATION)
             .as("no classes should use field injection").because(

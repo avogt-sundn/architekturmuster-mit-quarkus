@@ -1,4 +1,4 @@
-package de.deutsche;
+package quarkitecture.de.deutsche;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
