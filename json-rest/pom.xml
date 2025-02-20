@@ -120,6 +120,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${compiler-plugin.version}</version>
                     <configuration>
+                        <!-- for your ide: -->
+                        <generatedSourcesDirectory>target/generated-sources/openapi/src/gen/java/main</generatedSourcesDirectory>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -269,6 +271,63 @@
                                 <version>2.1.0</version>
                             </dependency>
                         </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>openapi-generator</id>
+            <activation>
+                <property>
+                    <name>openapi-generator</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <!-- RELEASE_VERSION -->
+                        <version>7.10.0</version>
+                        <!-- /RELEASE_VERSION -->
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <generatorName>jaxrs-spec</generatorName>
+                                    <verbose>true</verbose>
+                                    <apiPackage>de.deutsche.api</apiPackage>
+                                    <modelPackage>de.deutsche.model</modelPackage>
+                                    <inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
+                                    <configOptions>
+                                        <sourceFolder>src/gen/java/main</sourceFolder>
+                                        <useJakartaEe>true</useJakartaEe>
+                                        <openApiSpecFileLocation>src/main/resources/openapi/openapi.yaml</openApiSpecFileLocation>
+                                        <useSwaggerAnnotations>false</useSwaggerAnnotations>
+                                        <SecureAllEndpointsRule></SecureAllEndpointsRule>
+                                        <useMicroProfileOpenAPIAnnotations>true</useMicroProfileOpenAPIAnnotations>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <!-- <configuration>
+                            <generatorName>jaxrs-spec</generatorName>
+                            <configOptions>
+                                <bigDecimalAsString>true</bigDecimalAsString>
+                                <dateLibrary>java8</dateLibrary>
+                                <additionalModelTypeAnnotations>@lombok.Generated @lombok.Builder(toBuilder = true)
+                                    @lombok.NoArgsConstructor
+                                    @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
+                                <interfaceOnly>true</interfaceOnly>
+                                <openApiSpecFileLocation>src/main/resources/META-INF/openapi/openapi.yaml</openApiSpecFileLocation>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useSwaggerAnnotations>true</useSwaggerAnnotations>
+                                <returnResponse>true</returnResponse>
+                            </configOptions>
+                        </configuration> -->
                     </plugin>
                 </plugins>
             </build>
