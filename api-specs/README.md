@@ -1,62 +1,71 @@
 # api-specs
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Dieses Projekt zeigt den Umgang mit dem openapi Generator für Rest-APIS
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+````bash
+quarkus extension add openapi
+quarkus extension add openapi-generator
+quarkus extension add smallrye-openapi
+npm install @openapitools/openapi-generator-cli -g
+openapi-generator-cli generate -i /workspaces/architekturmuster-mit-quarkus/api-specs/src/main/resources/META-INF/openapi.yaml -g jaxrs-spec -o /workspaces/architekturmuster-mit-quarkus/api-specs/generated
+````
 
-## Running the application in dev mode
+### Der geschriebene Code
 
-You can run your application in dev mode that enables live coding using:
+````java
+package quarkitecture;
 
-```shell script
-./mvnw quarkus:dev
-```
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+@Path("/hello")
+public class GreetingResource {
 
-## Packaging and running the application
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
+        return "Hello from Quarkus REST";
+    }
+}
 
-The application can be packaged using:
+````
 
-```shell script
-./mvnw package
-```
+### Der generierte Code
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+So sieht das generierte Server-Implementierung aus:
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+````java
+package org.openapitools.api;
 
-If you want to build an _über-jar_, execute the following command:
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+import io.swagger.annotations.*;
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+import java.io.InputStream;
+import java.util.Map;
+import java.util.List;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
-## Creating a native executable
+/**
+* Represents a collection of functions to interact with the API endpoints.
+*/
+@Path("/hello")
+@Api(description = "the hello API")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-02-19T11:53:56.762836878Z[Etc/UTC]", comments = "Generator version: 7.11.0")
+public class HelloApi {
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/api-specs-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+    @GET
+    @Produces({ "text/plain" })
+    @ApiOperation(value = "Hello", notes = "", response = String.class, tags={ "Greeting Resource" })
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = String.class)
+    })
+    public Response helloGet() {
+        return Response.ok().entity("magic!").build();
+    }
+}
+````
