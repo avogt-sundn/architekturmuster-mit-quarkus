@@ -1,0 +1,14 @@
+@startuml archunit
+
+skinparam componentStyle uml2
+skinparam component {
+  BorderColor #grey
+  BackgroundColor #white
+}
+
+[domain package] <<..domain..>>
+[adapter package] <<..adapter..>>
+
+[adapter package] --> [domain package] : imports
+
+@enduml
