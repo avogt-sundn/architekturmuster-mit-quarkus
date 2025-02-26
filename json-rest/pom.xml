@@ -121,7 +121,7 @@
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <!-- for your ide: -->
-                        <generatedSourcesDirectory>target/generated-sources/openapi/src/gen/java/main</generatedSourcesDirectory>
+                        <generatedSourcesDirectory>target/generated-sources/openapi/src/gen/main/java</generatedSourcesDirectory>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -197,6 +197,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
     <profiles>
@@ -289,7 +290,7 @@
                         <groupId>org.openapitools</groupId>
                         <artifactId>openapi-generator-maven-plugin</artifactId>
                         <!-- RELEASE_VERSION -->
-                        <version>7.10.0</version>
+                        <version>7.11.0</version>
                         <!-- /RELEASE_VERSION -->
                         <executions>
                             <execution>
@@ -303,9 +304,10 @@
                                     <modelPackage>de.deutsche.model</modelPackage>
                                     <inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
                                     <configOptions>
-                                        <sourceFolder>src/gen/java/main</sourceFolder>
+                                        <sourceFolder>src/gen/main/java</sourceFolder>
                                         <useJakartaEe>true</useJakartaEe>
-                                        <openApiSpecFileLocation>src/main/resources/openapi/openapi.yaml</openApiSpecFileLocation>
+                                        <interfaceOnly>false</interfaceOnly>
+                                        <openApiSpecFileLocation>target/openapi/openapi.yaml</openApiSpecFileLocation>
                                         <useSwaggerAnnotations>false</useSwaggerAnnotations>
                                         <SecureAllEndpointsRule></SecureAllEndpointsRule>
                                         <useMicroProfileOpenAPIAnnotations>true</useMicroProfileOpenAPIAnnotations>
@@ -328,6 +330,51 @@
                                 <returnResponse>true</returnResponse>
                             </configOptions>
                         </configuration> -->
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>run-generated</id>
+            <activation>
+                <property>
+                    <name>run-generated</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-source</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>../../../partial/main/java</source>
+                                        <source>src/gen/main/java</source>
+                                        <source>../../../src/main/resources</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>../../../partial/test/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
