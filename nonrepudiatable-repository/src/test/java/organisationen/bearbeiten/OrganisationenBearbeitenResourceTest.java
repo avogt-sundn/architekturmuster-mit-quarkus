@@ -19,13 +19,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbException;
 import lombok.extern.slf4j.Slf4j;
 import organisationen.suchen.modell.Organisation;
 
@@ -42,7 +43,7 @@ class OrganisationenBearbeitenResourceTest {
     TestHelperOrganisation factory;
 
     @Inject
-    Jsonb jsonb;
+    ObjectMapper jsonb;
 
     final static boolean useJackson = true;
 
@@ -53,10 +54,10 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    void _CreateArbeitsversion() throws JSONException {
+    void _CreateArbeitsversion() throws JSONException, JsonProcessingException {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
-        final String body = jsonb.toJson(organisation);
+        final String body = jsonb.writeValueAsString(organisation);
         assertNotNull(organisation.getFachschluessel());
 
         // 1. create
@@ -73,7 +74,7 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    void _Update() throws JSONException {
+    void _Update() throws JsonProcessingException {
 
         Organisation organisation = factory.persistASingleInTx("UpdateArbeitsversion", 1);
         assertNotNull(organisation.getFachschluessel());
@@ -86,12 +87,12 @@ class OrganisationenBearbeitenResourceTest {
         assertTrue(r.matcher("2024-01-08T14:08:01.23687").matches(), "Format mit 5 Nachkommastellen");
 
         // 1. create
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+        given().with().contentType(ContentType.JSON).body(jsonb.writeValueAsString(organisation)).when()
                 .post(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK)).and()
                 .body("createdAt", matchesPattern(r));
         // 2. change
         organisation.setBeschreibung("NeueBeschreibung");
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+        given().with().contentType(ContentType.JSON).body(jsonb.writeValueAsString(organisation)).when()
                 .put(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. read back
         given().when().get(organisation.getFachschluessel() + "/draft").then().rootPath("organisation")
@@ -101,23 +102,25 @@ class OrganisationenBearbeitenResourceTest {
     }
 
     @Test
-    void ChangeStatus() throws JsonbException, JSONException {
+    void ChangeStatus() throws JSONException, JsonProcessingException {
         Organisation organisation = factory.persistASingleInTx("ChangeStatus", 1);
         assertNotNull(organisation.getFachschluessel());
 
         // 1. create
-        given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation)).when()
+        given().with().contentType(ContentType.JSON).body(jsonb.writeValueAsString(organisation)).when()
                 .post(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK));
         // 2. status change
         given().with().contentType(ContentType.TEXT).body("ZUR_FREIGABE").log().all().when()
                 .patch(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK)).and()
                 .body(equalTo("ZUR_FREIGABE")).log().all();
         // 3. new status
-        Arbeitsversion orgExtracted = given().with().contentType(ContentType.JSON).body(jsonb.toJson(organisation))
+        Arbeitsversion orgExtracted = given().with().contentType(ContentType.JSON)
+                .body(jsonb.writeValueAsString(organisation))
                 .when().get(organisation.getFachschluessel() + "/draft").then().statusCode(equalTo(HttpStatus.SC_OK))
                 .and().rootPath("organisation").extract().as(Arbeitsversion.class);
         log.info("orgExtracted: {}", orgExtracted);
-        JSONAssert.assertEquals(jsonb.toJson(organisation), jsonb.toJson(orgExtracted.organisation),
+        JSONAssert.assertEquals(jsonb.writeValueAsString(organisation),
+                jsonb.writeValueAsString(orgExtracted.organisation),
                 JSONCompareMode.STRICT);
 
         factory.deleteById(organisation.getId());
@@ -127,10 +130,10 @@ class OrganisationenBearbeitenResourceTest {
     @Disabled("""
             dieses sameJSONAs funktioniert nicht: der rootPath("organisation") ist nicht wirksam
             """)
-    void Bug_CreateArbeitsversion() throws JSONException {
+    void Bug_CreateArbeitsversion() throws JSONException, JsonProcessingException {
 
         Organisation organisation = factory.persistASingleInTx("CreateArbeitsversion", 1);
-        final String body = jsonb.toJson(organisation);
+        final String body = jsonb.writeValueAsString(organisation);
         // 1. create
         given().with().contentType(ContentType.JSON).body(body).when().post(organisation.getId() + "/draft").then()
                 .statusCode(equalTo(HttpStatus.SC_OK));

@@ -10,9 +10,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
 
 @QuarkusTest
@@ -21,11 +23,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 class KatalogEntityTest {
 
-    public KatalogEntityTest(Jsonb jsonb) {
+    public KatalogEntityTest(ObjectMapper jsonb) {
         this.jsonb = jsonb;
     }
 
-    Jsonb jsonb;
+    ObjectMapper jsonb;
 
     private KatalogEntity katalogEntity = KatalogEntity.builder()
             .eintrag("Armin")
@@ -43,10 +45,10 @@ class KatalogEntityTest {
 
     @Test
     @Order(2)
-    void AddArbeitsversion() {
+    void AddArbeitsversion() throws JsonProcessingException {
 
-        String json = jsonb.toJson(katalogEntity);
-        KatalogEntity duplicate = jsonb.fromJson(json, KatalogEntity.class);
+        String json = jsonb.writeValueAsString(katalogEntity);
+        KatalogEntity duplicate = jsonb.readValue(json, KatalogEntity.class);
         duplicate.isArbeitsversion = true;
         assertThat(duplicate.id).isEqualTo(katalogEntity.id);
         duplicate.persist();

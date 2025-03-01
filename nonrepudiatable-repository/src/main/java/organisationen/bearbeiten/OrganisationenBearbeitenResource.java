@@ -3,8 +3,10 @@ package organisationen.bearbeiten;
 import java.net.URI;
 import java.util.UUID;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.bind.Jsonb;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
@@ -26,13 +28,11 @@ public class OrganisationenBearbeitenResource {
 
     private static final String FACHSCHLUESSEL_PARAM = "fachschluessel";
 
-    Jsonb jsonb;
-
     ArbeitsversionMapper mapper;
+    ObjectMapper jsonb;
 
     @GET
     @Path("{fachschluessel}/draft")
-
     public Arbeitsversion get(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel) {
 
         return mapper.toDomainList(ArbeitsversionEntity.list(FACHSCHLUESSEL_PARAM, fachschluessel)).get(0);
@@ -42,11 +42,11 @@ public class OrganisationenBearbeitenResource {
     @Path("{fachschluessel}/draft")
     @Transactional
     public Response createArbeitsversion(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel,
-            @Valid Organisation organisation) {
+            @Valid Organisation organisation) throws JsonProcessingException {
 
         organisation.setFachschluessel(fachschluessel);
         ArbeitsversionEntity arbeitsversionEntity = ArbeitsversionEntity.builder().fachschluessel(fachschluessel)
-                .jsonString(jsonb.toJson(organisation)).build();
+                .jsonString(jsonb.writeValueAsString(organisation)).build();
         arbeitsversionEntity.persist();
 
         return Response.ok(mapper.toDomain(arbeitsversionEntity))
@@ -63,9 +63,10 @@ public class OrganisationenBearbeitenResource {
     @PUT
     @Path("{fachschluessel}/draft")
     @Transactional
-    public Response edit(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Organisation organisation) {
+    public Response edit(@PathParam(FACHSCHLUESSEL_PARAM) UUID fachschluessel, @Valid Organisation organisation)
+            throws JsonProcessingException {
         ArbeitsversionEntity single = ArbeitsversionEntity.find(FACHSCHLUESSEL_PARAM, fachschluessel).firstResult();
-        single.jsonString = jsonb.toJson(organisation);
+        single.jsonString = jsonb.writeValueAsString(organisation);
         return Response.ok().build();
     }
 
