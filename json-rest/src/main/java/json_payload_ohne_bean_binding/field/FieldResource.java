@@ -8,7 +8,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import io.quarkus.logging.Log;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.bind.Jsonb;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -27,14 +28,9 @@ class FieldResource {
     Map<Long, Organisation> store = new HashMap<>();
     AtomicLong sequence = new AtomicLong();
 
-    public FieldResource(Jsonb jsonb) {
-        this.jsonb = jsonb;
-    }
-
-    Jsonb jsonb;
-
     @POST
-    public Response saveObjectFromJson(Organisation body) {
+    @Consumes("application/json")
+    public Response saveObjectFromJson(@Valid Organisation body) {
 
         long id = sequence.incrementAndGet();
         store.put(id, body);

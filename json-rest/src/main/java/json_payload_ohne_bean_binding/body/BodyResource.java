@@ -9,14 +9,16 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.JsonObject;
-import jakarta.json.bind.Jsonb;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -34,12 +36,12 @@ class BodyResource {
 
     Map<Long, String> store = new HashMap<>();
     AtomicLong sequence = new AtomicLong();
+    ObjectMapper mapper;
 
-    public BodyResource(Jsonb jsonb) {
-        this.jsonb = jsonb;
+
+    public BodyResource(ObjectMapper mapper) {
+        this.mapper = mapper;
     }
-
-    Jsonb jsonb;
 
     @Operation(summary = "erzeugt ein neues Objekt", description = """
             Ein neues Objekt vom Typ wird angelegt und mit einer ID versehen.
@@ -83,10 +85,11 @@ class BodyResource {
      */
     @GET
     @Path("{id}")
-    public Response load(@PathParam("id") Long id) {
+    @Produces("application/json")
+    public Response load(@PathParam("id") Long id) throws JsonProcessingException {
 
         String string = store.get(id);
-        return Response.ok(jsonb.fromJson(string, JsonObject.class)).build();
+        return Response.ok(string).build();
     }
 
 }

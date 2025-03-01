@@ -10,8 +10,8 @@ cd target/generated-sources/openapi/ || exit
 mkdir -p src/main/resources/META-INF
 cp -i ../../../src/main/resources/openapi/openapi.yaml src/main/resources/META-INF/openapi.yaml | echo "openapi.yaml konnte nicht kopiert werden"
 
-echo "\n\nProjekt bauen und testen\n\n"
+printf "\n\nProjekt bauen und testen\n\n"
 mvn clean test -Prun-generated
-echo "\n\nDev Mode wird gestartet\n\n"
+printf "\n\nDev Mode wird gestartet\n\n"
 mvn quarkus:dev -Prun-generated
 exit 0;
