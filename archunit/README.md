@@ -7,6 +7,9 @@ Ziele von Hex Arch.
 - Lesbarkeit / Verständlichkeit durch Entkopplung
 - Code Dependency Graph hat keine Zirkel und klar erlaubte Richtungen
 - Mapping
+- Starke Domainobjekte mit Fachlogik vs. Service-Klassen
+- Service Klassen implementieren Use cases
+- 
 
 ````bash
 .
