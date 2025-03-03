@@ -71,3 +71,35 @@ Wie ausführlich ein Aspekt ausgearbeitet werden soll, wollen diese Prinzipien s
   * [hier zu den Kommentarbeispielen](./json-rest/src/main/java/json_payload_ohne_bean_binding/body/BodyResource.java)
 * Gute Lösungsaspeke dürfen sich wiederholen in weiteren Projekten, der Fokus sollte aber auf dem neuen Aspekt liegen und den sich wiederholenden in seinem Ursprungsprojekt verlinken (vom README.md)
 * 100% Testabdeckung
+
+## Umgang mit lokalen Dateien
+
+VS Code speichert einige Einstellungen unter .vscode/settings.json.
+
+Diese Datei ist im git repo enthalten und überträgt wichtige Einstellungen in den workspace. Damit folgende Änderungen nicht im git changelog auftauchen, kann die Datei nach dem clone umgestellt werden, so dass git sie überspringt/ignoriert:
+
+Aktivieren:
+
+````bash
+bash << EOF
+[[ "$(pwd)" =~ architekturmuster-mit-quarkus$ ]] || { echo Bitte im Projektordner ausfuehren statt in $(pwd); exit 1; }
+
+git update-index --skip-worktree .vscode/settings.json
+git ls-files -v|grep " .vscode/settings.json"
+# die Datei sollte nun mit einem S markiert sein:
+# S .vscode/settings.json
+EOF
+````
+
+Deaktivieren:
+
+````bash
+bash << EOF
+[[ "$(pwd)" =~ architekturmuster-mit-quarkus$ ]] || { echo Bitte im Projektordner ausfuehren statt in $(pwd); exit 1; }
+
+git update-index --no-skip-worktree .vscode/settings.json
+git ls-files -v|grep " .vscode/settings.json"
+# die Datei sollte nun mit einem H markiert sein:
+# H .vscode/settings.json
+EOF
+````
