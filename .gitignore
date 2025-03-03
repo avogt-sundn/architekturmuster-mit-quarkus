@@ -29,8 +29,6 @@ nb-configuration.xml
 # Visual Studio Code
 .vscode
 .factorypath
-.vscode/settings.json
-
 
 # OSX
 .DS_Store
