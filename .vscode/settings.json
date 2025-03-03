@@ -4,11 +4,9 @@
     "java.dependency.packagePresentation": "flat",
     "java.format.settings.url": ".vscode/java-formatter.xml",
     "files.autoSave": "afterDelay",
-    "java.project.explorer.showNonJavaResources": false,
+    "java.project.explorer.showNonJavaResources": true,
     "maven.view": "flat",
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms100m -Xlog:disable",
-    "java.checkstyle.configuration": "${workspaceFolder}/liquibase/src/main/resources/changelog.xml",
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
