@@ -13,9 +13,9 @@ import quarkitecture.de.deutsche.domain.Bestellung;
 public class BestellungenJsonResource {
 
     NeueBestellungAufgebenUC neueBestellungAufgebenUC;
-    
+
     @GET
     public BestellungJson getBestellungen() {
-        return BestellungJson.fromDomainModel(new Bestellung());
+        return BestellungJson.fromDomainModel(neueBestellungAufgebenUC.run(new Bestellung()));
     }
 }

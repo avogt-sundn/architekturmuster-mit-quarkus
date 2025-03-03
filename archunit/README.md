@@ -1,5 +1,13 @@
 # Namenskonventionen und Modulsichten prüfen mit Archunit
 
+Ziele von Hex Arch.
+
+- denke NICHT in Infrastruktur wie Rest-APIs, SQL, messaging etc.
+- Testbarkeit
+- Lesbarkeit / Verständlichkeit durch Entkopplung
+- Code Dependency Graph hat keine Zirkel und klar erlaubte Richtungen
+- Mapping
+
 ````bash
 .
 ├── adapter

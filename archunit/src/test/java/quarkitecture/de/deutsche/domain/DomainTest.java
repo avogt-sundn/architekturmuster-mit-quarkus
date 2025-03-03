@@ -6,10 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import quarkitecture.de.deutsche.domain.Bestellung;
-import quarkitecture.de.deutsche.domain.Posten;
-import quarkitecture.de.deutsche.domain.Produkt;
-
 class DomainTest {
     @Test
     void testNumberOfItems() {

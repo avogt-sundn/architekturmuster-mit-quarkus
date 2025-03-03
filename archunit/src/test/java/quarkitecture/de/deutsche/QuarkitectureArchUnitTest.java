@@ -17,7 +17,7 @@ class QuarkitectureArchUnitTest {
      * das WURZEL_PACKAGE stimmt.
      */
     private static final String WURZEL_PACKAGE = QuarkitectureArchUnitTest.class.getPackageName();
-    private static final ArchRule myRule = onionArchitecture().domainModels(WURZEL_PACKAGE + "domain..")
+    private static final ArchRule myRule = onionArchitecture().domainModels(WURZEL_PACKAGE + ".domain..")
             .domainServices(WURZEL_PACKAGE + ".domain..")
             .applicationServices(WURZEL_PACKAGE + ".application..")
             .adapter(WURZEL_PACKAGE + ".adapter..");
@@ -26,7 +26,7 @@ class QuarkitectureArchUnitTest {
     void onionTest() {
 
         JavaClasses importedClasses = new ClassFileImporter().importPackages(
-                "quarkitecture.archunit.plantuml.classes");
+                "quarkitecture.de.deutsche");
         EvaluationResult result = myRule.evaluate(importedClasses);
 
         System.out.println(result.getFailureReport().toString());
