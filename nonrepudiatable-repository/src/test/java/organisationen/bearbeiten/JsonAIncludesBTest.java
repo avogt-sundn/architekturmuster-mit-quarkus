@@ -52,6 +52,7 @@ class JsonAIncludesBTest {
         mapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
         mapper.registerModule(new com.fasterxml.jackson.datatype.jdk8.Jdk8Module());
 
+
         final String jsonArbeitsversion = mapper.writeValueAsString(arbeitsversion);
         DocumentContext documentContext = JsonPath.parse(jsonArbeitsversion);
         // selektiere auf das property 'organisation'
