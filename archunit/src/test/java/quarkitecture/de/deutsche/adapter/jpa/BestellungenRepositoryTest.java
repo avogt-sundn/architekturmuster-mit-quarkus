@@ -17,6 +17,6 @@ class BestellungenRepositoryTest {
     @Test
     void testSave() {
 
-        repo.save(new Bestellung())
+        repo.save(new Bestellung());
     }
 }
