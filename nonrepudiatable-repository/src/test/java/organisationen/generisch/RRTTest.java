@@ -52,8 +52,7 @@ abstract class RRT<T> {
     @GET
     @Path("/{fachschluessel}/draft")
     @ResponseStatus(200)
-    public T get(
-            @PathParam("fachschluessel") UUID fachschluessel) {
+    public T get(@PathParam("fachschluessel") UUID fachschluessel) {
 
         T t = drafts.get(fachschluessel);
         Log.infof("Lese %s", t);
@@ -64,7 +63,7 @@ abstract class RRT<T> {
     @Produces("application/json")
     @Path("/{fachschluessel}/draft")
     @ResponseStatus(204)
-    public void post(@PathParam("typ") String versionskreiswurzel, @PathParam("fachschluessel") UUID fachschluessel,
+    public void post(@PathParam("fachschluessel") UUID fachschluessel,
             @Valid T t) {
         Log.infof("Schreibe %s", t);
 

@@ -2,8 +2,8 @@ package quarkitecture.de.deutsche.application;
 
 import quarkitecture.de.deutsche.domain.Bestellung;
 
-public interface NeueBestellungAufgebenUC {
+public interface BestellungenRepositoryPO {
 
-    Bestellung aufgeben(Bestellung bestellung);
+    Bestellung save(Bestellung bestellung);
 
 }

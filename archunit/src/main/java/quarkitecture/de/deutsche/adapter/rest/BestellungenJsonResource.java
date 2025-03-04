@@ -1,4 +1,4 @@
-package quarkitecture.de.deutsche.adapter;
+package quarkitecture.de.deutsche.adapter.rest;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -10,12 +10,12 @@ import quarkitecture.de.deutsche.domain.Bestellung;
 @Path("/bestellungen")
 @Consumes("application/json")
 @Produces("application/json")
-public class BestellungenJsonResource {
+class BestellungenJsonResource {
 
     NeueBestellungAufgebenUC neueBestellungAufgebenUC;
 
     @GET
     public BestellungJson getBestellungen() {
-        return BestellungJson.fromDomainModel(neueBestellungAufgebenUC.run(new Bestellung()));
+        return BestellungJson.fromDomainModel(neueBestellungAufgebenUC.aufgeben(new Bestellung()));
     }
 }

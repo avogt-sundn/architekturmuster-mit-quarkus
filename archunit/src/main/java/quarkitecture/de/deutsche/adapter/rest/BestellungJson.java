@@ -1,4 +1,4 @@
-package quarkitecture.de.deutsche.adapter;
+package quarkitecture.de.deutsche.adapter.rest;
 
 import java.util.List;
 

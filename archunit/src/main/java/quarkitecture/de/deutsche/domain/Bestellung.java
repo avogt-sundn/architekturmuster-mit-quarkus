@@ -1,9 +1,21 @@
 package quarkitecture.de.deutsche.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bestellung {
+    public UUID uid;
+    public LocalDateTime datum;
     public List<Posten> posten;
 
     public int numberOfItems() {
