@@ -1,0 +1,7 @@
+{
+    "id": "local-feature",
+    "version": "0.0.1",
+    "installsAfter": [
+        "ghcr.io/devcontainers-contrib/features/zsh-plugins"
+    ]
+}

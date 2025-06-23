@@ -7,6 +7,7 @@
         "dockerfile": "Dockerfile"
     },
     "features": {
+        "./local-feature": {},
         "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
         "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
         "ghcr.io/devcontainers-contrib/features/json-server:1": {},
@@ -18,6 +19,7 @@
         "ghcr.io/devcontainers/features/java:1": {
             "version": "none",
             "installMaven": "true",
+            "mavenVersion": "3.9.10",
             "installGradle": "false"
         },
         "ghcr.io/devcontainers/features/node:1.6.0": {},
@@ -29,12 +31,9 @@
         7071
     ],
     "mounts": [
-        "source=localcache,target=/home/vscode/.m2,type=volume",
-        "source=${env:HOME}${env:USERPROFILE}/.zsh_history,target=/home/vscode/.zsh_history,type=bind",
-        "source=${env:HOME}${env:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind"
+        "source=localcache,target=/home/vscode/.m2,type=volume"
     ],
     "postCreateCommand": "sudo chown -R vscode.vscode /home/vscode/.m2;mkdir -p /home/vscode/.redhat/; echo '{\"disabled\":true}' > /home/vscode/.redhat/io.quarkus.analytics.localconfig",
-
     "containerEnv": {
         "DOCKER_NETWORK": "docker-default-network",
         "GRAALVM_HOME": "/opt/mandrel",
@@ -74,7 +73,14 @@
                 "yzhang.markdown-all-in-one",
                 "redhat.vscode-yaml",
                 "jebbs.plantuml",
-                "Continue.continue"
+                "EditorConfig.EditorConfig",
+                "tonybaloney.vscode-pets",
+                "ms-vscode.live-server",
+                "ryanluker.vscode-coverage-gutters",
+                "ms-vsliveshare.vsliveshare",
+                "myml.vscode-markdown-plantuml-preview",
+                "vscjava.vscode-java-test",
+                "redhat.java"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"
