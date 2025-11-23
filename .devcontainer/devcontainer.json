@@ -9,23 +9,20 @@
     "features": {
         "./local-feature": {},
         "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
-        "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
-        "ghcr.io/devcontainers-contrib/features/json-server:1": {},
-        "ghcr.io/devcontainers-contrib/features/quarkus-sdkman:2": {},
-        "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {},
-        "ghcr.io/devcontainers/features/common-utils:2.5.1": {},
-        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers-extra/features/curl-apt-get:1": {},
+        "ghcr.io/devcontainers-extra/features/json-server:1": {},
+        "ghcr.io/devcontainers-extra/features/quarkus-sdkman:2": {},
+        "ghcr.io/devcontainers-extra/features/springboot-sdkman:2": {},
+        "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {},
+        "ghcr.io/devcontainers/features/common-utils:2.5.4": {},
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
         "ghcr.io/devcontainers/features/java:1": {
-            "version": "none",
+            "version": "21.0.9-tem",
             "installMaven": "true",
             "mavenVersion": "3.9.10",
-            "installGradle": "false"
-        },
-        "ghcr.io/devcontainers/features/node:1.6.0": {},
-        "ghcr.io/dhoeric/features/k6:1": {},
-        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
-        "ghcr.io/lukewiwa/features/shellcheck:0": {}
+            "installGradle": "true",
+            "gradleVersion": "9.2.0"
+        }
     },
     "forwardPorts": [
         7071
@@ -37,7 +34,6 @@
     "containerEnv": {
         "DOCKER_NETWORK": "docker-default-network",
         "GRAALVM_HOME": "/opt/mandrel",
-        "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current",
         "DB_HOST": "postgres",
         "AMQ_HOST": "artemis",
         "KAFKA_BOOTSTRAP": "kafka",
@@ -83,11 +79,11 @@
                 "redhat.java"
             ],
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "zsh"
-            },
-            "terminal.integrated.profiles.linux": {
-                "zsh": {
-                    "path": "zsh"
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.profiles.linux": {
+                    "zsh": {
+                        "path": "zsh"
+                    }
                 }
             }
         }

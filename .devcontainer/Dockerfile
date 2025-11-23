@@ -1,6 +1,6 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/blob/main/containers/java/.devcontainer/base.Dockerfile
 # [Choice] Java version (use -bullseye variants on local arm64/Apple Silicon): 8, 11, 17, 8-bullseye, 11-bullseye, 17-bullseye, 8-buster, 11-buster, 17-buster
-FROM mcr.microsoft.com/devcontainers/java:1-21-bullseye
+FROM mcr.microsoft.com/devcontainers/java:1-bullseye
 
 # Avoid warnings by switching to noninteractive
 # ENV DEBIAN_FRONTEND=noninteractive
@@ -37,11 +37,6 @@ RUN apt-get install -y libglib2.0-0 \
 RUN apt-get update && apt-get install -y chromium
 
 #   END ------ Playwright Chromium
-#   BEGIN ------ install graalvm
-RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) \
-    && echo "Loading GraalVM/Mandrel for $ARCH" && curl -L -o /tmp/mandrel.tgz https://github.com/graalvm/mandrel/releases/download/mandrel-23.1.1.0-Final/mandrel-java21-linux-$ARCH-23.1.1.0-Final.tar.gz \
-    && cd /opt && tar xzf /tmp/mandrel.tgz && rm /tmp/mandrel.tgz \
-    && ln -s /opt/mandrel-java21-23.1.1.0-Final /opt/mandrel
 
 #   BEGIN ------ install kompose and kubectl and helm
 RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo arm64; else echo amd64; fi) \
