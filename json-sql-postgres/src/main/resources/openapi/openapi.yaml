@@ -1,18 +1,8 @@
 ---
-openapi: 3.0.3
-info:
-  title: json-sql-postgres API
-  version: 1.0.0-SNAPSHOT
-servers:
-- url: http://localhost:8080
-  description: Auto generated value
-- url: http://0.0.0.0:8080
-  description: Auto generated value
+openapi: 3.1.0
 paths:
   /jsonresource:
     get:
-      tags:
-      - Json Resource
       parameters:
       - name: surname
         in: query
@@ -21,9 +11,13 @@ paths:
       responses:
         "200":
           description: OK
-    post:
+          content:
+            application/json:
+              schema: {}
+      summary: Search
       tags:
       - Json Resource
+    post:
       requestBody:
         content:
           application/json:
@@ -31,23 +25,36 @@ paths:
               type: object
               additionalProperties:
                 $ref: "#/components/schemas/JsonValue"
+        required: true
       responses:
         "200":
           description: OK
-  /jsonresource/{id}:
-    get:
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+      summary: Save Object From Json
       tags:
       - Json Resource
+  /jsonresource/{id}:
+    get:
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          format: int64
           type: integer
+          format: int64
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
+      summary: Load
+      tags:
+      - Json Resource
 components:
   schemas:
     JsonValue:
@@ -56,6 +63,7 @@ components:
         valueType:
           $ref: "#/components/schemas/ValueType"
     ValueType:
+      type: string
       enum:
       - ARRAY
       - OBJECT
@@ -64,4 +72,11 @@ components:
       - "TRUE"
       - "FALSE"
       - "NULL"
-      type: string
+info:
+  title: json-sql-postgres API
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
