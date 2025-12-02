@@ -34,7 +34,15 @@
         },
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
           }
         },
         "summary" : "Save Object From Json",
@@ -45,7 +53,12 @@
       "get" : {
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
           }
         },
         "summary" : "Get All Classic",
@@ -56,7 +69,12 @@
       "get" : {
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
           }
         },
         "summary" : "Get All Virtual",
@@ -76,7 +94,12 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
           }
         },
         "summary" : "Load",

@@ -31,6 +31,11 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
       summary: Save Object From Json
       tags:
       - Resource With Metrics
@@ -39,6 +44,9 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
       summary: Get All Classic
       tags:
       - Resource With Metrics
@@ -47,6 +55,9 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
       summary: Get All Virtual
       tags:
       - Resource With Metrics
@@ -62,6 +73,9 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
       summary: Load
       tags:
       - Resource With Metrics

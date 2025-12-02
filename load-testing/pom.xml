@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>quarkitecture</groupId>
     <artifactId>load-testing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
-
-        <compiler-plugin.version>3.13.0</compiler-plugin.version>
-        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.18.2</quarkus.platform.version>
+        <quarkus.platform.version>3.30.1</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.2</surefire-plugin.version>
-        <org.projectlombok.version>1.18.30</org.projectlombok.version>
+        <org.projectlombok.version>1.18.40</org.projectlombok.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -33,7 +30,7 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-opentelemetry</artifactId>
-         </dependency>
+        </dependency>
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-logging</artifactId>
@@ -130,16 +127,18 @@
             <version>2.10.0.pr1</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${compiler-plugin.version}</version>
+                    <version>3.14.1</version>
                     <configuration>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -152,9 +151,8 @@
                                 <version>${quarkus.platform.version}</version>
                             </path>
                         </annotationProcessorPaths>
-                        <release>21</release>
-
-
+                        <release>25</release>
+                        <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
             </plugins>
@@ -175,14 +173,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
